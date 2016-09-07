@@ -79,6 +79,7 @@
 
           it('should be positioned on click target', function(done) {
             menu.target.addEventListener('contextmenu', function() {
+              menu.flushDebouncer('opening');
               expect(menu.$.overlay.x).to.eql(10);
               expect(menu.$.overlay.y).to.eql(10);
               done();

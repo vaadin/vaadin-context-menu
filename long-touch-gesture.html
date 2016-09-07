@@ -1,0 +1,65 @@
+<script>
+  (function() {
+    Polymer.Gestures.register({
+      name: 'long-touch',
+      deps: ['touchstart', 'touchend', 'touchmove'],
+      flow: {
+        start: ['touchstart'],
+        end: ['touchend']
+      },
+
+      emits: ['long-touch'],
+
+      info: {
+        x: 0,
+        y: 0
+      },
+
+      reset: function() {
+        this.info.x = 0;
+        this.info.y = 0;
+        this.info.fired = false;
+        if (this.info.touchJob) {
+          this.info.touchJob.stop();
+        }
+        this.info.touchJob = null;
+      },
+
+      touchstart: function(e) {
+        this.info.x = e.changedTouches[0].clientX;
+        this.info.y = e.changedTouches[0].clientY;
+        this.info.touchJob = Polymer.Debounce(this.info.touchJob, function() {
+          var t = Polymer.Gestures.findOriginalTarget(e);
+          var ct = e.changedTouches[0];
+          this.fire(t, ct);
+        }.bind(this), 650);
+      },
+
+      touchmove: function(e) {
+        var moveThreshold = 15;
+        if (Math.abs(this.info.x - e.changedTouches[0].clientX) > moveThreshold ||
+            Math.abs(this.info.y - e.changedTouches[0].clientY) > moveThreshold) {
+          this.info.touchJob.stop();
+        }
+      },
+
+      touchend: function(e) {
+        this.info.touchJob.stop();
+
+        if (this.info.fired) {
+          e.preventDefault(); //stop click from happening
+          e.stopPropagation();
+        }
+      },
+
+      fire: function(target, touch) {
+        Polymer.Gestures.fire(target, 'long-touch', {
+          clientX: touch.clientX,
+          clientY: touch.clientY
+        });
+
+        this.info.fired = true;
+      }
+    });
+  })();
+</script>

@@ -1,6 +1,7 @@
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../paper-styles/shadow.html">
 <link rel="import" href="vaadin-context-menu-overlay.html">
+<link rel="import" href="long-touch-gesture.html">
 
 <dom-module id="vaadin-context-menu">
   <template>
@@ -24,7 +25,7 @@
         padding: 0 24px;
       }
     </style>
-    <vaadin-context-menu-overlay id="overlay" on-iron-overlay-opened="_onOverlayOpened" opened="{{opened}}">
+    <vaadin-context-menu-overlay id="overlay" on-iron-overlay-opened="_focusChild" opened="{{opened}}">
       <div class="dropdown-content">
         <content></content>
       </div>
@@ -78,7 +79,7 @@
         }
       },
 
-      _onOverlayOpened: function() {
+      _focusChild: function() {
         var child = Polymer.dom(this).queryDistributedElements('*')[0];
         if (child) {
           child.focus();
@@ -101,19 +102,37 @@
 
       _targetChanged: function(target, oldTarget) {
         if (oldTarget) {
+          oldTarget.style.webkitUserSelect = '';
+          this.unlisten(oldTarget, 'long-touch', '_onContextMenu');
           this.unlisten(oldTarget, 'contextmenu', '_onContextMenu');
         }
         if (target) {
+          target.style.webkitUserSelect = 'none';
+          this.listen(target, 'long-touch', '_onContextMenu');
           this.listen(target, 'contextmenu', '_onContextMenu');
         }
       },
 
       _onContextMenu: function(e) {
         e.preventDefault();
-        this.$.overlay.resetFit();
-        this.$.overlay.x = e.clientX;
-        this.$.overlay.y = e.clientY;
+
+        // some mobile browsers like iOS Safari seem to get the client X and Y
+        // wrong (always 0,0) unless we set them after a short delay.
+        // could be removed for desktop browsers if needed.
+        this.$.overlay.style.visibility = 'hidden';
+
         this.opened = true;
+
+        this.debounce('opening', function() {
+          this.$.overlay.resetFit();
+          this.$.overlay.x = e.clientX || e.detail.clientX;
+          this.$.overlay.y = e.clientY || e.detail.clientY;
+          this.$.overlay.style.visibility = '';
+          // need to explicitly focus because overlay is still hidden at the time
+          // `iron-overlay-opened` event is fired.
+          this._focusChild();
+        }, 100);
+
       },
 
       _targetSelectorChanged: function(isAttached, targetSelector) {
