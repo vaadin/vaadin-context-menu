@@ -1,16 +1,12 @@
 <link rel="import" href="../polymer/polymer.html">
-<link rel="import" href="../paper-styles/shadow.html">
 <link rel="import" href="vaadin-context-menu-overlay.html">
+<link rel="import" href="long-touch-gesture.html">
 
 <dom-module id="vaadin-context-menu">
   <template>
     <style>
       :host {
         display: block;
-      }
-
-      #overlay {
-        @apply(--shadow-elevation-6dp);
       }
     </style>
     <content></content>
@@ -80,7 +76,11 @@
           observer: '_closeOnChanged'
         },
 
-        _contentTemplate: Object
+        _contentTemplate: Object,
+
+        _ios: {
+          value: /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream
+        }
       },
 
       observers: ['_contentTemplateChanged(_contentTemplate)',
@@ -97,12 +97,23 @@
       _targetOrOpenOnChanged: function(target, openOn, isAttached) {
         if (this._oldTarget && this._oldOpenOn) {
           this.unlisten(this._oldTarget, this._oldOpenOn, '_onContextMenu');
+          this.listen(this._oldTarget, 'long-touch', '_onLongTouch');
+
+          this._oldTarget.style.webkitTouchCallout = '';
+          this._oldTarget.style.webkitUserSelect = '';
+
           this._oldTarget = null;
           this._oldOpenOn = null;
         }
 
         if (target && openOn && isAttached) {
           this.listen(target, openOn, '_onContextMenu');
+          this.listen(target, 'long-touch', '_onLongTouch');
+
+          // note: these styles don't seem to work in Firefox on iOS.
+          target.style.webkitTouchCallout = 'none';
+          target.style.webkitUserSelect = 'none';
+
           this._oldTarget = target;
           this._oldOpenOn = openOn;
         }
@@ -146,6 +157,14 @@
         }
       },
 
+      _onLongTouch: function(e) {
+        // on Android, a `contextmenu` is fired natively. However, it's important
+        // to have the long-touch listener to prevent `tap` event from bubbling.
+        if (this._ios) {
+          this._onContextMenu(e);
+        }
+      },
+
       _onContextMenu: function(e) {
         this.context = {
           detail: e.detail,
@@ -154,10 +173,12 @@
 
         if (this.context.target) {
           e.preventDefault();
+          e.stopPropagation();
 
           this.$.overlay.resetFit();
-          this.$.overlay.x = e.clientX;
-          this.$.overlay.y = e.clientY;
+          this.$.overlay.x = e.clientX || e.detail.clientX;
+          this.$.overlay.y = e.clientY || e.detail.clientY;
+
           this.opened = true;
         }
       },

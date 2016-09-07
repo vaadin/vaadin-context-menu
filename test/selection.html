@@ -79,6 +79,17 @@
 
             menu.opened = true;
           });
+
+          it('should focus the child element on `contextmenu` event', function(done) {
+            menu.addEventListener('iron-overlay-opened', function() {
+              expect(document.activeElement).to.eql(unwrapIfNeeded(document.querySelector('#menu')));
+              done();
+            });
+
+            menu.fire('contextmenu', {}, {
+              node: menu.target
+            });
+          });
         });
       });
     </script>
