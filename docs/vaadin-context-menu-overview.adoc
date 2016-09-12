@@ -9,9 +9,18 @@ layout: page
 
 The [vaadinelement]#vaadin-context-menu# is a Polymer element implementing a menu in an overlay which is open by the target element.
 
+The [propertyname]#target# property is used to determine which element to listen for [propertyname]#contextmenu# events.
+[propertyname]#targetSelector# is a shortcut for using a CSS selector to determine the [propertyname]#target# element.
+
+For touch devices which don't fire [propertyname]#contextmenu#, there is a simulated event which get fired after a long lasting tap.
+
 [source,html]
 ----
-<a id="opener" href='#'>
+Lorem ipsum dolor sit amet.
+<a id="opener" href="#">
+  Consectetur
+</a>
+adipiscing elit.
 
 <vaadin-context-menu target-selector="#opener" id="menu">
   <paper-menu>
