@@ -42,8 +42,8 @@
                 </colgroup>
               </table>
             </vaadin-grid>
-
-            <vaadin-context-menu id="menu" target-selector="#grid" close-on="">
+            <vaadin-context-menu id="menu" close-on="">
+              <template>
                 <paper-menu multi selected-values="{{selectedValues}}">
                   <paper-item>Name</paper-item>
                   <paper-item>Surname</paper-item>
@@ -51,6 +51,7 @@
                   <paper-item>Target</paper-item>
                   <paper-item>Effort</paper-item>
                 </paper-menu>
+              </template>
             </vaadin-context-menu>
         </template>
       </dom-module>
@@ -67,6 +68,7 @@
             '_selectedChanged(selectedValues.*)'
           ],
           ready: function() {
+            this.$.menu.target = this.$.grid;
             // Cancel event unless the user clicks on the header
             this.$.grid.addEventListener('contextmenu', function(e) {
               if (this.$.grid.getRowIndex(e.target) > -1) {
