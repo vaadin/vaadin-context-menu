@@ -90,8 +90,11 @@
         });
 
         describe('closing', function() {
-          it('should close on outside tap', function(done) {
+          beforeEach(function() {
             menu.opened = true;
+          });
+
+          it('should close on outside tap', function(done) {
 
             menu.addEventListener('iron-overlay-closed', function() {
               expect(menu.opened).to.eql(false);
@@ -103,6 +106,28 @@
                 node: document.body
               });
             });
+          });
+
+          it('should close on `click`', function() {
+            menu.$.overlay.click();
+
+            expect(menu.opened).to.eql(false);
+          });
+
+          it('should close on custom event', function() {
+            menu.closeOn = 'foobar';
+
+            menu.$.overlay.fire('foobar');
+
+            expect(menu.opened).to.eql(false);
+          });
+
+          it('should disable close on empty `closeOn`', function() {
+            menu.closeOn = '';
+
+            menu.$.overlay.click();
+
+            expect(menu.opened).to.eql(true);
           });
         });
       });
