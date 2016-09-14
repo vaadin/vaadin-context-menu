@@ -12,17 +12,6 @@
       #overlay {
         @apply(--shadow-elevation-6dp);
       }
-
-      :host ::content paper-menu {
-        width: calc(64px * 4);
-        padding: 16px 0;
-      }
-
-      :host ::content paper-item,
-      :host ::content paper-item-body {
-        min-height: 32px !important;
-        padding: 0 24px;
-      }
     </style>
     <content></content>
     <vaadin-context-menu-overlay id="overlay" on-iron-overlay-opened="_onOverlayOpened" opened="{{opened}}">
