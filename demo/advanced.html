@@ -106,9 +106,9 @@
             },
             _selectedChanged: function() {
               for (var i = 0; this.columns && i < this.columns.length; i++) {
-                this.columns[i].hidden = !this.selectedValues.includes(i);
+                this.columns[i].hidden = this.selectedValues.indexOf(i) == -1;
               }
-            },
+            }
           });
         });
       </script>

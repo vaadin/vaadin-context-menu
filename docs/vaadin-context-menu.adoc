@@ -159,7 +159,7 @@ It is useful when firing custom events from inside custom elements.
 ----
 
 [[vaadin-context-menu.closing]]
-== Closing
+= Closing
 
 By default, [vaadinelement]#vaadin-context-menu# closes when a [propertyname]#click# event is triggered inside the overlay.
 
