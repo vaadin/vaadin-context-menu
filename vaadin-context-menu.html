@@ -152,9 +152,15 @@ Custom property | Description | Default
 
       /**
        * Open the overlay.
+       * @param {Event|undefined} opens the overlay. If an event is passed it is used to figure
+       *    out the position of the menu.
        */
-      open: function() {
-        this.opened = true;
+      open: function(ev) {
+        if (ev) {
+          this._onContextMenu(ev);
+        } else {
+          this.opened = true;
+        }
       },
 
       _openedChanged: function(opened) {
@@ -204,13 +210,14 @@ Custom property | Description | Default
         };
 
         if (this._context.target) {
-          e.preventDefault();
-          e.stopPropagation();
+          var ev = e.detail && e.detail.event || e.detail || e;
+
+          (ev.preventDefault || e.preventDefault)();
+          (ev.stopPropagation || e.stopPropagation)();
 
           this.$.overlay.resetFit();
-          this.$.overlay.x = e.detail && e.detail.clientX || e.clientX;
-          this.$.overlay.y = e.detail && e.detail.clientY || e.clientY;
-
+          this.$.overlay.x = ev.clientX;
+          this.$.overlay.y = ev.clientY;
           this.opened = true;
         }
       },
