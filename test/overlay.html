@@ -101,6 +101,20 @@
               node: menu.listenOn
             });
           });
+
+          it('should be positioned by detail from custom event', function(done) {
+            menu.listenOn.addEventListener('iron-overlay-opened', function() {
+              expect(menu.$.overlay.x).to.eql(5);
+              expect(menu.$.overlay.y).to.eql(5);
+              done();
+            });
+
+            menu.openOn = 'foobar';
+
+            menu.fire('foobar', {clientX: 5, clientY: 5, sourceEvent: {clientX: 10, clientY: 20}}, {
+              node: menu.listenOn
+            });
+          });
         });
 
         describe('closing', function() {
