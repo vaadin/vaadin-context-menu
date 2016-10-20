@@ -213,13 +213,25 @@ Custom property | Description | Default
 
             this.$.overlay.resetFit();
 
-            var sourceEvent = e.detail && e.detail.sourceEvent;
-            this.$.overlay.x = sourceEvent && sourceEvent.clientX || e.clientX;
-            this.$.overlay.y = sourceEvent && sourceEvent.clientY || e.clientY;
+            this.$.overlay.x = this._getEventCoordinate(e, 'clientX');
+            this.$.overlay.y = this._getEventCoordinate(e, 'clientY');
 
             this._opened = true;
           }
         }
+      },
+
+      _getEventCoordinate: function(event, coordinate) {
+        var sourceEvent = event.detail && event.detail.sourceEvent;
+        if (sourceEvent) {
+          event = sourceEvent;
+        }
+
+        if (event.changedTouches) {
+          return event.changedTouches[0][coordinate];
+        }
+
+        return event[coordinate];
       },
 
       _forwardParentProp: function(prop, value) {
