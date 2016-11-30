@@ -73,15 +73,13 @@ This program is available under Apache License Version 2.0, available at https:/
         }
       },
 
-      _preventDefault: function(e) {
-        // note: at least in Chrome, even though preventDefault() is called,
-        // the e.target still loses focus.
-        e.preventDefault();
-        e.stopPropagation();
-      },
-
       _phoneChanged: function(phone) {
         this.withBackdrop = phone;
+        if (phone) {
+          this.backdropElement.addEventListener('touchmove', function(e) {
+            e.preventDefault();
+          });
+        }
       },
 
       // monkey patching iron-overlay-behavior to cancel overriding transform styles.
