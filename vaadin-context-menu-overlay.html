@@ -26,13 +26,14 @@ This program is available under Apache License Version 2.0, available at https:/
       }
 
       :host([phone]) {
+        /* width set to make it possible for the user make the contents fit whole screen */
         width: 100vw;
-        max-height: calc(100vh - 48px);
+        /* Ideally should be 100vh - 2*24px but iOS phone has issues when the addr-bar activates */
+        max-height: 80vh;
         overflow: auto;
         bottom: 24px;
         padding: 0 24px;
         top: auto !important;
-
         transform: none !important;
       }
     </style>
@@ -77,12 +78,19 @@ This program is available under Apache License Version 2.0, available at https:/
 
       _phoneChanged: function(phone) {
         this.withBackdrop = phone;
+
+        // Not need to remove event listeners because phone shouldn't change.
         if (phone) {
           // Prevent scrolling body when swiping the backdrop
-          this.backdropElement.addEventListener('touchmove', function(e) {
-            e.preventDefault();
-          });
-          // Prevent scrolling body when swiping the overlay, but
+          this.backdropElement.addEventListener('touchstart', this.close.bind(this));
+          // Prevent scrolling body when swiping the overlay if
+          // there is no scroll.
+          this.addEventListener('touchmove', function(e) {
+            if (this.scrollHeight == this.offsetHeight) {
+              e.preventDefault();
+            }
+          }.bind(this));
+          // Prevent scrolling body when the overlay has its scroll, but
           // only in the case of scroll position is at the edges.
           this.addEventListener('touchstart', function(e) {
             if (!this.scrollTop) {
@@ -91,7 +99,7 @@ This program is available under Apache License Version 2.0, available at https:/
             if (this.scrollHeight == this.offsetHeight + this.scrollTop) {
               this.scrollTop--;
             }
-          });
+          }.bind(this));
         }
       },
 
