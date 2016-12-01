@@ -9,6 +9,15 @@ This program is available under Apache License Version 2.0, available at https:/
 <link rel="import" href="../paper-styles/shadow.html">
 <link rel="import" href="vaadin-device-detector.html">
 
+<style>
+  html.vaadin-context-menu-opened,
+  html.vaadin-context-menu-opened > body {
+    overflow: hidden;
+    position: relative;
+    height: 100%;
+  }
+</style>
+
 <dom-module id="vaadin-context-menu-overlay">
   <template>
     <style>
@@ -26,13 +35,14 @@ This program is available under Apache License Version 2.0, available at https:/
       }
 
       :host([phone]) {
+        /* width set to make it possible for the user make the contents fit whole screen */
         width: 100vw;
-        max-height: calc(100vh - 48px);
+        /* Ideally should be 100vh - 2*24px but iOS phone has issues when the addr-bar activates */
+        max-height: 80vh;
         overflow: auto;
         bottom: 24px;
         padding: 0 24px;
         top: auto !important;
-
         transform: none !important;
       }
     </style>
@@ -47,8 +57,23 @@ This program is available under Apache License Version 2.0, available at https:/
         '_positionChanged(x, y)', '_phoneChanged(phone)'
       ],
 
-      properties: {
+      listeners: {
+        'iron-overlay-opened': '_onOpenOrClose',
+        'iron-overlay-closed': '_onOpenOrClose',
+      },
 
+      _onOpenOrClose: function() {
+        // In mobile, prevent body to scroll when overlay is opened.
+        if (this.phone) {
+          if (this.opened) {
+            document.documentElement.classList.add('vaadin-context-menu-opened');
+          } else {
+            document.documentElement.classList.remove('vaadin-context-menu-opened');
+          }
+        }
+      },
+
+      properties: {
         /**
          * Position of the overlay on horizontal axis.
          */
@@ -77,22 +102,6 @@ This program is available under Apache License Version 2.0, available at https:/
 
       _phoneChanged: function(phone) {
         this.withBackdrop = phone;
-        if (phone) {
-          // Prevent scrolling body when swiping the backdrop
-          this.backdropElement.addEventListener('touchmove', function(e) {
-            e.preventDefault();
-          });
-          // Prevent scrolling body when swiping the overlay, but
-          // only in the case of scroll position is at the edges.
-          this.addEventListener('touchstart', function(e) {
-            if (!this.scrollTop) {
-              this.scrollTop++;
-            }
-            if (this.scrollHeight == this.offsetHeight + this.scrollTop) {
-              this.scrollTop--;
-            }
-          });
-        }
       },
 
       // monkey patching iron-overlay-behavior to cancel overriding transform styles.
