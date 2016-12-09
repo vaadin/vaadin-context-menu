@@ -44,7 +44,9 @@
         });
 
         for (var property in touchEventInit) {
-          event[property] = touchEventInit[property];
+          if ({}.hasOwnProperty.call(touchEventInit, property)) {
+            event[property] = touchEventInit[property];
+          }
         }
 
         node.dispatchEvent(event);
