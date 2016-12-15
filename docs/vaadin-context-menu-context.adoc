@@ -1,0 +1,64 @@
+---
+title: The Context
+order: 5
+layout: page
+---
+
+[[vaadin-context-menu.context]]
+= The Context
+
+You can use data bindings to the following properties in the menu template:
+
+- `target` is the menu opening event target, which is the element that the user has called the context menu for,
+- `detail` is the menu opening event detail.
+
+In the following example, the menu item text mentions the text content of the menu target:
+
+[source,html]
+----
+<vaadin-context-menu selector="li">
+  <template>
+    <paper-menu>
+      <paper-item>The menu target: [[target.textContent]]</paper-item>
+    </paper-menu>
+  </template>
+
+  <ul>
+    <li>Foo</li>
+    <li>Bar</li>
+    <li>Baz</li>
+  </ul>
+</vaadin-context-menu>
+----
+
+:screenshot:
+
+== Accessing the Context on Menu Item Click
+
+You can use data bindings for the menu items in order to access the relevant context from the item click events.
+
+In the following example, the list item has an index property, and the list item is bound to the menu item so that it is accessible in the menu item click event handler:
+
+[source,html]
+----
+<vaadin-content-menu selector="li">
+  <template>
+    <paper-menu>
+      <paper-item on-click="_remove" list-item="[[target]]">Remove</paper-item>
+    </paper-menu>
+  </template>
+
+  <ul>
+    <template is="dom-repeat" items="[[items]]">
+      <li index="[[index]]"></li>
+    </template>
+  </ul>
+</vaadin-context-menu>
+----
+
+[source,javascript]
+----
+_remove: function(e) {
+  this.splice('items', e.target.listItem.index, 1);
+}
+----

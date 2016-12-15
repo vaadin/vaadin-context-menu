@@ -1,0 +1,92 @@
+---
+title: Targeting the Menu
+order: 4
+layout: page
+---
+
+[[vaadin-context-menu.targeting]]
+= Targeting the Menu
+
+When the user calls the context menu on the page content, the context menu event is dispatched for an element in the page content. The `<vaadin-context-menu>` element needs to process this event to open the menu overlay. There are multiple ways of achieving this behavior, they are described below.
+
+[[vaadin-context-menu.wrapping]]
+== Wrapping the Page Content
+
+By default, the `<vaadin-context-menu>` element listens for the menu opening event on itself. In order to have a context menu on your content, wrap your page content with the `<vaadin-context-menu>` element and add a template element with a menu. Example:
+
+[source,html]
+----
+<vaadin-context-menu>
+  <template>
+    <paper-menu>
+      <paper-item>First menu item</paper-item>
+      <paper-item>Second menu item</paper-item>
+    </paper-menu>
+  </template>
+
+  <p>This paragraph has the context menu provided in the above template.</p>
+  <p>Another paragraph with the context menu.</p>
+</vaadin-context-menu>
+----
+
+:screenshot:
+
+[[vaadin-context-menu.listen-on]]
+== The `listenOn` Property
+
+In case if wrapping the page content is not desired, you can listen for events on an element outside the `<vaadin-context-menu>` as well by setting the `listenOn` property:
+
+[source,html]
+----
+<vaadin-context-menu id="customListener">
+  <template>
+    <paper-menu>
+      ...
+    </paper-menu>
+  </template>
+</vaadin-context-menu>
+
+<div id="menuListener">The element that listens for the context menu.</div>
+
+<script>
+  var contextMenu = document.querySelector('vaadin-context-menu#customListener');
+  contextMenu.listenOn = document.querySelector('#menuListener');
+</script>
+----
+
+[[vaadin-context-menu.selector]]
+== Filtering Menu Targets
+
+By default, all the elements inside the menu listener and the listener element itself have a context menu. You can filter the menu targets to a desired set of elements inside the listener element by setting the `selector` property.
+
+In the following example, only the elements matching `.has-menu` will have the context menu:
+
+[source,html]
+----
+<vaadin-context-menu selector=".has-menu">
+  <template>
+    <paper-menu>
+      ...
+    </paper-menu>
+  </template>
+
+  <p class="has-menu">This paragraph opens the context menu</p>
+  <p>This paragraph does not open the context menu</p>
+</vaadin-context-menu>
+----
+
+[[vaadin-context-menu.open-method]]
+== The `open` Method
+
+If the declarative menu targeting, which was described above, is not applicable, you open the menu manually by calling the `open` method of the `<vaadin-context-menu>` from an event listener:
+
+[source,html]
+----
+<script>
+  target.addEventListener('vaadin-contextmenu', function(event) {
+    document.querySelector('vaadin-context-menu#myMenu').open(event);
+  });
+</script>
+----
+
+Note that the `open` method requires an event in the first argument. This event is used for extracting the context and positioning the overlay.

@@ -1,0 +1,48 @@
+---
+title: Styling
+order: 7
+layout: page
+---
+
+[[vaadin-context-menu.styling]]
+= Styling
+
+`<vaadin-context-menu>` is style-agnostic, which applies both to the menu template contents and for the overlay.
+
+For the menu template, most of the code examples use `<paper-menu>` and `<paper-item>`, but it is allowed to use any other elements there as well.
+
+== Styling the Menu
+[[vaadin-context-menu.styling-menu]]
+
+`<paper-menu>` and `<paper-item>` elements come with Material Design styles by default. See the `<paper-menu>` and `<paper-item>` documentation for more information on how to customize their look.
+
+=== Selected Item Style
+[[vaadin-context-menu.styling-selected-item]]
+`<paper-menu>` has the selection functionality, which makes the previously selected `<paper-item>` look different by applying the `iron-selected` classname.
+
+You can change the class name that `<paper-menu>` sets for selected items to prevent this:
+[source,html]
+----
+<vaadin-context-menu>
+  <template>
+    <paper-menu selected-class="custom-selected">
+      <paper-item>First menu item</paper-item>
+      <paper-item>Second menu item</paper-item>
+    </paper-menu>
+  </template>
+
+  <p>The context menu of this paragraph does not change the items look when opened again.</p>
+</vaadin-context-menu>
+----
+
+[[vaadin-context-menu.styling-overlay]]
+== Styling the Overlay
+
+`<vaadin-context-menu>` stamps the menu template in the menu overlay element, which has empty styles by default.
+
+The following custom CSS mixin is available for styling:
+
+[width="100%", options="header"]
+|==========
+|Property name | Description
+| `--vaadin-context-menu-overlay` | Mixin applied to the overlay
