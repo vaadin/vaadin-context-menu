@@ -12,6 +12,7 @@
     "gulp": "latest",
     "gulp-html-extract": "^0.2.0",
     "gulp-eslint": "^3.0.1",
+    "polylint": "^2.10.1",
     "web-component-tester": "^5.0.0",
     "yargs": "^5.0.0"
   },
