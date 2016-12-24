@@ -29,10 +29,16 @@
     <test-fixture id="default">
       <template>
         <vaadin-context-menu>
+          <template>
+            <paper-menu id="menu">
+              <paper-item>The menu target: [[target.textContent]]</paper-item>
+            </paper-menu>
+          </template>
           <div id="target">
+            Foo
             <x-foo></x-foo>
           </div>
-          <div id="another"></div>
+          <div id="another">Bar</div>
         </vaadin-context-menu>
       </template>
     </test-fixture>
@@ -48,12 +54,25 @@
           another = document.querySelector('#another');
         });
 
-        it('should use target as default context', function() {
+        it('should use target as default context', function(done) {
           menu.fire('vaadin-contextmenu', {}, {
             node: target
           });
 
-          expect(menu._context.target).to.eql(target);
+          menu.async(function() {
+            expect(menu._context.target).to.eql(target);
+            expect(menu.$.overlay.textContent).to.contain(target.textContent);
+
+            menu.fire('vaadin-contextmenu', {}, {
+              node: another
+            });
+
+            menu.async(function() {
+              expect(menu._context.target).to.eql(another);
+              expect(menu.$.overlay.textContent).to.contain(another.textContent);
+              done();
+            });
+          });
         });
 
         it('should use details as context details', function() {
