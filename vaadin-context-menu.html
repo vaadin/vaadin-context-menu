@@ -220,7 +220,7 @@ Custom property | Description | Default
       observers: [
         '_contentTemplateChanged(_contentTemplate)',
         '_openedChanged(opened)',
-        '_targetOrOpenOnChanged(listenOn, openOn, isAttached)'
+        '_targetOrOpenOnChanged(listenOn, openOn)'
       ],
 
       _onOverlayOpened: function() {
@@ -234,7 +234,7 @@ Custom property | Description | Default
         this._setOpened(false);
       },
 
-      _targetOrOpenOnChanged: function(listenOn, openOn, isAttached) {
+      _targetOrOpenOnChanged: function(listenOn, openOn) {
         if (this._oldListenOn && this._oldOpenOn) {
           this.unlisten(this._oldListenOn, this._oldOpenOn, 'open');
 
@@ -245,7 +245,7 @@ Custom property | Description | Default
           this._oldOpenOn = null;
         }
 
-        if (listenOn && openOn && isAttached) {
+        if (listenOn && openOn) {
           this.listen(listenOn, openOn, 'open');
 
           // note: these styles don't seem to work in Firefox on iOS.
