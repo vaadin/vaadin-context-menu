@@ -318,7 +318,14 @@ Custom property | Description | Default
             this.$.overlay.x = this._getEventCoordinate(e, 'x');
             this.$.overlay.y = this._getEventCoordinate(e, 'y');
 
-            this._setOpened(true);
+            if (this.opened) {
+              this.close();
+              Polymer.Base.async(function() {
+                this._setOpened(true);
+              }.bind(this));
+            } else {
+              this._setOpened(true);
+            }
           }
         }
       },
