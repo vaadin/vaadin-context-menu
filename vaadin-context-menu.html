@@ -220,6 +220,7 @@ Custom property | Description | Default
       observers: [
         '_contentTemplateChanged(_contentTemplate)',
         '_openedChanged(opened)',
+        '_contextChanged(_context)',
         '_targetOrOpenOnChanged(listenOn, openOn, isAttached)'
       ],
 
@@ -276,6 +277,13 @@ Custom property | Description | Default
             this._instance.detail = this._context.detail;
             this._instance.target = this._context.target;
           }
+        }
+      },
+
+      _contextChanged: function(context) {
+        if (this.opened) {
+          this._instance.detail = context.detail;
+          this._instance.target = context.target;
         }
       },
 
