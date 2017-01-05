@@ -218,6 +218,20 @@
 
             expect(menu.opened).to.eql(true);
           });
+
+          it('should close the menu and should not active link on backdrop click', function(done) {
+            var link = document.createElement('a');
+            var linkText = document.createTextNode('I should not be activated because of backdrop');
+            link.appendChild(linkText);
+            link.href = 'http://example.com';
+            document.body.appendChild(link);
+            var linkClientRect = link.getBoundingClientRect();
+            document.elementFromPoint(linkClientRect.left + 1, linkClientRect.top + 1).click();
+            menu.addEventListener('iron-overlay-closed', function() {
+              expect(menu.opened).to.eql(false);
+              done();
+            });
+          });
         });
       });
     </script>
