@@ -13,5 +13,6 @@ addons:
 
 script:
   - gulp lint
+  - TRAVIS_BRANCH=quick/local-tests xvfb-run -s '-screen 0 1024x768x24' wct -t chrome
   - travis_retry xvfb-run -s '-screen 0 1024x768x24' wct
   - travis_retry xvfb-run -s '-screen 0 1024x768x24' wct --dom=shadow
