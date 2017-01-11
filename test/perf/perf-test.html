@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+
+  <script src="../../../webcomponentsjs/webcomponents-lite.js"></script>
+  <script src="../../../web-component-tester/browser.js"></script>
+
+  <link rel="import" href="../../../test-fixture/test-fixture.html">
+  <link rel="import" href="../../../iron-test-helpers/iron-test-helpers.html">
+  <link rel="import" href="../../../polyperf/perf-lib/frame-tester.html">
+</head>
+
+<body>
+  <!-- TODO Use some ajax service to store/restore old values, for instance pouchdb + cloudant.com -->
+  <frame-tester runs="10"></frame-tester>
+  <summary>Element Tester</summary>
+
+  <script>
+    var isChrome = !!window.chrome && !!window.chrome.webstore;
+
+    var frame;
+    window.addEventListener('WebComponentsReady', function() {
+      frame = document.querySelector('frame-tester');
+    });
+
+    describe('performance', function() {
+
+      if (isChrome) {
+        it('should perform good', function(done) {
+          this.timeout(5000);
+          var listener = frame.addEventListener('done', function() {
+            for (var i = 0; i < frame.tests.length; i++) {
+              var stat = frame.stats(frame.times[i]);
+
+              // TODO: Expect more realistic values
+              expect(stat.mean).to.be.below(200);
+              expect(stat.variance).to.be.below(180);
+              expect(stat.deviation).to.be.below(30);
+
+              frame.removeEventListener('done', listener);
+              done();
+            }
+          });
+
+          frame.tests = [
+            'perf-vaadin-context-menu.html?wc-foo=10000'
+          ];
+        });
+      }
+
+    });
+  </script>
+
+</body>
+
+</html>
