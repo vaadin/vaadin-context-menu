@@ -19,5 +19,9 @@
   },
   "scripts": {
     "postinstall": "node_modules/.bin/bower install"
+  },
+  "dependencies": {
+    "lighthouse": "^1.4.1",
+    "serve": "^2.4.0"
   }
 }
