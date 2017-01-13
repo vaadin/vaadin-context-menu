@@ -30,15 +30,16 @@
 
       if (isChrome) {
         it('should perform good', function(done) {
-          this.timeout(5000);
+          this.timeout(60000);
           var listener = frame.addEventListener('done', function() {
             for (var i = 0; i < frame.tests.length; i++) {
               var stat = frame.stats(frame.times[i]);
+              window.console.log('Stats: ', JSON.stringify(stat));
 
               // TODO: Expect more realistic values
-              expect(stat.mean).to.be.below(200);
-              expect(stat.variance).to.be.below(180);
-              expect(stat.deviation).to.be.below(30);
+              expect(stat.mean).to.be.below(6000, 'Slow mean value ' + JSON.stringify(stat));
+              expect(stat.variance).to.be.below(5000, 'Slow variance value ' + JSON.stringify(stat));
+              expect(stat.deviation).to.be.below(5000, 'Slow deviation value ' + JSON.stringify(stat));
 
               frame.removeEventListener('done', listener);
               done();
