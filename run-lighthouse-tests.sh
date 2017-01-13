@@ -11,7 +11,7 @@ demoDir=demo
 lighthouse=node_modules/.bin/lighthouse
 serve=node_modules/.bin/serve
 
-perfThreshold=0.75
+perfThreshold=0.11
 tests="$testDir/test.html $demoDir/index.html"
 
 mkdir -p $elementDir/$testDir
@@ -28,6 +28,8 @@ proc=$!
 
 trap "kill $proc" SIGINT SIGTERM EXIT
 
+status=0
+
 for i in $tests
 do
   url=http://localhost:3000/$elementName/$i
@@ -37,7 +39,7 @@ do
 
   $lighthouse $url --perf --output=json > $out
 
-  node -e "var t = require('$out').aggregations[0].total; console.log(' >> lighthouse result $i', t); process.exit($perfThreshold <  t? 0: 1)" || exit 1
+  node -e "var t = require('$out').aggregations[0].total; console.log(' >> lighthouse total=' + t + ' threshold=$perfThreshold test=$i'); process.exit($perfThreshold <  t? 0: 1)" || status=1
 done
 
-echo LightHouse tests for $elementName Succeed
+exit $status
