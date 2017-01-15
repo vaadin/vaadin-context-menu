@@ -28,7 +28,7 @@
 
       if (isChrome) {
         var control;
-        var perfMultiplier = 1.6;
+        var perfMultiplier = 1.7;
 
         it('should run control', function(done) {
           this.timeout(60000);
@@ -48,9 +48,9 @@
           this.timeout(60000);
           var listener = function() {
             var stat = frame.stats(frame.times[0]);
-            var meanTop = control.mean * perfMultiplier;
+            var limit = control.mean * perfMultiplier;
 
-            expect(stat.mean).to.be.below(meanTop, 'Slow mean value=' + JSON.stringify(stat) + ' control=' + JSON.stringify(control));
+            expect(stat.mean).to.be.below(limit, 'Slow mean value=' + stat.mean + ' control=' + control.mean + ' limit=' + limit);
 
             frame.removeEventListener('done', listener);
             done();
