@@ -30,9 +30,10 @@ cp $testDir/* $elementDir/$testDir
 cp $demoDir/* $elementDir/$demoDir
 
 ## Run a server in localhost
-$serve --port 3000 $bowerDir &
+$serve --port 3000 --no-logs $bowerDir &
 proc=$!
 trap "kill -TERM $proc" INT TERM EXIT
+sleep 1
 
 ## Tests leave json results in the reportDir
 mkdir -p $reportDir
@@ -60,6 +61,6 @@ do
   runTest $i
   # Read the performance file, and check if values are OK
   node -e "process.exit($total < $perfThreshold? 0: 1)" || status=1
-  echo " >> lighthouse total=$total threshold=$perfThreshold test=$controlTest status=$status"
+  echo " >> lighthouse total=$total threshold=$perfThreshold test=$i status=$status"
 done
 exit $status
