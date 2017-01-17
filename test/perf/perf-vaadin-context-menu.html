@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+
+  <script src="../../../webcomponentsjs/webcomponents-lite.js"></script>
+  <script src="../../../polyperf/perf-lib/perf.js"></script>
+
+  <link rel="import" href="../../../polymer/polymer.html">
+  <link rel="import" href="../../../paper-menu/paper-menu.html">
+  <link rel="import" href="../../../paper-item/paper-item.html">
+</head>
+<body>
+  <vaadin-context-menu selector="p" open-on="click">
+    <template>
+      <paper-menu>
+        <paper-item>First menu item</paper-item>
+        <paper-item>Second menu item</paper-item>
+      </paper-menu>
+    </template>
+    <p>Click Me.</p>
+  </vaadin-context-menu>
+
+  <script>
+    var foo = Number(window.WebComponents.flags.foo) || 10;
+    var tagName = 'vaadin-context-menu';
+    var testName = tagName + '-' + foo;
+    var importPath = '../../' + tagName + '.html';
+
+    function test() {
+      window.console.perf();
+
+      window.addEventListener('WebComponentsReady', function() {
+        Polymer.Base.importHref(importPath, function() {
+          var elem = document.querySelector(tagName);
+
+          elem.addEventListener('iron-overlay-opened', function() {
+            requestAnimationFrame(function() {
+              window.console.perfEnd({name: testName});
+            });
+          });
+
+          document.querySelector('p').click();
+        });
+      });
+    }
+
+    requestAnimationFrame(test);
+  </script>
+
+</body>
+</html>

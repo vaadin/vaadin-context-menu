@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+
+  <script src="../../../web-component-tester/browser.js"></script>
+
+  <link rel="import" href="../../../test-fixture/test-fixture.html">
+  <link rel="import" href="../../../iron-test-helpers/iron-test-helpers.html">
+  <link rel="import" href="../../../polyperf/perf-lib/frame-tester.html">
+</head>
+
+<body>
+  <frame-tester runs="10"></frame-tester>
+  <summary>Element Tester</summary>
+
+  <script>
+    var isChrome = !!window.chrome && !!window.chrome.webstore;
+
+    var frame;
+    window.addEventListener('WebComponentsReady', function() {
+      frame = document.querySelector('frame-tester');
+    });
+
+    describe('performance', function() {
+
+      if (isChrome) {
+        var control;
+        var perfMultiplier = 1.7;
+
+        it('should run control', function(done) {
+          this.timeout(60000);
+          var listener = function() {
+            control = frame.stats(frame.times[0]);
+            frame.removeEventListener('done', listener);
+            done();
+          };
+
+          frame.addEventListener('done', listener);
+          frame.tests = [
+            'perf-paper-button.html'
+          ];
+        });
+
+        it('should perform good', function(done) {
+          this.timeout(60000);
+          var listener = function() {
+            var stat = frame.stats(frame.times[0]);
+            var limit = control.mean * perfMultiplier;
+
+            expect(stat.mean).to.be.below(limit, 'Slow mean value=' + stat.mean + ' control=' + control.mean + ' limit=' + limit);
+
+            frame.removeEventListener('done', listener);
+            done();
+          };
+
+          frame.addEventListener('done', listener);
+          frame.tests = [
+            'perf-vaadin-context-menu.html?wc-foo=10000'
+          ];
+        });
+      }
+
+    });
+  </script>
+
+</body>
+
+</html>
