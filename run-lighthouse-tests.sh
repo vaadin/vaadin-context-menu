@@ -20,17 +20,10 @@ tests="
 "
 ## Executables
 lighthouse=node_modules/.bin/lighthouse
-serve=node_modules/.bin/serve
-
-## Copy this component stuff to the bower_components structure
-mkdir -p $elementDir/$testDir
-mkdir -p $elementDir/$demoDir
-cp *.html *.js* $elementDir
-cp $testDir/* $elementDir/$testDir
-cp $demoDir/* $elementDir/$demoDir
+polyserve=node_modules/.bin/polyserve
 
 ## Run a server in localhost
-$serve --port 3000 $bowerDir &
+$polyserve --port 4567 &
 proc=$!
 trap "kill -TERM $proc" INT TERM EXIT
 
@@ -38,7 +31,7 @@ trap "kill -TERM $proc" INT TERM EXIT
 mkdir -p $reportDir
 
 runTest() {
-  url=http://localhost:3000/$elementName/$1
+  url=http://localhost:4567/components/$elementName/$1
   echo ">>> Running test: $url"
   name=`echo $1 | tr / _`
   name=`basename $name .html`".json"
@@ -51,6 +44,7 @@ runTest() {
 
 ## Compute the time that the control test lasts to configure the threshold for this system
 runTest $controlTest
+
 perfThreshold=`node -e "console.log($total * $controlMultiplier)"`
 echo " >> lighthouse total=$total threshold=$perfThreshold test=$controlTest"
 ## Run tests and exit with status zero if all tests run in the expected limits

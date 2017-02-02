@@ -21,6 +21,6 @@
   },
   "dependencies": {
     "lighthouse": "^1.4.1",
-    "serve": "1.4.0"
+    "polyserve": "^0.15.0
   }
 }
