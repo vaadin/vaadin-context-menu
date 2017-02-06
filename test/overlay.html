@@ -197,6 +197,17 @@
             });
           });
 
+          it('should close on backdrop contextmenu', function(done) {
+            menu.addEventListener('iron-overlay-closed', function() {
+              expect(menu.opened).to.eql(false);
+              done();
+            });
+            Polymer.Base.fire('contextmenu', {}, {
+              bubbles: true,
+              node: menu.$.overlay.backdropElement
+            });
+          });
+
           it('should close on `click`', function() {
             menu.$.overlay.click();
 
