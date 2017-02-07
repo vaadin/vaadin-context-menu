@@ -8,7 +8,7 @@ reportDir=./target
 reportFile=$reportDir/output.json
 testDir=test/light
 demoDir=demo
-controlMultiplier=1.1
+controlMultiplier=0.5
 
 ## Tests to run
 controlTest="$testDir/control.html"
@@ -37,7 +37,7 @@ runTest() {
   name=`basename $name .html`".json"
   out=$reportDir/$name
   # For debugging use --save-assets to see screenshots
-  $lighthouse $url --perf --output=json > $out
+  $lighthouse $url --quiet --perf --output=json > $out
   # Read the performance json file to get the aggregation value.
   total=`node -e "console.log(require('$out').aggregations[0].total)"`
 }
@@ -53,7 +53,7 @@ for i in $tests
 do
   runTest $i
   # Read the performance file, and check if values are OK
-  node -e "process.exit($total < $perfThreshold? 0: 1)" || status=1
-  echo " >> lighthouse total=$total threshold=$perfThreshold test=$controlTest status=$status"
+  node -e "process.exit($total >= $perfThreshold? 0: 1)" || status=1
+  echo " >> lighthouse total=$total threshold=$perfThreshold test=$i status=$status"
 done
 exit $status
