@@ -48,7 +48,8 @@
         };
         var event = new CustomEvent(type, {
           bubbles: true,
-          cancelable: true
+          cancelable: true,
+          composed: true
         });
 
         for (var property in touchEventInit) {
