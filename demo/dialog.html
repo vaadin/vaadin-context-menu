@@ -1,0 +1,165 @@
+<html>
+
+<head>
+  <link rel="import" href="../../polymer/polymer-element.html">
+  <link rel="import" href="../../polymer/lib/utils/flattened-nodes-observer.html">
+  <link rel="import" href="../vaadin-overlay.html">
+</head>
+
+<body>
+  <style>
+    body {
+      height: 2000px;
+    }
+  </style>
+  <my-app>
+  </my-app>
+  <dom-module id="my-app">
+    <template>
+      <button on-click="_open">Open</button>
+      <vaadin-dialog id="dialog">
+        <template>
+          <style>
+            .container {
+              background: #fff;
+              padding: 20px;
+              border-radius: 2px;
+              box-shadow:
+                0 6px 10px 0 rgba(0, 0, 0, 0.14),
+                0 1px 18px 0 rgba(0, 0, 0, 0.12),
+                0 3px 5px -1px rgba(0, 0, 0, 0.4);
+            }
+
+            .buttons {
+              display: flex;
+              justify-content: space-between;
+              margin-top: 20px;
+            }
+          </style>
+          <div class="container">
+            <div>I'm a centered modal dialog!</div>
+            <div class="buttons">
+              <button>OK</button>
+              <button on-click="_close">Close</button>
+            </div>
+          </div>
+      </template>
+      </vaadin-dialog>
+    </template>
+    <script>
+      class MyAppElement extends Polymer.Element {
+        static get is() {
+          return 'my-app';
+        }
+
+        _open() {
+          this.$.dialog.opened = true;
+        }
+
+        _close() {
+          this.$.dialog.opened = false;
+        }
+      }
+
+      customElements.define('my-app', MyAppElement);
+    </script>
+  </dom-module>
+
+  <dom-module id="vaadin-dialog-backdrop">
+    <template>
+      <style>
+         :host {
+          display: block;
+          position: fixed;
+          top: 0;
+          left: 0;
+          bottom: 0;
+          right: 0;
+          z-index: -1;
+          background: #000;
+          opacity: 0.3;
+          height: 100%;
+          width: 100%;
+        }
+      </style>
+      <slot></slot>
+    </template>
+    <script>
+      class DialogBackdropElement extends Polymer.Element {
+        static get is() {
+          return 'vaadin-dialog-backdrop';
+        }
+      }
+
+      customElements.define(DialogBackdropElement.is, DialogBackdropElement);
+    </script>
+  </dom-module>
+
+  <dom-module id="vaadin-dialog-overlay-styles" theme-for="vaadin-overlay">
+    <template>
+      <style include="vaadin-overlay-default-theme">
+        :host(.vaadin-dialog-overlay) {
+          bottom: 0;
+          right: 0;
+        }
+
+        :host(.vaadin-dialog-overlay) [part="content"] {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 100%;
+          width: 100%;
+          background: transparent;
+        }
+      </style>
+    </template>
+  </dom-module>
+
+  <dom-module id="vaadin-dialog">
+    <template>
+      <vaadin-overlay class="vaadin-dialog-overlay" id="overlay" opened="{{opened}}">
+      </vaadin-overlay>
+    </template>
+    <script>
+      class DialogElement extends Polymer.Element {
+        static get is() {
+          return 'vaadin-dialog';
+        }
+
+        static get properties() {
+          return {
+            opened: {
+              type: Boolean
+            },
+
+            _contentTemplate: {
+              type: Object,
+              observer: '_contentTemplateChanged'
+            }
+          }
+        }
+
+        ready() {
+          super.ready();
+
+          this._observer = new Polymer.FlattenedNodesObserver(this, info => {
+            this._contentTemplate = info.addedNodes.filter(n => n.nodeType === 1 && n.nodeName === 'TEMPLATE')[
+              0] || this._contentTemplate;
+          });
+        }
+
+        _contentTemplateChanged(template) {
+          // TODO: append backdrop to template directly instead of shadow root of overlay.
+          // var t = template.cloneNode(true);
+          // t.content.appendChild(document.createElement('vaadin-dialog-backdrop'));
+          this.$.overlay.appendChild(template);
+          this.$.overlay.root.appendChild(document.createElement('vaadin-dialog-backdrop'));
+        }
+      }
+
+      customElements.define(DialogElement.is, DialogElement);
+    </script>
+  </dom-module>
+</body>
+
+</html>

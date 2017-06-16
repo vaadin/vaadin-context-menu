@@ -42,7 +42,7 @@ This program is available under Apache License Version 2.0, available at https:/
       }
     </style>
     <div part="content" id="content">
-      <slot id="slot" on-slotchange="_assignTemplate"></slot>
+      <slot id="slot"></slot>
     </div>
   </template>
 </dom-module>
@@ -96,7 +96,11 @@ This program is available under Apache License Version 2.0, available at https:/
 
       ready() {
         super.ready();
-        this._assignTemplate();
+
+        this._observer = new Polymer.FlattenedNodesObserver(this, info => {
+          this.template = info.addedNodes.filter(n => n.nodeType === 1 && n.nodeName === 'TEMPLATE')[
+            0] || this.template;
+        });
       }
 
       // We need to listen on 'click' / 'tap' event and capture it and close the overlay before
@@ -120,13 +124,6 @@ This program is available under Apache License Version 2.0, available at https:/
         if (!evt.defaultPrevented) {
           this.opened = false;
         }
-      }
-
-      _assignTemplate() {
-        const templates = this.$.slot.assignedNodes({
-          flatten: true
-        }).filter(node => node.localName && node.localName === 'template');
-        this.template = templates[0] || undefined;
       }
 
       _openedChanged(opened) {
