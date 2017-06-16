@@ -2,7 +2,6 @@
 
 <head>
   <link rel="import" href="../../polymer/polymer-element.html">
-  <link rel="import" href="../../polymer/lib/utils/flattened-nodes-observer.html">
   <link rel="import" href="../vaadin-overlay.html">
 </head>
 
@@ -65,44 +64,9 @@
     </script>
   </dom-module>
 
-  <dom-module id="vaadin-dialog-backdrop">
-    <template>
-      <style>
-         :host {
-          display: block;
-          position: fixed;
-          top: 0;
-          left: 0;
-          bottom: 0;
-          right: 0;
-          z-index: -1;
-          background: #000;
-          opacity: 0.3;
-          height: 100%;
-          width: 100%;
-        }
-      </style>
-      <slot></slot>
-    </template>
-    <script>
-      class DialogBackdropElement extends Polymer.Element {
-        static get is() {
-          return 'vaadin-dialog-backdrop';
-        }
-      }
-
-      customElements.define(DialogBackdropElement.is, DialogBackdropElement);
-    </script>
-  </dom-module>
-
   <dom-module id="vaadin-dialog-overlay-styles" theme-for="vaadin-overlay">
     <template>
       <style include="vaadin-overlay-default-theme">
-        :host(.vaadin-dialog-overlay) {
-          bottom: 0;
-          right: 0;
-        }
-
         :host(.vaadin-dialog-overlay) [part="content"] {
           display: flex;
           justify-content: center;
@@ -117,7 +81,8 @@
 
   <dom-module id="vaadin-dialog">
     <template>
-      <vaadin-overlay class="vaadin-dialog-overlay" id="overlay" opened="{{opened}}">
+      <vaadin-overlay class="vaadin-dialog-overlay" opened="{{opened}}" with-backdrop>
+        <slot></slot>
       </vaadin-overlay>
     </template>
     <script>
@@ -130,30 +95,8 @@
           return {
             opened: {
               type: Boolean
-            },
-
-            _contentTemplate: {
-              type: Object,
-              observer: '_contentTemplateChanged'
             }
           }
-        }
-
-        ready() {
-          super.ready();
-
-          this._observer = new Polymer.FlattenedNodesObserver(this, info => {
-            this._contentTemplate = info.addedNodes.filter(n => n.nodeType === 1 && n.nodeName === 'TEMPLATE')[
-              0] || this._contentTemplate;
-          });
-        }
-
-        _contentTemplateChanged(template) {
-          // TODO: append backdrop to template directly instead of shadow root of overlay.
-          // var t = template.cloneNode(true);
-          // t.content.appendChild(document.createElement('vaadin-dialog-backdrop'));
-          this.$.overlay.appendChild(template);
-          this.$.overlay.root.appendChild(document.createElement('vaadin-dialog-backdrop'));
         }
       }
 

@@ -6,6 +6,7 @@ This program is available under Apache License Version 2.0, available at https:/
 
 <link rel="import" href="../polymer/polymer-element.html">
 <link rel="import" href="../polymer/lib/utils/templatize.html">
+<link rel="import" href="../polymer/lib/utils/flattened-nodes-observer.html">
 <link rel="import" href="../vaadin-themable-mixin/vaadin-themable-mixin.html">
 
 <dom-module id="vaadin-overlay-default-theme">
@@ -33,12 +34,28 @@ This program is available under Apache License Version 2.0, available at https:/
         overflow: hidden;
       }
 
+      :host([with-backdrop][opened]) {
+        right: 0;
+        bottom: 0;
+      }
+
       :host(:not([opened])) {
         display: none !important;
       }
 
       [part="content"] {
         max-height: 100%;
+      }
+
+      :host([with-backdrop][opened])::before {
+        z-index: -1;
+        content: "";
+        background: rgba(0, 0, 0, 0.5);
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
       }
     </style>
     <div part="content" id="content">
