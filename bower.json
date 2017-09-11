@@ -38,10 +38,6 @@
     "paper-styles": "^2.0.0",
     "test-fixture": "^3.0.0",
     "vaadin-grid": "^3.0.0",
-    "web-component-tester": "^6.0.0",
-    "vaadin-demo-helpers": "vaadin/vaadin-demo-helpers"
-  },
-  "resolutions": {
-    "vaadin-themable-mixin": "propagate-theme"
+    "web-component-tester": "^6.1.5"
   }
 }
