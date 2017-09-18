@@ -39,6 +39,10 @@
     "test-fixture": "^3.0.0",
     "vaadin-grid": "^3.0.0",
     "webcomponentsjs": "^1.0.0",
-    "web-component-tester": "^6.1.5"
+    "web-component-tester": "^6.1.5",
+    "vaadin-demo-helpers": "vaadin/vaadin-demo-helpers"
+  },
+  "resolutions": {
+    "vaadin-themable-mixin": "theme-custom-prop"
   }
 }
