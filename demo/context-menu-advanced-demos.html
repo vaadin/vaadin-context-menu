@@ -7,23 +7,65 @@
 
     </style>
 
-
-    <h3>Opening and Closing Events</h3>
-    <vaadin-demo-snippet id='context-menu-advanced-demos-opening-and-closing-events'>
+    <h3>Menu Item Events</h3>
+    <vaadin-demo-snippet id='context-menu-basic-demos-menu-item-events'>
       <template preserve-content>
-        <vaadin-context-menu selector="button" open-on="click" close-on="none">
-          <template>
-            <paper-listbox>
-              <paper-item>First menu item</paper-item>
-              <paper-item>Second menu item</paper-item>
-            </paper-listbox>
+        <dom-module id="my-list-view">
+          <template preserve-content>
+            <vaadin-context-menu selector="li">
+              <template>
+                <paper-listbox>
+                  <paper-item on-tap="_appendItem">Append item</paper-item>
+                  <paper-item list-item="[[target]]" on-tap="_removeItem">Remove item</paper-item>
+                </paper-listbox>
+              </template>
+
+              <ul>
+                <template is="dom-repeat" items="[[items]]">
+                  <li index="[[index]]">[[item]]</li>
+                </template>
+              </ul>
+            </vaadin-context-menu>
           </template>
 
-          <button>Show Context Menu</button>
-        </vaadin-context-menu>
+          <script>
+            window.addDemoReadyListener('#context-menu-basic-demos-menu-item-events', function(document) {
+              class MyListView extends Polymer.Element {
+
+                static get is() {
+                  return 'my-list-view';
+                }
+
+                static get properties() {
+                  return {
+                    items: {
+                      type: Array,
+                      value: () => {
+                        return ['Foo', 'Bar', 'Baz'];
+                      }
+                    }
+                  };
+                }
+
+                _appendItem() {
+                  this.push('items', 'New item');
+                }
+
+                _removeItem(e) {
+                  const menuItem = e.target; // `<paper-item>`
+                  const listItem = menuItem.listItem; // `<li>`
+                  this.splice('items', listItem.index, 1);
+                }
+              }
+
+              customElements.define(MyListView.is, MyListView);
+            });
+          </script>
+        </dom-module>
+
+        <my-list-view></my-list-view>
       </template>
     </vaadin-demo-snippet>
-
 
     <h3>Using with Vaadin Grid</h3>
     <vaadin-demo-snippet id='context-menu-advanced-demos-using-with-vaadin-grid'>
@@ -122,80 +164,20 @@
       </template>
     </vaadin-demo-snippet>
 
-
-    <h3>Basic HTML Menu</h3>
-    <vaadin-demo-snippet id='context-menu-advanced-demos-basic-html-menu'>
-      <template preserve-content>
-        <vaadin-context-menu>
-          <template>
-            <style>
-              .my-menu {
-                padding: 8px 0;
-                background: #fff;
-              }
-
-              .my-menu-item {
-                display: block;
-                padding: 8px 24px;
-                text-decoration: none;
-                color: #000;
-              }
-
-              .my-menu-item:hover {
-                background: #eee;
-              }
-            </style>
-            <div class="my-menu">
-              <a href="#" class="my-menu-item">First menu item</a>
-              <a href="#" class="my-menu-item">Second menu item</a>
-            </div>
-          </template>
-
-          <p>
-            This paragraph has a context menu built using basic HTML elements
-            and global CSS styles.
-          </p>
-        </vaadin-context-menu>
-      </template>
-    </vaadin-demo-snippet>
-
-
-    <h3>Long Menus</h3>
-    <vaadin-demo-snippet id='context-menu-advanced-demos-long-menus'>
-      <template preserve-content>
-        <dom-bind id="app">
-          <template>
-            <vaadin-context-menu>
-              <template>
-                <paper-listbox>
-                  <dom-repeat items="[[menuItems]]">
-                    <template>
-                      <paper-item>Menu Item</paper-item>
-                    </template>
-                  </dom-repeat>
-                </paper-listbox>
-              </template>
-
-              <p>
-                This paragraph has a context menu that cannot fit inside
-                the viewport. The context menu has scrolling for the menu items.
-              </p>
-            </vaadin-context-menu>
-          </template>
-        </dom-bind>
-        <script>
-          window.addDemoReadyListener('#context-menu-advanced-demos-long-menus', function(document) {
-            document.querySelector('#app').menuItems = new Array(30);
-          });
-        </script>
-      </template>
-    </vaadin-demo-snippet>
   </div>
   </template>
   <script>
     class ContextMenuAdvancedDemos extends DemoReadyEventEmitter(ContextMenuDemo(Polymer.Element)) {
       static get is() {
         return 'context-menu-advanced-demos';
+      }
+
+      static get template() {
+        if (Array.prototype.find) {
+          return super.template;
+        } else {
+          return '<p>This demo must be viewed with an ES6 compatible browser</p>';
+        }
       }
     }
     customElements.define(ContextMenuAdvancedDemos.is, ContextMenuAdvancedDemos);
