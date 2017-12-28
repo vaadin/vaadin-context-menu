@@ -38,7 +38,7 @@
     "test-fixture": "^3.0.0",
     "vaadin-grid": "^3.0.0",
     "vaadin-item": "^1.0.0",
-    "vaadin-list-box": "^1.0.0",
+    "vaadin-list-box": "=1.0.0-alpha3",
     "webcomponentsjs": "^1.0.0",
     "web-component-tester": "^6.1.5",
     "vaadin-demo-helpers": "^1.0.0",
