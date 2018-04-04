@@ -1,6 +1,6 @@
 {
-  "name": "vaadin-context-menu",
-  "version": "4.0.0-beta2",
+  "name": "@vaadin/vaadin-context-menu",
+  "version": "4.0.0-alpha6",
   "description": "Polymer element for showing context dependent items for any element on the page",
   "main": "vaadin-context-menu.html",
   "repository": "vaadin/vaadin-context-menu",
@@ -18,7 +18,6 @@
   },
   "homepage": "https://vaadin.com/components",
   "devDependencies": {
-    "bower": "latest",
     "eslint": "^4.0.0",
     "eslint-config-vaadin": "latest",
     "eslint-plugin-html": "^4.0.0",
@@ -31,12 +30,10 @@
     "gulp-grep-contents": "0.0.1",
     "gulp-html-extract": "^0.3.0",
     "gulp-replace": "^0.6.1",
-    "gulp-stylelint": "^7.0.0",
-    "polymer-cli": "^1.6.0",
-    "stylelint": "^9.0.0",
+    "gulp-stylelint": "^6.0.0",
+    "stylelint": "^8.0.0",
     "stylelint-config-vaadin": "latest",
-    "web-component-tester": "^6.1.5",
-    "yargs": "^8.0.2"
+    "web-component-tester": "^6.1.5"
   },
   "scripts": {
     "test": "wct",
