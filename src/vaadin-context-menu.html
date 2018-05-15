@@ -314,14 +314,21 @@ This program is available under Apache License Version 2.0, available at https:/
 
         // Runs after overlay is fully rendered
         _onVaadinOverlayOpen(e) {
-          // Phone alignment is done in CSS
-          if (this.opened && !this._phone) {
-            this.__alignOverlayPosition();
-          }
+          if (this.opened) {
+            // Phone alignment is done in CSS
+            if (!this._phone) {
+              this.__alignOverlayPosition();
+            }
 
-          const child = this.$.overlay.content.querySelector(':not(style):not(slot)');
-          if (child) {
-            child.focus();
+            // This timeout should not be necessary, because we call focus once
+            // the component has been rendered and positioned, but otherwise
+            // tests fail.
+            Polymer.Async.timeOut.run(() => {
+              const child = this.$.overlay.content.querySelector(':not(style):not(slot)');
+              if (child) {
+                child.focus();
+              }
+            });
           }
         }
 
@@ -449,14 +456,16 @@ This program is available under Apache License Version 2.0, available at https:/
           const overlayRect = overlay.getClientRects()[0];
           const contentRect = overlay.$.overlay.getClientRects()[0];
 
-          // Top x and y values are imposed by content size and overlay limits.
-          const xMax = overlayRect.x + overlayRect.width - contentRect.width;
-          const yMax = overlayRect.y + overlayRect.height - contentRect.height;
-          const x = this.__x || overlayRect.x;
-          const y = this.__y || overlayRect.y;
+          // Maximum x and y values are imposed by content size and overlay limits.
+          const xMax = overlayRect.left + overlayRect.width - contentRect.width;
+          const yMax = overlayRect.top + overlayRect.height - contentRect.height;
+          // Reuse saved x and y event values, in order to this method be used async
+          // in the `vaadin-overlay-change` which guarantees that overlay is ready
+          const x = this.__x || overlayRect.left;
+          const y = this.__y || overlayRect.top;
 
-          // Select and move one of overlay corners to the event x/y position.
-          // Then flex-align the content against it.
+          // Select one overlay corner and move to the event x/y position.
+          // Then set styling attrs for flex-aligning the content appropriatelly.
           const wdthVport = document.documentElement.clientWidth;
           const hghtVport = document.documentElement.clientHeight;
           if (x < wdthVport / 2 || x < xMax) {
