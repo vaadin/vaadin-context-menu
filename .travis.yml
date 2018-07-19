@@ -14,7 +14,6 @@ addons:
 env:
   - POLYMER=2 TEST_SUITE=unit_tests
   - POLYMER=2 TEST_SUITE=visual_tests
-  - POLYMER=3
 
 script:
   - if [[ "$POLYMER" = "2" ]]; then
