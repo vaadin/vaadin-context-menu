@@ -18,11 +18,17 @@
           window.addDemoReadyListener('#context-menu-basic-demos-basic-usage', function(document) {
             const contextMenu = document.querySelector('vaadin-context-menu');
             contextMenu.renderer = function(root) {
-              root.innerHTML =
-                '<vaadin-list-box>' +
-                '<vaadin-item>First menu item</vaadin-item>' +
-                '<vaadin-item>Second menu item</vaadin-item>' +
-                '</vaadin-list-box>';
+              root.innerHTML = '';
+
+              const listBox = new Vaadin.ListBoxElement();
+
+              ['First', 'Second'].map(function(name) {
+                const item = new Vaadin.ItemElement();
+                item.textContent = name + ' menu item';
+                listBox.appendChild(item);
+              });
+
+              root.appendChild(listBox);
             };
           });
         </script>
@@ -59,11 +65,20 @@
           window.addDemoReadyListener('#context-menu-basic-demos-filtering-menu-targets', function(document) {
             const contextMenu = document.querySelector('vaadin-context-menu');
             contextMenu.renderer = function(root) {
-              root.innerHTML =
-                '<vaadin-list-box>' +
-                '<vaadin-item>First menu item</vaadin-item>' +
-                '<vaadin-item>Second menu item</vaadin-item>' +
-                '</vaadin-list-box>';
+              const contextMenu = document.querySelector('vaadin-context-menu');
+              contextMenu.renderer = function(root) {
+                root.innerHTML = '';
+
+                const listBox = new Vaadin.ListBoxElement();
+
+                ['First', 'Second'].map(function(name) {
+                  const item = new Vaadin.ItemElement();
+                  item.textContent = name + ' menu item';
+                  listBox.appendChild(item);
+                });
+
+                root.appendChild(listBox);
+              };
             };
           });
         </script>
@@ -84,11 +99,16 @@
         <script>
           window.addDemoReadyListener('#context-menu-basic-demos-accessing-the-menu-target', function(document) {
             const contextMenu = document.querySelector('vaadin-context-menu');
-            contextMenu.renderer = function(root, contextMenu, model) {
-              root.innerHTML =
-                '<vaadin-list-box>' +
-                '<vaadin-item>The menu target: ' + model.target.textContent + '</vaadin-item>' +
-                '</vaadin-list-box>';
+            contextMenu.renderer = function(root, contextMenu, context) {
+              root.innerHTML = '';
+
+              const listBox = new Vaadin.ListBoxElement();
+
+              const item = new Vaadin.ItemElement();
+              item.textContent = 'The menu target: ' + context.target.textContent;
+              listBox.appendChild(item);
+
+              root.appendChild(listBox);
             };
           });
         </script>
@@ -107,7 +127,7 @@
             const items = ['Item #1', 'Item #2', 'Item #3'];
             const contextMenu = document.querySelector('vaadin-context-menu');
 
-            contextMenu.renderer = function(root, contextMenu, model) {
+            contextMenu.renderer = function(root, contextMenu, context) {
               // Needed for proper event target detection
               // And to prevent recreation of the content
               root.innerHTML = '';
@@ -123,7 +143,7 @@
 
               const removeItem = window.document.createElement('vaadin-item');
               removeItem.addEventListener('click', function() {
-                const targetItemIndex = items.indexOf(model.target.innerText);
+                const targetItemIndex = items.indexOf(context.target.innerText);
                 items.splice(targetItemIndex, 1);
                 updateList();
               });

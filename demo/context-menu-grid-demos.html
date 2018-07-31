@@ -22,7 +22,7 @@
             const contextMenu = document.querySelector('vaadin-context-menu');
             const grid = contextMenu.querySelector('vaadin-grid');
 
-            contextMenu.renderer = function(root, contextMenu, model) {
+            contextMenu.renderer = function(root, contextMenu, context) {
               root.innerHTML = '';
 
               const listBox = window.document.createElement('vaadin-list-box');
@@ -36,12 +36,12 @@
               });
               listBox.appendChild(addItem);
 
-
-              if (!model.target.querySelector('.body-content')) {
+              // If user clicks on the cell
+              if (!context.target.querySelector('.body-content')) {
                 const removeItem = window.document.createElement('vaadin-item');
                 removeItem.textContent = 'Remove';
                 removeItem.addEventListener('click', function() {
-                  const index = parseInt(model.target.getAttribute('data-index'));
+                  const index = parseInt(context.target.getAttribute('data-index'));
                   const newItemsArray = grid.items.slice(0);
                   newItemsArray.splice(index, 1);
                   grid.items = newItemsArray;
@@ -58,13 +58,13 @@
               const lowCaseColumnName = columnName.toLowerCase();
               const column = grid.querySelector('#column-' + lowCaseColumnName);
 
-              column.renderer = function(root, column, model) {
+              column.renderer = function(root, column, context) {
                 root.innerHTML = '';
 
                 const contentWrapper = window.document.createElement('div');
                 contentWrapper.className = 'body-content';
-                contentWrapper.setAttribute('data-index', model.index);
-                contentWrapper.textContent = model.item[lowCaseColumnName];
+                contentWrapper.setAttribute('data-index', context.index);
+                contentWrapper.textContent = context.item[lowCaseColumnName];
 
                 root.appendChild(contentWrapper);
               };
