@@ -6,6 +6,7 @@ This program is available under Apache License Version 2.0, available at https:/
 
 <link rel="import" href="../../polymer/polymer-element.html">
 <link rel="import" href="../../polymer/lib/mixins/gesture-event-listeners.html">
+<link rel="import" href="../../polymer/lib/utils/flattened-nodes-observer.html">
 <link rel="import" href="vaadin-contextmenu-event.html">
 <link rel="import" href="vaadin-device-detector.html">
 <link rel="import" href="../../vaadin-element-mixin/vaadin-element-mixin.html">
@@ -274,7 +275,11 @@ This program is available under Apache License Version 2.0, available at https:/
 
             _boundOpen: Object,
 
-            _templateClass: Object
+            _contentTemplate: Object,
+
+            _oldTemplate: Object,
+
+            _oldRenderer: Object
           };
         }
 
@@ -282,7 +287,8 @@ This program is available under Apache License Version 2.0, available at https:/
           return [
             '_openedChanged(opened)',
             '_contextChanged(_context, _instance)',
-            '_targetOrOpenOnChanged(listenOn, openOn)'
+            '_targetOrOpenOnChanged(listenOn, openOn)',
+            '_templateOrRendererChanged(_contentTemplate, renderer, _context)'
           ];
         }
 
@@ -295,7 +301,13 @@ This program is available under Apache License Version 2.0, available at https:/
 
         ready() {
           super.ready();
-          this.$.overlay.owner = this;
+          this._observer = new Polymer.FlattenedNodesObserver(this, info => {
+            this._setTemplateFromNodes(info.addedNodes);
+          });
+        }
+
+        _setTemplateFromNodes(nodes) {
+          this._contentTemplate = nodes.filter(node => node.localName && node.localName === 'template')[0] || this._contentTemplate;
         }
 
         // Runs before overlay is fully rendered
@@ -365,7 +377,6 @@ This program is available under Apache License Version 2.0, available at https:/
 
         _openedChanged(opened) {
           if (opened) {
-            this.$.overlay.renderer = this.renderer;
             if (!this._instance) {
               this.$.overlay.template = this.querySelector('template');
               this._instance = this.$.overlay._instance;
@@ -377,6 +388,28 @@ This program is available under Apache License Version 2.0, available at https:/
 
           // Has to be set after instance has been created
           this.$.overlay.opened = opened;
+        }
+
+        _removeNewRendererOrTemplate(template, oldTemplate, renderer, oldRenderer) {
+          if (template !== oldTemplate) {
+            this._contentTemplate = undefined;
+          } else if (renderer !== oldRenderer) {
+            this.renderer = undefined;
+          }
+        }
+
+        _templateOrRendererChanged(template, renderer, context) {
+          if (template && renderer) {
+            this._removeNewRendererOrTemplate(template, this._oldTemplate, renderer, this._oldRenderer);
+            throw new Error('You should only use either a renderer or a template for context-menu content');
+          }
+
+          this._oldTemplate = template;
+          this._oldRenderer = renderer;
+
+          if (renderer && context) {
+            this.$.overlay.setProperties({owner: this, renderer: renderer});
+          }
         }
 
         _contextChanged(context, instance) {
