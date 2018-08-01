@@ -65,20 +65,17 @@
           window.addDemoReadyListener('#context-menu-basic-demos-filtering-menu-targets', function(document) {
             const contextMenu = document.querySelector('vaadin-context-menu');
             contextMenu.renderer = function(root) {
-              const contextMenu = document.querySelector('vaadin-context-menu');
-              contextMenu.renderer = function(root) {
-                root.innerHTML = '';
+              root.innerHTML = '';
 
-                const listBox = new Vaadin.ListBoxElement();
+              const listBox = new Vaadin.ListBoxElement();
 
-                ['First', 'Second'].map(function(name) {
-                  const item = new Vaadin.ItemElement();
-                  item.textContent = name + ' menu item';
-                  listBox.appendChild(item);
-                });
+              ['First', 'Second'].map(function(name) {
+                const item = new Vaadin.ItemElement();
+                item.textContent = name + ' menu item';
+                listBox.appendChild(item);
+              });
 
-                root.appendChild(listBox);
-              };
+              root.appendChild(listBox);
             };
           });
         </script>
