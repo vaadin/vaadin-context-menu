@@ -39,7 +39,7 @@
     "iron-test-helpers": "^2.0.0",
     "test-fixture": "^3.0.0",
     "vaadin-button": "vaadin/vaadin-button#^2.1.0-beta2",
-    "vaadin-grid": "vaadin/vaadin-grid#^5.1.0-beta1",
+    "vaadin-grid": "vaadin/vaadin-grid#renderer-preview",
     "vaadin-item": "vaadin/vaadin-item#^2.1.0-beta2",
     "vaadin-list-box": "vaadin/vaadin-list-box#^1.1.0-beta2",
     "webcomponentsjs": "^1.0.0",
