@@ -18,17 +18,18 @@
           window.addDemoReadyListener('#context-menu-basic-demos-basic-usage', function(document) {
             const contextMenu = document.querySelector('vaadin-context-menu');
             contextMenu.renderer = function(root) {
-              root.innerHTML = '';
+              let listBox = root.firstElementChild;
+              if (!listBox) {
+                listBox = window.document.createElement('vaadin-list-box');
+                root.appendChild(listBox);
+              }
 
-              const listBox = window.document.createElement('vaadin-list-box');
-
+              listBox.innerHTML = '';
               ['First', 'Second'].forEach(function(name) {
                 const item = window.document.createElement('vaadin-item');
                 item.textContent = name + ' menu item';
                 listBox.appendChild(item);
               });
-
-              root.appendChild(listBox);
             };
           });
         </script>
@@ -65,17 +66,18 @@
           window.addDemoReadyListener('#context-menu-basic-demos-filtering-menu-targets', function(document) {
             const contextMenu = document.querySelector('vaadin-context-menu');
             contextMenu.renderer = function(root) {
-              root.innerHTML = '';
+              let listBox = root.firstElementChild;
+              if (!listBox) {
+                listBox = window.document.createElement('vaadin-list-box');
+                root.appendChild(listBox);
+              }
 
-              const listBox = window.document.createElement('vaadin-list-box');
-
+              listBox.innerHTML = '';
               ['First', 'Second'].forEach(function(name) {
                 const item = window.document.createElement('vaadin-item');
                 item.textContent = name + ' menu item';
                 listBox.appendChild(item);
               });
-
-              root.appendChild(listBox);
             };
           });
         </script>
@@ -97,15 +99,16 @@
           window.addDemoReadyListener('#context-menu-basic-demos-accessing-the-menu-target', function(document) {
             const contextMenu = document.querySelector('vaadin-context-menu');
             contextMenu.renderer = function(root, contextMenu, context) {
-              root.innerHTML = '';
+              let listBox = root.firstElementChild;
+              if (!listBox) {
+                listBox = window.document.createElement('vaadin-list-box');
+                root.appendChild(listBox);
+              }
 
-              const listBox = window.document.createElement('vaadin-list-box');
-
+              listBox.innerHTML = '';
               const item = window.document.createElement('vaadin-item');
               item.textContent = 'The menu target: ' + context.target.textContent;
               listBox.appendChild(item);
-
-              root.appendChild(listBox);
             };
           });
         </script>
@@ -116,7 +119,7 @@
     <h3>Use Menu Item Events to Create Clickable Commands</h3>
     <vaadin-demo-snippet id="context-menu-basic-demos-menu-item-events">
       <template preserve-content>
-        <vaadin-context-menu selector="li" renderer="[[_renderer]]">
+        <vaadin-context-menu selector="li">
           <ul></ul>
         </vaadin-context-menu>
         <script>
@@ -125,11 +128,13 @@
             const contextMenu = document.querySelector('vaadin-context-menu');
 
             contextMenu.renderer = function(root, contextMenu, context) {
-              // Needed for proper event target detection
-              // And to prevent recreation of the content
-              root.innerHTML = '';
+              let listBox = root.firstElementChild;
+              if (!listBox) {
+                listBox = window.document.createElement('vaadin-list-box');
+                root.appendChild(listBox);
+              }
 
-              const listBox = window.document.createElement('vaadin-list-box');
+              listBox.innerHTML = '';
 
               const appendItem = window.document.createElement('vaadin-item');
               appendItem.addEventListener('click', function() {
@@ -149,8 +154,6 @@
               [appendItem, removeItem].forEach(function(el) {
                 listBox.appendChild(el);
               });
-
-              root.appendChild(listBox);
             };
 
             function updateList() {
