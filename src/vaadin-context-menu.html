@@ -9,6 +9,7 @@ This program is available under Apache License Version 2.0, available at https:/
 <link rel="import" href="../../polymer/lib/utils/flattened-nodes-observer.html">
 <link rel="import" href="vaadin-contextmenu-event.html">
 <link rel="import" href="vaadin-device-detector.html">
+<link rel="import" href="vaadin-contextmenu-items-mixin.html">
 <link rel="import" href="../../vaadin-element-mixin/vaadin-element-mixin.html">
 <link rel="import" href="../../vaadin-themable-mixin/vaadin-theme-property-mixin.html">
 <link rel="import" href="vaadin-context-menu-overlay.html">
@@ -225,7 +226,8 @@ This program is available under Apache License Version 2.0, available at https:/
       class ContextMenuElement extends
         Vaadin.ElementMixin(
           Vaadin.ThemePropertyMixin(
-            Polymer.GestureEventListeners(Polymer.Element))) {
+            Vaadin.ContextMenu.ItemsMixin(
+              Polymer.GestureEventListeners(Polymer.Element)))) {
 
         static get is() {
           return 'vaadin-context-menu';
@@ -320,7 +322,7 @@ This program is available under Apache License Version 2.0, available at https:/
             '_openedChanged(opened)',
             '_contextChanged(_context, _instance)',
             '_targetOrOpenOnChanged(listenOn, openOn)',
-            '_templateOrRendererChanged(_contentTemplate, renderer, _context)'
+            '_templateOrRendererChanged(_contentTemplate, renderer, _context, items)'
           ];
         }
 
@@ -437,7 +439,7 @@ This program is available under Apache License Version 2.0, available at https:/
           }
         }
 
-        _templateOrRendererChanged(template, renderer, context) {
+        _templateOrRendererChanged(template, renderer, context, items) {
           if (template && renderer) {
             this._removeNewRendererOrTemplate(template, this._oldTemplate, renderer, this._oldRenderer);
             throw new Error('You should only use either a renderer or a template for context-menu content');
@@ -446,6 +448,12 @@ This program is available under Apache License Version 2.0, available at https:/
           this._oldTemplate = template;
           this._oldRenderer = renderer;
 
+          if (items) {
+            if (template || renderer) {
+              throw new Error('The items API cannot be used together with a template/renderer');
+            }
+            renderer = this.__itemsRenderer;
+          }
           if (renderer && context) {
             this.$.overlay.setProperties({owner: this, renderer: renderer});
           }

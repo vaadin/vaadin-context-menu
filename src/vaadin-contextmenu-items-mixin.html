@@ -1,0 +1,101 @@
+<script>
+  window.Vaadin = window.Vaadin || {};
+  window.Vaadin.ContextMenu = window.Vaadin.ContextMenu || {};
+
+  /**
+   * @polymerMixin
+   */
+  Vaadin.ContextMenu.ItemsMixin = superClass => class ItemsMixin extends superClass {
+
+    static get properties() {
+      return {
+        items: Array
+      };
+    }
+
+    __openSubMenu(item) {
+      const itemRect = item.getBoundingClientRect();
+      item.dispatchEvent(new CustomEvent('opensubmenu', {detail: {
+        x: itemRect.right,
+        y: itemRect.top,
+        children: item._childItems
+      }}));
+    };
+
+    __closeSubMenus(parentMenu) {
+      Array.from(parentMenu.querySelectorAll('vaadin-context-menu')).forEach(menu => menu.close());
+    }
+
+    __itemsRenderer(root, menu, context) {
+      if (!root.firstElementChild) {
+        root.innerHTML = '<vaadin-list-box></vaadin-list-box>';
+        root.firstElementChild.addEventListener('selected-changed', e => {
+          const item = e.target.items[e.detail.value]._item;
+          const detail = {value: item};
+          menu.dispatchEvent(new CustomEvent('item-selected', {detail}));
+        });
+      }
+
+      const listBox = root.firstElementChild
+      menu._listBox = listBox;
+      listBox.innerHTML = '';
+      const items = Array.from(context.detail.children || menu.items);
+
+      items.forEach(item => {
+        if (item.divider) {
+          const divider = document.createElement('hr');
+          listBox.appendChild(divider);
+        } else {
+          const vaadinItem = document.createElement('vaadin-item');
+          vaadinItem.textContent = item.label;
+          vaadinItem._item = item;
+          vaadinItem.disabled = item.disabled;
+
+          if (item.children && item.children.length) {
+            vaadinItem._childItems = Array.from(item.children);
+            vaadinItem.className += 'vaadin-context-menu-parent-item';
+
+            const subMenu = document.createElement('vaadin-context-menu');
+            subMenu.items = item.children;
+            subMenu.openOn = 'opensubmenu';
+            subMenu.listenOn = vaadinItem;
+
+            subMenu.addEventListener('item-selected', e => {
+              menu.dispatchEvent(new CustomEvent('item-selected', {detail: e.detail}));
+              this.__closeSubMenus(listBox);
+              menu.close();
+            });
+
+            const closeListener = e => {
+              if (!e.detail.value) {
+                menu.removeEventListener('opened-changed', closeListener);
+                subMenu.close();
+              }
+            };
+            menu.addEventListener('opened-changed', closeListener);
+
+            listBox.appendChild(subMenu);
+            subMenu.$.overlay.modeless = true;
+          }
+
+          vaadinItem.addEventListener('mouseover', e => {
+            this.__closeSubMenus(listBox);
+            this.__openSubMenu(vaadinItem);
+          });
+
+          vaadinItem.addEventListener('keydown', e => {
+            if (e.keyCode === 39) {
+              this.__openSubMenu(vaadinItem);
+            } else if (e.keyCode === 37 || e.keyCode === 27) {
+              menu.close();
+              menu.listenOn.focus();
+            }
+          });
+
+          listBox.appendChild(vaadinItem);
+        }
+      });
+    }
+
+  };
+</script>
