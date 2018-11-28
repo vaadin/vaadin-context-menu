@@ -37,6 +37,18 @@
 ```html
 <vaadin-context-menu>
   <template>
+    <!-- place your content here -->
+  </template>
+
+  Open a context menu with <b>right click</b> or with <b>long touch.</b>
+</vaadin-context-menu>
+```
+
+For instance, a content for the `<template>` tag could be [vaadin-list-box](https://github.com/vaadin/vaadin-list-box):
+
+```html
+<vaadin-context-menu>
+  <template>
     <vaadin-list-box>
       <vaadin-item>First menu item</vaadin-item>
       <vaadin-item>Second menu item</vaadin-item>
@@ -51,6 +63,7 @@
 
   Open a context menu with <b>right click</b> or with <b>long touch.</b>
 </vaadin-context-menu>
+
 ```
 
 [<img src="https://raw.githubusercontent.com/vaadin/vaadin-context-menu/master/screenshot.png" width="493" alt="Screenshot of vaadin-context-menu">](https://vaadin.com/components/vaadin-context-menu)
