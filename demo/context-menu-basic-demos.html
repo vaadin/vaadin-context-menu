@@ -18,22 +18,22 @@
             const contextMenu = document.querySelector('vaadin-context-menu');
             contextMenu.addEventListener('item-selected', console.log);
             contextMenu.items = [
-              {label: "Menu Item 1"},
-              {divider: true},
-              {label: "Menu Item 2", children:
+              {label: 'Menu Item 1'},
+              {component: 'hr'},
+              {label: 'Menu Item 2', children:
                 [
-                  {label: "Menu Item 1"},
-                  {label: "Menu Item 2", children:
+                  {label: 'Menu Item 1'},
+                  {label: 'Menu Item 2', children:
                     [
-                      {label: "Menu Item 1", disabled: true},
-                      {label: "Menu Item 2"},
-                      {divider: true},
-                      {label: "Menu Item 3"}
+                      {label: 'Menu Item 1', disabled: true},
+                      {label: 'Menu Item 2'},
+                      {component: 'hr'},
+                      {label: 'Menu Item 3'}
                     ]
                   }
                 ]
               },
-              {label: "Menu Item 3", disabled: true}
+              {label: 'Menu Item 3', disabled: true}
             ];
           });
         </script>
