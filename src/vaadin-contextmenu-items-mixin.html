@@ -22,7 +22,7 @@
       // Overlay's outside click listener doesn't work with modeless
       // overlays (submenus) so we need additional logic for it
       this.__itemsOutsideClickListener = e => {
-        if (!e.composedPath().find(el => el.localName === 'vaadin-context-menu-overlay')) {
+        if (!e.composedPath().filter(el => el.localName === 'vaadin-context-menu-overlay')[0]) {
           this.dispatchEvent(new CustomEvent('items-outside-click'));
         }
       };
@@ -124,7 +124,7 @@
         menu.addEventListener('opened-changed', e => !e.detail.value && subMenu.close());
 
         listBox.addEventListener('selected-changed', e => {
-          if (Number.isInteger(e.detail.value)) {
+          if (typeof e.detail.value === "number") {
             const item = e.target.items[e.detail.value]._item;
             const detail = {value: item};
             menu.dispatchEvent(new CustomEvent('item-selected', {detail}));
