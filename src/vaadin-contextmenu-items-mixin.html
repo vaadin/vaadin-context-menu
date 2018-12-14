@@ -1,3 +1,6 @@
+<link rel="import" href="../../vaadin-item/vaadin-item.html">
+<link rel="import" href="../../vaadin-list-box/vaadin-list-box.html">
+
 <script>
   window.Vaadin = window.Vaadin || {};
   window.Vaadin.ContextMenu = window.Vaadin.ContextMenu || {};
@@ -36,20 +39,20 @@
       document.removeEventListener('click', this.__itemsOutsideClickListener);
     }
 
-
     __openSubMenu(subMenu, itemElement) {
       subMenu.items = itemElement._item.children;
       subMenu.listenOn = itemElement;
 
       const itemRect = itemElement.getBoundingClientRect();
       let x, y = itemRect.top;
-      if (window.innerWidth - itemRect.right > itemRect.width) {
+      if (document.documentElement.clientWidth - itemRect.right > itemRect.width) {
         // There's room on the right side
         x = itemRect.right;
       } else {
         // Open on the left side
         x = itemRect.left - itemRect.width;
       }
+
       itemElement.dispatchEvent(new CustomEvent('opensubmenu', {detail: {
         x, y, children: itemElement._item.children
       }}));
@@ -78,6 +81,13 @@
         if (item.label) {
           component.textContent = item.label;
         }
+
+        if (item.selected) {
+          component.setAttribute('menu-item-selected', '');
+        } else {
+          component.removeAttribute('menu-item-selected');
+        }
+
         component.disabled = item.disabled;
         component.addEventListener('mouseover', e => subMenu.close());
         component.addEventListener('keydown', e => {
