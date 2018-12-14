@@ -43,13 +43,13 @@
           rootMenu = fixture('default');
           target = rootMenu.firstElementChild;
           rootMenu.items = [
-            {label: 'foo-0', children:
+            {text: 'foo-0', children:
               [
-                {label: 'foo-0-0', selected: true},
-                {label: 'foo-0-1', disabled: true}
+                {text: 'foo-0-0', selected: true},
+                {text: 'foo-0-1', disabled: true}
               ]
             },
-            {label: 'foo-1'}
+            {text: 'foo-1'}
           ];
           open();
           flush(() => {
