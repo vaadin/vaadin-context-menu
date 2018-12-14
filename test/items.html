@@ -63,6 +63,10 @@
           expect(menuComponents()[0].textContent).to.equal('foo-0');
         });
 
+        it('should have menu item classname', () => {
+          expect(menuComponents()[0].classList.contains('vaadin-menu-item')).to.be.true;
+        });
+
         it('should render sub-menu items', () => {
           expect(menuComponents(subMenu)[0].textContent).to.equal('foo-0-0');
         });

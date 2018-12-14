@@ -31,13 +31,21 @@
   </template>
 </dom-module>
 
-<dom-module id="lumo-context-menu-item" theme-for="vaadin-item">
+<dom-module id="lumo-menu-item" theme-for="vaadin-item">
   <template>
     <style>
-      :host(.vaadin-context-menu-parent-item)::after {
+      :host(.vaadin-menu-item.vaadin-context-menu-parent-item)::after {
         font-family: lumo-icons;
         font-size: var(--lumo-icon-size-s);
         content: var(--lumo-icons-angle-right);
+      }
+
+      :host(.vaadin-menu-item)::before {
+        display: block !important;
+      }
+
+      :host(.vaadin-menu-item[menu-item-selected])::before {
+        opacity: 1 !important;
       }
     </style>
   </template>

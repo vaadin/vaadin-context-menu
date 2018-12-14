@@ -76,6 +76,7 @@
         } else {
           component = document.createElement(item.component || 'vaadin-item');
         }
+        component.classList.add('vaadin-menu-item');
         component._item = item;
 
         if (item.label) {
