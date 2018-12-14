@@ -25,7 +25,7 @@
         if (!e.composedPath().find(el => el.localName === 'vaadin-context-menu-overlay')) {
           this.dispatchEvent(new CustomEvent('items-outside-click'));
         }
-      }
+      };
       this.addEventListener('items-outside-click', e => this.items && this.close());
     }
 
@@ -44,7 +44,8 @@
       subMenu.listenOn = itemElement;
 
       const itemRect = itemElement.getBoundingClientRect();
-      let x, y = itemRect.top;
+      let x;
+      const y = itemRect.top;
       if (document.documentElement.clientWidth - itemRect.right > itemRect.width) {
         // There's room on the right side
         x = itemRect.right;
@@ -56,7 +57,7 @@
       itemElement.dispatchEvent(new CustomEvent('opensubmenu', {detail: {
         x, y, children: itemElement._item.children
       }}));
-    };
+    }
 
     __itemsRenderer(root, menu, context) {
       this.__initMenu(root, menu);
