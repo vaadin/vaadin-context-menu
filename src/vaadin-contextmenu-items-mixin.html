@@ -124,7 +124,7 @@
         menu.addEventListener('opened-changed', e => !e.detail.value && subMenu.close());
 
         listBox.addEventListener('selected-changed', e => {
-          if (typeof e.detail.value === "number") {
+          if (typeof e.detail.value === 'number') {
             const item = e.target.items[e.detail.value]._item;
             const detail = {value: item};
             menu.dispatchEvent(new CustomEvent('item-selected', {detail}));

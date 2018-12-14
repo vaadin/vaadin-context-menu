@@ -193,11 +193,23 @@
           expect(subMenu.opened).to.be.false;
         });
 
-        it('fire an event for item selection', () => {
+        it('should fire an event for item selection', () => {
           const eventSpy = sinon.spy();
           rootMenu.addEventListener('item-selected', eventSpy);
           menuComponents(subMenu)[0].click();
           expect(eventSpy.getCall(0).args[0].detail.value).to.equal(rootMenu.items[0].children[0]);
+        });
+
+        it('should throw with renderer', () => {
+          expect(() => rootMenu.renderer = () => {}).to.throw(Error);
+        });
+
+        it('should throw with template', () => {
+          const addTemplate = () => {
+            rootMenu.appendChild(document.createElement('template'));
+            rootMenu._observer.flush();
+          };
+          expect(addTemplate).to.throw(Error);
         });
 
       });
