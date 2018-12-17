@@ -1,5 +1,5 @@
-<link rel="import" href="../../vaadin-item/vaadin-item.html">
-<link rel="import" href="../../vaadin-list-box/vaadin-list-box.html">
+<link rel="import" href="../../vaadin-item/src/vaadin-item.html">
+<link rel="import" href="../../vaadin-list-box/src/vaadin-list-box.html">
 
 <script>
   window.Vaadin = window.Vaadin || {};
@@ -123,6 +123,7 @@
         `;
         Polymer.flush();
         const listBox = root.querySelector('vaadin-list-box');
+        listBox.classList.add('vaadin-menu-list-box');
         const subMenu = root.querySelector('vaadin-context-menu');
         subMenu.$.overlay.modeless = true;
         subMenu.openOn = 'opensubmenu';

@@ -27,25 +27,37 @@
         --_lumo-list-box-item-selected-icon-display: none;
         --_lumo-list-box-item-padding-left: calc(var(--lumo-space-m) + var(--lumo-border-radius) / 4);
       }
+
     </style>
   </template>
 </dom-module>
 
-<dom-module id="lumo-menu-item" theme-for="vaadin-item">
+<dom-module id="lumo-context-menu-list-box" theme-for="vaadin-list-box">
   <template>
     <style>
+      :host(.vaadin-menu-list-box) {
+        --_lumo-list-box-item-selected-icon-display: block;
+      }
+
+      :host(.vaadin-menu-list-box) [part="items"] ::slotted(vaadin-item) {
+        padding-left: calc(var(--lumo-border-radius) / 4);
+        padding-right: calc(var(--lumo-space-l) + var(--lumo-border-radius) / 4);
+      }
+    </style>
+  </template>
+</dom-module>
+
+<dom-module id="lumo-context-menu-item" theme-for="vaadin-item">
+  <template>
+    <style>
+      :host(.vaadin-menu-item[menu-item-checked])::before {
+        opacity: 1 !important;
+      }
+
       :host(.vaadin-menu-item.vaadin-context-menu-parent-item)::after {
         font-family: lumo-icons;
         font-size: var(--lumo-icon-size-s);
         content: var(--lumo-icons-angle-right);
-      }
-
-      :host(.vaadin-menu-item)::before {
-        display: block !important;
-      }
-
-      :host(.vaadin-menu-item[menu-item-checked])::before {
-        opacity: 1 !important;
       }
     </style>
   </template>
