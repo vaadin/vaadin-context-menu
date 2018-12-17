@@ -44,15 +44,23 @@
       subMenu.listenOn = itemElement;
 
       const itemRect = itemElement.getBoundingClientRect();
+      
+      const content = subMenu.$.overlay.$.content;
+      const padding = getComputedStyle(content).paddingTop;
+      const y = itemRect.top - parseFloat(padding);
+
       let x;
-      const y = itemRect.top;
+      subMenu.$.overlay.$.content.style.minWidth = '';
       if (document.documentElement.clientWidth - itemRect.right > itemRect.width) {
         // There's room on the right side
         x = itemRect.right;
       } else {
         // Open on the left side
         x = itemRect.left - itemRect.width;
+        // Make sure there's no gaps between the menus
+        subMenu.$.overlay.$.content.style.minWidth = this.$.overlay.$.content.clientWidth + 'px';
       }
+      x = Math.max(x, 0);
 
       itemElement.dispatchEvent(new CustomEvent('opensubmenu', {detail: {
         x, y, children: itemElement._item.children
@@ -86,7 +94,8 @@
         this.__toggleMenuComponentAttribute(component, 'menu-item-checked', item.checked);
         this.__toggleMenuComponentAttribute(component, 'disabled', item.disabled);
 
-        component.addEventListener('mouseover', e => subMenu.close());
+        const openEvent = this._touch ? 'touchstart' : 'mouseover';
+        component.addEventListener(openEvent, e => subMenu.close());
         component.addEventListener('keydown', e => {
           if (e.keyCode === 37 || e.keyCode === 27) {
             menu.close();
@@ -97,7 +106,7 @@
         if (item.children && item.children.length) {
           component.classList.add('vaadin-context-menu-parent-item');
           const openSubMenu = this.__openSubMenu.bind(this, subMenu, component);
-          component.addEventListener('mouseover', openSubMenu);
+          component.addEventListener(openEvent, openSubMenu);
           component.addEventListener('keydown', e => e.keyCode === 39 && openSubMenu());
         }
 
