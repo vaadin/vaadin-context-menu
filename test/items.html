@@ -200,6 +200,13 @@
           expect(eventSpy.getCall(0).args[0].detail.value).to.equal(rootMenu.items[0].children[0]);
         });
 
+        it('should not fire an event for parent item selection', () => {
+          const eventSpy = sinon.spy();
+          rootMenu.addEventListener('item-selected', eventSpy);
+          menuComponents(rootMenu)[0].click();
+          expect(eventSpy).to.not.have.been.called;
+        });
+
         it('should throw with renderer', () => {
           expect(() => rootMenu.renderer = () => {}).to.throw(Error);
         });

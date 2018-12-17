@@ -66,7 +66,6 @@
       const subMenu = root.querySelector('vaadin-context-menu');
 
       listBox.innerHTML = '';
-      listBox.selected = null;
 
       const items = Array.from(context.detail.children || menu.items);
 
@@ -127,8 +126,11 @@
         listBox.addEventListener('selected-changed', e => {
           if (typeof e.detail.value === 'number') {
             const item = e.target.items[e.detail.value]._item;
-            const detail = {value: item};
-            menu.dispatchEvent(new CustomEvent('item-selected', {detail}));
+            if (!item.children) {
+              const detail = {value: item};
+              menu.dispatchEvent(new CustomEvent('item-selected', {detail}));
+            }
+            listBox.selected = null;
           }
         });
 
