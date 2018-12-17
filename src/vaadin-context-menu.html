@@ -505,6 +505,7 @@ This program is available under Apache License Version 2.0, available at https:/
               // Used in alignment which is delayed until overlay is rendered
               this.__x = this._getEventCoordinate(e, 'x');
               this.__y = this._getEventCoordinate(e, 'y');
+              this.$.overlay.style.visibility = 'hidden';
               this._setOpened(true);
             }
           }
@@ -546,6 +547,7 @@ This program is available under Apache License Version 2.0, available at https:/
             style.bottom = Math.max(0, (hghtVport - y)) + 'px';
             overlay.setAttribute('bottom-aligned', '');
           }
+          this.$.overlay.style.visibility = '';
         }
 
         _getEventCoordinate(event, coord) {
