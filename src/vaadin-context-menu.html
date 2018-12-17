@@ -355,6 +355,7 @@ This program is available under Apache License Version 2.0, available at https:/
           if (!this._phone) {
             this.__alignOverlayPosition();
           }
+          this.$.overlay.style.visibility = '';
 
           const child = this.$.overlay.content.querySelector(':not(style):not(slot)');
           if (child) {
@@ -547,7 +548,6 @@ This program is available under Apache License Version 2.0, available at https:/
             style.bottom = Math.max(0, (hghtVport - y)) + 'px';
             overlay.setAttribute('bottom-aligned', '');
           }
-          this.$.overlay.style.visibility = '';
         }
 
         _getEventCoordinate(event, coord) {
