@@ -83,13 +83,9 @@
           component.textContent = item.text;
         }
 
-        if (item.checked) {
-          component.setAttribute('menu-item-checked', '');
-        } else {
-          component.removeAttribute('menu-item-checked');
-        }
+        this.__toggleMenuComponentAttribute(component, 'menu-item-checked', item.checked);
+        this.__toggleMenuComponentAttribute(component, 'disabled', item.disabled);
 
-        component.disabled = item.disabled;
         component.addEventListener('mouseover', e => subMenu.close());
         component.addEventListener('keydown', e => {
           if (e.keyCode === 37 || e.keyCode === 27) {
@@ -107,6 +103,16 @@
 
         listBox.appendChild(component);
       });
+    }
+
+    __toggleMenuComponentAttribute(component, attribute, on) {
+      if (on) {
+        component.setAttribute(attribute, '');
+        component['__has-' + attribute] = true;
+      } else if (component['__has-' + attribute]){
+        component.removeAttribute(attribute);
+        component['__has-' + attribute] = false;
+      }
     }
 
     __initMenu(root, menu) {

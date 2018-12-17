@@ -219,6 +219,17 @@
           expect(addTemplate).to.throw(Error);
         });
 
+        it('should not remove the component attributes', () => {
+          rootMenu.close();
+          const button = document.createElement('button');
+          button.setAttribute('disabled', '');
+          button.setAttribute('menu-item-checked', '');
+          rootMenu.items[0].component = button;
+          open();
+          expect(button.hasAttribute('disabled')).to.be.true;
+          expect(button.hasAttribute('menu-item-checked')).to.be.true;
+        });
+
       });
     });
   </script>
