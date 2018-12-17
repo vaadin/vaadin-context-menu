@@ -116,6 +116,7 @@
           <vaadin-list-box></vaadin-list-box>
           <vaadin-context-menu hidden></vaadin-context-menu>
         `;
+        Polymer.flush();
         const listBox = root.querySelector('vaadin-list-box');
         const subMenu = root.querySelector('vaadin-context-menu');
         subMenu.$.overlay.modeless = true;
