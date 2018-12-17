@@ -83,10 +83,10 @@
           component.textContent = item.text;
         }
 
-        if (item.selected) {
-          component.setAttribute('menu-item-selected', '');
+        if (item.checked) {
+          component.setAttribute('menu-item-checked', '');
         } else {
-          component.removeAttribute('menu-item-selected');
+          component.removeAttribute('menu-item-checked');
         }
 
         component.disabled = item.disabled;

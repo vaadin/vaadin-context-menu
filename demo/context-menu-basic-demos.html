@@ -16,7 +16,10 @@
         <script>
           window.addDemoReadyListener('#context-menu-items-demo', function(document) {
             const contextMenu = document.querySelector('vaadin-context-menu');
-            contextMenu.addEventListener('item-selected', console.log);
+            contextMenu.addEventListener('item-selected', e => {
+              const item = e.detail.value;
+              item.checked = !item.checked;
+            });
             contextMenu.items = [
               {text: 'Menu Item 1', children:
                 [
