@@ -127,6 +127,13 @@
         } else {
           component = document.createElement(item.component || 'vaadin-item');
         }
+
+        if (component.localName === 'vaadin-item') {
+          component.setAttribute('role', 'menuitem');
+        } else if (component.localName === 'hr') {
+          component.setAttribute('role', 'separator');
+        }
+
         component.classList.add('vaadin-menu-item');
         component._item = item;
 
@@ -137,8 +144,11 @@
         this.__toggleMenuComponentAttribute(component, 'menu-item-checked', item.checked);
         this.__toggleMenuComponentAttribute(component, 'disabled', item.disabled);
 
+        component.setAttribute('aria-haspopup', 'false');
         if (item.children && item.children.length) {
           component.classList.add('vaadin-context-menu-parent-item');
+          component.setAttribute('aria-haspopup', 'true');
+          component.setAttribute('aria-expanded', 'false');
         }
 
         listBox.appendChild(component);
@@ -164,11 +174,20 @@
         Polymer.flush();
         const listBox = root.querySelector('vaadin-list-box');
         listBox.classList.add('vaadin-menu-list-box');
+        requestAnimationFrame(() => listBox.setAttribute('role', 'menu'));
         const subMenu = root.querySelector('vaadin-context-menu');
         subMenu.$.overlay.modeless = true;
         subMenu.openOn = 'opensubmenu';
 
         menu.addEventListener('opened-changed', e => !e.detail.value && subMenu.close());
+        subMenu.addEventListener('opened-changed', e => {
+          if (!e.detail.value) {
+            const expandedItem = listBox.querySelector('[aria-expanded="true"]');
+            if (expandedItem) {
+              expandedItem.setAttribute('aria-expanded', 'false');
+            }
+          }
+        });
 
         listBox.addEventListener('selected-changed', e => {
           if (typeof e.detail.value === 'number') {
@@ -201,6 +220,7 @@
             }
 
             if (menu.opened && itemElement._item.children && itemElement._item.children.length) {
+              itemElement.setAttribute('aria-expanded', 'true');
               this.__openSubMenu(subMenu, itemElement);
             }
           }
