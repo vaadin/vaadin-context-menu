@@ -44,7 +44,7 @@
       subMenu.listenOn = itemElement;
 
       const itemRect = itemElement.getBoundingClientRect();
-      
+
       const content = subMenu.$.overlay.$.content;
       const padding = getComputedStyle(content).paddingTop;
       const y = itemRect.top - parseFloat(padding);
@@ -94,20 +94,8 @@
         this.__toggleMenuComponentAttribute(component, 'menu-item-checked', item.checked);
         this.__toggleMenuComponentAttribute(component, 'disabled', item.disabled);
 
-        const openEvent = this._touch ? 'touchstart' : 'mouseover';
-        component.addEventListener(openEvent, e => subMenu.close());
-        component.addEventListener('keydown', e => {
-          if (e.keyCode === 37 || e.keyCode === 27) {
-            menu.close();
-            menu.listenOn.focus();
-          }
-        });
-
         if (item.children && item.children.length) {
           component.classList.add('vaadin-context-menu-parent-item');
-          const openSubMenu = this.__openSubMenu.bind(this, subMenu, component);
-          component.addEventListener(openEvent, openSubMenu);
-          component.addEventListener('keydown', e => e.keyCode === 39 && openSubMenu());
         }
 
         listBox.appendChild(component);
@@ -154,6 +142,25 @@
           menu.dispatchEvent(new CustomEvent('item-selected', {detail: e.detail}));
           menu.close();
         });
+
+        menu.$.overlay.addEventListener('keydown', e => {
+          if (e.keyCode === 37 || e.keyCode === 27) {
+            menu.close();
+            menu.listenOn.focus();
+          }
+        });
+
+        const openSubMenu = e => {
+          subMenu.close()
+          const itemElement = e.composedPath().filter(e => e.localName === 'vaadin-item')[0];
+          if (itemElement && itemElement._item.children && itemElement._item.children.length) {
+            this.__openSubMenu(subMenu, itemElement);
+          }
+        };
+
+        const openEvent = this._touch ? 'touchstart' : 'mouseover';
+        menu.$.overlay.addEventListener(openEvent, openSubMenu);
+        menu.$.overlay.addEventListener('keydown', e => e.keyCode === 39 && openSubMenu(e));
       }
     }
 
