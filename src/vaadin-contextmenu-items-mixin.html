@@ -150,10 +150,12 @@
         });
 
         const openSubMenu = e => {
-          subMenu.close();
           const itemElement = e.composedPath().filter(e => e.localName === 'vaadin-item')[0];
-          if (itemElement && itemElement._item.children && itemElement._item.children.length) {
-            this.__openSubMenu(subMenu, itemElement);
+          if (itemElement) {
+            subMenu.close();
+            if (itemElement._item.children && itemElement._item.children.length) {
+              this.__openSubMenu(subMenu, itemElement);
+            }
           }
         };
 
