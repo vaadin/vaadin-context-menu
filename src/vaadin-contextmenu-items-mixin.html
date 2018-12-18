@@ -193,8 +193,11 @@
         const openSubMenu = e => {
           const itemElement = e.composedPath().filter(e => e.localName === 'vaadin-item')[0];
           if (itemElement) {
-            subMenu.close();
-            if (itemElement._item.children && itemElement._item.children.length) {
+            if (subMenu.items !== itemElement._item.children) {
+              subMenu.close();
+            }
+
+            if (menu.opened && itemElement._item.children && itemElement._item.children.length) {
               this.__openSubMenu(subMenu, itemElement);
             }
           }
