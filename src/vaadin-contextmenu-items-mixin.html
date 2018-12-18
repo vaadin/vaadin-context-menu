@@ -71,7 +71,6 @@
       this.__initMenu(root, menu);
 
       const listBox = root.querySelector('vaadin-list-box');
-      const subMenu = root.querySelector('vaadin-context-menu');
 
       listBox.innerHTML = '';
 
@@ -106,7 +105,7 @@
       if (on) {
         component.setAttribute(attribute, '');
         component['__has-' + attribute] = true;
-      } else if (component['__has-' + attribute]){
+      } else if (component['__has-' + attribute]) {
         component.removeAttribute(attribute);
         component['__has-' + attribute] = false;
       }
@@ -151,7 +150,7 @@
         });
 
         const openSubMenu = e => {
-          subMenu.close()
+          subMenu.close();
           const itemElement = e.composedPath().filter(e => e.localName === 'vaadin-item')[0];
           if (itemElement && itemElement._item.children && itemElement._item.children.length) {
             this.__openSubMenu(subMenu, itemElement);
