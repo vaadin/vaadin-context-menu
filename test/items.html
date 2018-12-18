@@ -14,7 +14,7 @@
 <body>
   <test-fixture id="default">
     <template>
-      <vaadin-context-menu open-on="mouseover">
+      <vaadin-context-menu>
         <button id="target"></button>
       </vaadin-context-menu>
     </template>
@@ -22,6 +22,7 @@
 
   <script>
     const MOBILE = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    const OPENEVENT = MOBILE ? 'touchstart' : 'mouseover';
 
     describe('items', () => {
       let rootMenu, subMenu, target;
@@ -30,7 +31,7 @@
         return Array.from(menu.$.overlay.content.firstElementChild.children);
       };
 
-      const open = (openTarget = target) => fire(openTarget, 'mouseover', {});
+      const open = (openTarget = target) => fire(openTarget, OPENEVENT, {});
 
       const getSubMenu = (menu = rootMenu) => {
         return menu.$.overlay.content.querySelector('vaadin-context-menu');
@@ -41,6 +42,7 @@
       describe('default', () => {
         beforeEach(done => {
           rootMenu = fixture('default');
+          rootMenu.openOn = OPENEVENT;
           target = rootMenu.firstElementChild;
           rootMenu.items = [
             {text: 'foo-0', children:
