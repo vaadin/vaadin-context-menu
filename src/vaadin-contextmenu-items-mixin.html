@@ -145,6 +145,7 @@
         this.__toggleMenuComponentAttribute(component, 'disabled', item.disabled);
 
         component.setAttribute('aria-haspopup', 'false');
+        component.classList.remove('vaadin-context-menu-parent-item');
         if (item.children && item.children.length) {
           component.classList.add('vaadin-context-menu-parent-item');
           component.setAttribute('aria-haspopup', 'true');
