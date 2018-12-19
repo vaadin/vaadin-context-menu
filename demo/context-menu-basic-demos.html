@@ -11,18 +11,12 @@
       <template preserve-content>
         <vaadin-context-menu>
           <p>This paragraph has a nested context menu.</p>
-          <p>Another paragraph with the context menu that can be opened with <b>right click</b> or with <b>long touch.</b></p>
+          <p>Opened the menu with <b>right click</b> or with <b>long touch.</b></p>
         </vaadin-context-menu>
         <script>
           window.addDemoReadyListener('#context-menu-items-demo', function(document) {
             const contextMenu = document.querySelector('vaadin-context-menu');
-            contextMenu.addEventListener('item-selected', function(e) {
-              const item = e.detail.value;
-              if (item.checkable) {
-                item.checked = !item.checked;
-              }
-              console.log('Item ' + item.text + ' selected');
-            });
+
             contextMenu.items = [
               {text: 'Menu Item 1', children:
                 [
@@ -46,6 +40,14 @@
               },
               {text: 'Menu Item 3', disabled: true}
             ];
+
+            contextMenu.addEventListener('item-selected', function(e) {
+              const item = e.detail.value;
+              if (item.checkable) {
+                item.checked = !item.checked;
+              }
+              console.log('Item ' + item.text + ' selected');
+            });
           });
         </script>
       </template>
