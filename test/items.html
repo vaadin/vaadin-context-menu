@@ -31,7 +31,11 @@
         return Array.from(menu.$.overlay.content.firstElementChild.children);
       };
 
-      const open = (openTarget = target) => fire(openTarget, OPENEVENT, {});
+      const open = (openTarget = target) => {
+        const menu = openTarget.parentElement.parentElement.__dataHost;
+        menu && (menu.__openListenerActive = true);
+        fire(openTarget, OPENEVENT, {});
+      };
 
       const getSubMenu = (menu = rootMenu) => {
         return menu.$.overlay.content.querySelector('vaadin-context-menu');

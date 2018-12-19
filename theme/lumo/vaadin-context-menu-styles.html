@@ -39,7 +39,7 @@
         --_lumo-list-box-item-selected-icon-display: block;
       }
 
-      :host(.vaadin-menu-list-box) [part="items"] ::slotted(vaadin-item) {
+      :host(.vaadin-menu-list-box) [part="items"] ::slotted(vaadin-item.vaadin-menu-item) {
         padding-left: calc(var(--lumo-border-radius) / 4);
         padding-right: calc(var(--lumo-space-l) + var(--lumo-border-radius) / 4);
       }
@@ -58,6 +58,9 @@
         font-family: lumo-icons;
         font-size: var(--lumo-icon-size-xs);
         content: var(--lumo-icons-angle-right);
+        color: var(--lumo-tertiary-text-color);
+        margin-right: calc(var(--lumo-space-m) * -1);
+        padding-left: var(--lumo-space-m);
       }
     </style>
   </template>

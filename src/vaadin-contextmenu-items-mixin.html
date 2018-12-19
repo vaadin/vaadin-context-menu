@@ -212,7 +212,12 @@
           }
         });
 
+        requestAnimationFrame(() => this.__openListenerActive = true);
         const openSubMenu = e => {
+          // Delay enabling the mouseover listener to avoid it from triggering on parent menu open
+          if (!this.__openListenerActive) {
+            return;
+          }
           const itemElement = e.composedPath().filter(e => e.localName === 'vaadin-item')[0];
           if (itemElement) {
             if (subMenu.items !== itemElement._item.children) {
