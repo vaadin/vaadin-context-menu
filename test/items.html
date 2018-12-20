@@ -33,7 +33,11 @@
 
       const open = (openTarget = target) => {
         const menu = openTarget.parentElement.parentElement.__dataHost;
-        menu && (menu.__openListenerActive = true);
+        if (menu) {
+          menu.__openListenerActive = true;
+          const overlay = menu.$.overlay;
+          overlay.__openingHandler && overlay.__openingHandler();
+        }
         fire(openTarget, OPENEVENT, {});
       };
 
