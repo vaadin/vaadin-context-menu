@@ -247,6 +247,15 @@
           expect(button.hasAttribute('menu-item-checked')).to.be.true;
         });
 
+        it('should propagate closeOn', () => {
+          rootMenu.close();
+          rootMenu.closeOn = 'keydown';
+          open();
+          open(menuComponents()[0]);
+          fire(menuComponents(subMenu)[0], 'keydown', {}, {keyCode: 65, key: 'a'});
+          expect(subMenu.opened).to.be.false;
+        });
+
       });
     });
   </script>

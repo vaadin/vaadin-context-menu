@@ -114,6 +114,9 @@
     __itemsRenderer(root, menu, context) {
       this.__initMenu(root, menu);
 
+      const subMenu = root.querySelector('vaadin-context-menu');
+      subMenu.closeOn = menu.closeOn;
+
       const listBox = root.querySelector('vaadin-list-box');
 
       listBox.innerHTML = '';
