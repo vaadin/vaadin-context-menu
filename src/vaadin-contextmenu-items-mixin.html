@@ -206,8 +206,9 @@
 
         subMenu.addEventListener('item-selected', e => {
           menu.dispatchEvent(new CustomEvent('item-selected', {detail: e.detail}));
-          menu.close();
         });
+
+        menu.addEventListener('item-selected', menu.close);
 
         menu.$.overlay.addEventListener('keydown', e => {
           if (e.keyCode === 37 || e.keyCode === 27) {
