@@ -24,6 +24,7 @@
             const columns = grid.querySelectorAll('vaadin-grid-column');
 
             contextMenu.renderer = function(root, contextMenu, context) {
+              const eventContext = grid.getEventContext(context.detail.sourceEvent);
               let listBox = root.firstElementChild;
               if (listBox) {
                 listBox.innerHTML = '';
@@ -42,17 +43,14 @@
               listBox.appendChild(addItem);
 
               // If user clicks on the cell
-              if (!context.target.querySelector('.body-content')) {
-                const removeItem = window.document.createElement('vaadin-item');
-                removeItem.textContent = 'Remove';
-                removeItem.addEventListener('click', function() {
-                  const index = parseInt(context.target.getAttribute('data-index'));
-                  const newItemsArray = grid.items.slice(0);
-                  newItemsArray.splice(index, 1);
-                  grid.items = newItemsArray;
-                });
-                listBox.appendChild(removeItem);
-              }
+              const removeItem = window.document.createElement('vaadin-item');
+              removeItem.textContent = 'Remove';
+              removeItem.addEventListener('click', function() {
+                const newItemsArray = grid.items.slice(0);
+                newItemsArray.splice(eventContext.index, 1);
+                grid.items = newItemsArray;
+              });
+              listBox.appendChild(removeItem);
             };
 
             grid.items = getItems();
@@ -62,15 +60,7 @@
               const propertyName = columnName.toLowerCase();
 
               column.renderer = function(root, column, context) {
-                if (!root.firstElementChild) {
-                  root.innerHTML = '<div class="body-content"></div>';
-                }
-                root.firstElementChild.setAttribute('data-index', context.index);
-                root.firstElementChild.textContent = context.item[propertyName];
-              };
-
-              column.headerRenderer = function(root) {
-                root.textContent = columnName;
+                root.textContent = context.item[propertyName];
               };
             });
           });
