@@ -12,17 +12,17 @@
       <template preserve-content>
         <vaadin-context-menu>
           <vaadin-grid>
-            <vaadin-grid-column header="Name"></vaadin-grid-column>
-            <vaadin-grid-column header="Surname"></vaadin-grid-column>
-            <vaadin-grid-column header="Effort"></vaadin-grid-column>
+            <vaadin-grid-column path="name"></vaadin-grid-column>
+            <vaadin-grid-column path="surname"></vaadin-grid-column>
+            <vaadin-grid-column path="effort"></vaadin-grid-column>
           </vaadin-grid>
         </vaadin-context-menu>
         <script>
           window.addDemoReadyListener('#context-menu-grid-demos-using-with-vaadin-grid', function(document) {
-            const contextMenu = document.querySelector('vaadin-context-menu');
-            const grid = contextMenu.querySelector('vaadin-grid');
-            const columns = grid.querySelectorAll('vaadin-grid-column');
+            const grid = document.querySelector('vaadin-grid');
+            grid.items = getItems();
 
+            const contextMenu = document.querySelector('vaadin-context-menu');
             contextMenu.renderer = function(root, contextMenu, context) {
               const eventContext = grid.getEventContext(context.detail.sourceEvent);
               let listBox = root.firstElementChild;
@@ -52,17 +52,6 @@
               });
               listBox.appendChild(removeItem);
             };
-
-            grid.items = getItems();
-
-            columns.forEach(function(column) {
-              const columnName = column.getAttribute('header');
-              const propertyName = columnName.toLowerCase();
-
-              column.renderer = function(root, column, context) {
-                root.textContent = context.item[propertyName];
-              };
-            });
           });
         </script>
       </template>
