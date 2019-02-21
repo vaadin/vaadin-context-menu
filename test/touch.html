@@ -204,6 +204,18 @@
           target.dispatchEvent(ev);
         });
 
+        it('should forward `preventDefault` to `sourceEvent`', done => {
+          const ev = makeSoloTouchEvent('touchstart', null, target);
+          menu.listenOn.addEventListener('vaadin-contextmenu', e => {
+            e.preventDefault();
+            setTimeout(() => {
+              expect(ev.defaultPrevented).to.be.true;
+              done();
+            });
+          });
+          target.dispatchEvent(ev);
+        });
+
         it('should not preventDefault on touch-end after normal tap', done => {
           makeSoloTouchEvent('touchstart', null, target);
 
