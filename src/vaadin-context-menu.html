@@ -566,7 +566,14 @@ This program is available under Apache License Version 2.0, available at https:/
           // Then set styling attrs for flex-aligning the content appropriatelly.
           const wdthVport = document.documentElement.clientWidth;
           const hghtVport = document.documentElement.clientHeight;
-          if (x < wdthVport / 2 || x < xMax) {
+
+          const parent = overlay.parentOverlay;
+          if (parent && parent.hasAttribute('right-aligned')) {
+            const parentStyle = getComputedStyle(parent);
+            const parentContentRect = parent.$.overlay.getBoundingClientRect();
+            overlay.setAttribute('right-aligned', '');
+            style.right = parseFloat(parentStyle.right) + parentContentRect.width + 'px';
+          } else if (x < wdthVport / 2 || x < xMax) {
             style.left = x + 'px';
           } else {
             style.right = Math.max(0, (wdthVport - x)) + 'px';
