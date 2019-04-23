@@ -18,6 +18,10 @@
         justify-content: flex-end;
       }
 
+      [part="overlay"] {
+        outline: none;
+      }
+
       :host([phone]) [part="content"] {
         /* Ideally should be 100vh but iOS phone addr-bar covers view port */
         max-height: 80vh;

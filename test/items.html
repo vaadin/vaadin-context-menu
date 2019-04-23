@@ -243,12 +243,12 @@
           expect(subMenu.opened).to.be.false;
         });
 
-        it('should focus closed parent item when hovering on non-parent item', () => {
+        it('should not focus closed parent item when hovering on non-parent item', () => {
           const parent = menuComponents()[0];
           const nonParent = menuComponents()[1];
           open(nonParent);
-          expect(parent.hasAttribute('focused')).to.be.true;
-          expect(parent.hasAttribute('focus-ring')).to.be.true;
+          expect(parent.hasAttribute('focused')).to.be.false;
+          expect(parent.hasAttribute('focus-ring')).to.be.false;
         });
 
         it('should close the menu', () => {

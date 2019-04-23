@@ -82,6 +82,12 @@
           expect(menu._context.detail).to.eql(detail);
         });
 
+        it('should use event as context sourceEvent', () => {
+          const event = fire(menu, 'vaadin-contextmenu', {});
+
+          expect(menu._context.sourceEvent).to.eql(event);
+        });
+
         it('should use local target when targeting inside shadow root', () => {
           fire(foo.$.content, 'contextmenu');
 

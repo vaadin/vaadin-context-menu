@@ -77,12 +77,17 @@
         });
 
         it('should rerender on reopen', () => {
-          fire(target, 'vaadin-contextmenu');
+          const e1 = fire(target, 'vaadin-contextmenu');
           menu.close();
-          fire(target, 'vaadin-contextmenu');
+          const e2 = fire(target, 'vaadin-contextmenu');
 
           expect(menu.renderer.callCount).to.equal(2);
-          expect(menu.renderer.getCall(1).args).to.deep.equal(menu.renderer.getCall(0).args);
+          const args1 = menu.renderer.getCall(0).args;
+          const args2 = menu.renderer.getCall(1).args;
+          expect(args1[0]).to.equal(args2[0]);
+          expect(args1[1]).to.equal(args2[1]);
+          expect(args1[2].sourceEvent).to.deep.equal(e1);
+          expect(args2[2].sourceEvent).to.deep.equal(e2);
         });
 
         it('should rerender with new target on reopen', () => {

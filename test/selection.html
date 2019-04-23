@@ -67,11 +67,10 @@
             menu._setOpened(true);
           });
 
-          it('should focus the child element', done => {
+          it('should focus the overlay element', done => {
             listenOnce(menu.$.overlay, 'vaadin-overlay-open', () => {
-              Polymer.Async.timeOut.run(() => {
-                const item = menu.$.overlay.content.querySelector('#menu vaadin-item');
-                expect(document.activeElement).to.eql(item);
+              Polymer.RenderStatus.afterNextRender(menu.$.overlay, () => {
+                expect(document.activeElement).to.eql(menu.$.overlay);
                 done();
               });
             });
@@ -79,16 +78,41 @@
             menu._setOpened(true);
           });
 
-          it('should focus the child element on `contextmenu` event', done => {
+          it('should focus the overlay element on `contextmenu` event', done => {
             listenOnce(menu.$.overlay, 'vaadin-overlay-open', () => {
-              Polymer.Async.timeOut.run(() => {
+              Polymer.RenderStatus.afterNextRender(menu.$.overlay, () => {
+                expect(document.activeElement).to.eql(menu.$.overlay);
+                done();
+              });
+            });
+
+            fire(menu, 'contextmenu');
+          });
+
+          it('should focus the child element on `keydown` event', done => {
+            menu.openOn = 'keydown';
+            listenOnce(menu.$.overlay, 'vaadin-overlay-open', () => {
+              Polymer.RenderStatus.afterNextRender(menu.$.overlay, () => {
                 const item = menu.$.overlay.content.querySelector('#menu vaadin-item');
                 expect(document.activeElement).to.eql(item);
                 done();
               });
             });
 
-            fire(menu, 'contextmenu');
+            fire(menu, 'keydown', {}, {keyCode: 40, key: 'ArrowDown'});
+          });
+
+          it('should focus the last item element on Arrow Up `keydown` event', done => {
+            menu.openOn = 'keydown';
+            listenOnce(menu.$.overlay, 'vaadin-overlay-open', () => {
+              Polymer.RenderStatus.afterNextRender(menu.$.overlay, () => {
+                const items = menu.$.overlay.content.querySelectorAll('#menu vaadin-item');
+                expect(document.activeElement).to.eql(items[items.length - 1]);
+                done();
+              });
+            });
+
+            fire(menu, 'keydown', {}, {keyCode: 38, key: 'ArrowUp'});
           });
         });
       });
