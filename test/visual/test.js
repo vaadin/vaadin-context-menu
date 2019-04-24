@@ -40,6 +40,28 @@ gemini.suite('vaadin-context-menu', function(rootSuite) {
           });
         });
     });
+
+    gemini.suite(`arrow-down-tests-${theme}`, function(suite) {
+      suite
+        .setUrl(`keys.html?theme=${theme}`)
+        .setCaptureElements('#keys-tests')
+        .capture('arrow-down', function(actions) {
+          actions.executeJS(function(window) {
+            window.arrowDown(window.document.querySelector('#keys'));
+          });
+        });
+    });
+
+    gemini.suite(`arrow-up-tests-${theme}`, function(suite) {
+      suite
+        .setUrl(`keys.html?theme=${theme}`)
+        .setCaptureElements('#keys-tests')
+        .capture('arrow-up', function(actions) {
+          actions.executeJS(function(window) {
+            window.arrowUp(window.document.querySelector('#keys'));
+          });
+        });
+    });
   });
 
 });
