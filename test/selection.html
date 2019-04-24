@@ -31,17 +31,20 @@
     <script>
       describe('overlay', () => {
 
-        let menu;
+        const ios = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+
+        let menu, overlay;
 
         beforeEach(() => {
           menu = fixture('default');
+          overlay = menu.$.overlay;
         });
 
         describe('selection', () => {
 
           it('should close on item tap', done => {
-            listenOnce(menu.$.overlay, 'vaadin-overlay-open', () => {
-              const listBox = menu.$.overlay.content.querySelector('#menu');
+            listenOnce(overlay, 'vaadin-overlay-open', () => {
+              const listBox = overlay.content.querySelector('#menu');
               Polymer.RenderStatus.afterNextRender(listBox, () => {
                 MockInteractions.tap(listBox.items[0]);
                 expect(menu.opened).to.eql(false);
@@ -53,13 +56,13 @@
           });
 
           it('should close on keyboard selection', done => {
-            listenOnce(menu.$.overlay, 'vaadin-overlay-open', () => {
+            listenOnce(overlay, 'vaadin-overlay-open', () => {
               setTimeout(() => {
                 listenOnce(menu, 'opened-changed', () => {
                   done();
                 });
 
-                const item = menu.$.overlay.content.querySelector('#menu vaadin-item');
+                const item = overlay.content.querySelector('#menu vaadin-item');
                 MockInteractions.pressAndReleaseKeyOn(item, 13, [], 'Enter');
               }, 10);
             });
@@ -68,9 +71,9 @@
           });
 
           it('should focus the overlay element', done => {
-            listenOnce(menu.$.overlay, 'vaadin-overlay-open', () => {
+            listenOnce(overlay, 'vaadin-overlay-open', () => {
               Polymer.Async.timeOut.run(() => {
-                expect(document.activeElement).to.eql(menu.$.overlay);
+                expect(overlay._getActiveElement()).to.eql(overlay.$.overlay);
                 done();
               });
             });
@@ -79,9 +82,9 @@
           });
 
           it('should focus the overlay element on `contextmenu` event', done => {
-            listenOnce(menu.$.overlay, 'vaadin-overlay-open', () => {
+            listenOnce(overlay, 'vaadin-overlay-open', () => {
               Polymer.Async.timeOut.run(() => {
-                expect(document.activeElement).to.eql(menu.$.overlay);
+                expect(overlay._getActiveElement()).to.eql(overlay.$.overlay);
                 done();
               });
             });
@@ -91,10 +94,10 @@
 
           it('should focus the child element on `keydown` event', done => {
             menu.openOn = 'keydown';
-            listenOnce(menu.$.overlay, 'vaadin-overlay-open', () => {
+            listenOnce(overlay, 'vaadin-overlay-open', () => {
               Polymer.Async.timeOut.run(() => {
-                const item = menu.$.overlay.content.querySelector('#menu vaadin-item');
-                expect(document.activeElement).to.eql(item);
+                const item = overlay.content.querySelector('#menu vaadin-item');
+                expect(overlay._getActiveElement()).to.eql(item);
                 done();
               });
             });
@@ -102,12 +105,12 @@
             fire(menu, 'keydown', {}, {keyCode: 40, key: 'ArrowDown'});
           });
 
-          it('should focus the last item element on Arrow Up `keydown` event', done => {
+          (ios ? it.skip : it)('should focus the last item element on Arrow Up `keydown` event', done => {
             menu.openOn = 'keydown';
-            listenOnce(menu.$.overlay, 'vaadin-overlay-open', () => {
+            listenOnce(overlay, 'vaadin-overlay-open', () => {
               Polymer.Async.timeOut.run(() => {
-                const items = menu.$.overlay.content.querySelectorAll('#menu vaadin-item');
-                expect(document.activeElement).to.eql(items[items.length - 1]);
+                const items = overlay.content.querySelectorAll('#menu vaadin-item');
+                expect(overlay._getActiveElement()).to.eql(items[items.length - 1]);
                 done();
               });
             });
