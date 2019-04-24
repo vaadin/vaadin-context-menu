@@ -389,7 +389,7 @@ This program is available under Apache License Version 2.0, available at https:/
           this.__alignOverlayPosition();
           this.$.overlay.style.opacity = '';
 
-          this.$.overlay.forwardFocus(this._context && this._context.sourceEvent);
+          this.$.overlay.forwardFocus(this._context && this._context.originalEvent);
         }
 
         _targetOrOpenOnChanged(listenOn, openOn) {
@@ -527,9 +527,11 @@ This program is available under Apache License Version 2.0, available at https:/
         open(e) {
           if (e && !this.opened) {
             const detail = e.detail;
+            // NOTE: `originalEvent` is used to not mess up `sourceEvent` added by Gestures
+            const originalEvent = (detail && detail.originalEvent) || e;
             this._context = {
               detail,
-              sourceEvent: (detail && detail.sourceEvent) || e,
+              originalEvent,
               target: this._contextTarget(e)
             };
 

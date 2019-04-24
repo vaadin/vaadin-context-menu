@@ -24,7 +24,7 @@
 
             const contextMenu = document.querySelector('vaadin-context-menu');
             contextMenu.renderer = function(root, contextMenu, context) {
-              const eventContext = grid.getEventContext(context.sourceEvent);
+              const eventContext = grid.getEventContext(context.originalEvent);
               let listBox = root.firstElementChild;
               if (listBox) {
                 listBox.innerHTML = '';

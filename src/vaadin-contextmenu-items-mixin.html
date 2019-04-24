@@ -124,7 +124,7 @@
       document.documentElement.removeEventListener('click', this.__itemsOutsideClickListener);
     }
 
-    __openSubMenu(subMenu, itemElement, sourceEvent) {
+    __openSubMenu(subMenu, itemElement, originalEvent) {
       subMenu.items = itemElement._item.children;
       subMenu.listenOn = itemElement;
 
@@ -154,7 +154,7 @@
       x = Math.max(x, 0);
 
       itemElement.dispatchEvent(new CustomEvent('opensubmenu', {detail: {
-        x, y, children: itemElement._item.children, sourceEvent
+        x, y, children: itemElement._item.children, originalEvent
       }}));
     }
 

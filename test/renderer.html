@@ -86,8 +86,8 @@
           const args2 = menu.renderer.getCall(1).args;
           expect(args1[0]).to.equal(args2[0]);
           expect(args1[1]).to.equal(args2[1]);
-          expect(args1[2].sourceEvent).to.deep.equal(e1);
-          expect(args2[2].sourceEvent).to.deep.equal(e2);
+          expect(args1[2].originalEvent).to.deep.equal(e1);
+          expect(args2[2].originalEvent).to.deep.equal(e2);
         });
 
         it('should rerender with new target on reopen', () => {
