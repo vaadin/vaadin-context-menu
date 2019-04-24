@@ -69,7 +69,7 @@
 
           it('should focus the overlay element', done => {
             listenOnce(menu.$.overlay, 'vaadin-overlay-open', () => {
-              Polymer.RenderStatus.afterNextRender(menu.$.overlay, () => {
+              Polymer.Async.timeOut.run(() => {
                 expect(document.activeElement).to.eql(menu.$.overlay);
                 done();
               });
@@ -80,7 +80,7 @@
 
           it('should focus the overlay element on `contextmenu` event', done => {
             listenOnce(menu.$.overlay, 'vaadin-overlay-open', () => {
-              Polymer.RenderStatus.afterNextRender(menu.$.overlay, () => {
+              Polymer.Async.timeOut.run(() => {
                 expect(document.activeElement).to.eql(menu.$.overlay);
                 done();
               });
@@ -92,7 +92,7 @@
           it('should focus the child element on `keydown` event', done => {
             menu.openOn = 'keydown';
             listenOnce(menu.$.overlay, 'vaadin-overlay-open', () => {
-              Polymer.RenderStatus.afterNextRender(menu.$.overlay, () => {
+              Polymer.Async.timeOut.run(() => {
                 const item = menu.$.overlay.content.querySelector('#menu vaadin-item');
                 expect(document.activeElement).to.eql(item);
                 done();
@@ -105,7 +105,7 @@
           it('should focus the last item element on Arrow Up `keydown` event', done => {
             menu.openOn = 'keydown';
             listenOnce(menu.$.overlay, 'vaadin-overlay-open', () => {
-              Polymer.RenderStatus.afterNextRender(menu.$.overlay, () => {
+              Polymer.Async.timeOut.run(() => {
                 const items = menu.$.overlay.content.querySelectorAll('#menu vaadin-item');
                 expect(document.activeElement).to.eql(items[items.length - 1]);
                 done();
