@@ -33,6 +33,8 @@ This program is available under Apache License Version 2.0, available at https:/
 <dom-module id="vaadin-context-menu-overlay">
   <script>
     (function() {
+      const ios = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+
       /**
        * The overlay element.
        *
@@ -76,12 +78,14 @@ This program is available under Apache License Version 2.0, available at https:/
         ready() {
           super.ready();
 
-          this.addEventListener('keydown', e => {
-            if (!e.defaultPrevented && [38, 40].indexOf(e.keyCode) > -1) {
-              e.preventDefault();
-              this.forwardFocus(e);
-            }
-          });
+          if (!ios) {
+            this.addEventListener('keydown', e => {
+              if (!e.defaultPrevented && [38, 40].indexOf(e.keyCode) > -1) {
+                e.preventDefault();
+                this.forwardFocus(e);
+              }
+            });
+          }
         }
 
         forwardFocus(e) {
