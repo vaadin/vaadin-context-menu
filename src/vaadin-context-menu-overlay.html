@@ -82,23 +82,21 @@ This program is available under Apache License Version 2.0, available at https:/
             this.addEventListener('keydown', e => {
               if (!e.defaultPrevented && [38, 40].indexOf(e.keyCode) > -1) {
                 e.preventDefault();
-                this.forwardFocus(e);
+                this.focusChild(e);
               }
             });
           }
         }
 
-        forwardFocus(e) {
+        focusChild(e) {
           const child = this.querySelector(':not(style):not(slot)');
-          if (child && e && e.type === 'keydown') {
+          if (child) {
             // TODO(web-padawan): using protected API from vaadin-list-mixin
             if (e.keyCode === 38 && child.items && child._focus && child._getAvailableIndex) {
               child._focus(child._getAvailableIndex(child.items.length - 1, -1, item => !item.disabled));
             } else {
               child.focus();
             }
-          } else {
-            this.$.overlay.focus();
           }
         }
 

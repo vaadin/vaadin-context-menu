@@ -389,7 +389,12 @@ This program is available under Apache License Version 2.0, available at https:/
           this.__alignOverlayPosition();
           this.$.overlay.style.opacity = '';
 
-          this.$.overlay.forwardFocus(this._originalEvent);
+          const event = this._originalEvent;
+          if (event && event.type === 'keydown') {
+            this.$.overlay.focusChild(event);
+          } else {
+            this.$.overlay.$.overlay.focus();
+          }
         }
 
         _targetOrOpenOnChanged(listenOn, openOn) {
