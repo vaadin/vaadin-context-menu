@@ -156,7 +156,8 @@
               contextmenu(viewWidth, viewHeight);
             });
 
-            it('should reset css properties and attributes on each open', done => {
+            // FIXME(web-padawan): timeout in Sauce on iOS 11.3
+            (MOBILE ? it.skip : it)('should reset css properties and attributes on each open', done => {
               listenOnce(overlay, 'vaadin-overlay-open', () => {
 
                 overlay.opened = false;

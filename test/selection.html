@@ -93,7 +93,7 @@
             fire(menu, 'contextmenu');
           });
 
-          it('should focus the child element on `keydown` event', done => {
+          (ios ? it.skip : it)('should focus the child element on `keydown` event', done => {
             menu.openOn = 'keydown';
             listenOnce(overlay, 'vaadin-overlay-open', () => {
               Polymer.Async.timeOut.run(() => {
