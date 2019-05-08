@@ -449,15 +449,15 @@
             const scrollDistance = 150;
 
             // Default indentation is 16
-            expect(rootOverlay.getBoundingClientRect().top).to.equal(16);
-            expect(subOverlay1.getBoundingClientRect().top).to.equal(16);
-            expect(subOverlay2.getBoundingClientRect().top).to.equal(88);
+            const rootBRCTop = rootOverlay.getBoundingClientRect().top;
+            const subBRCTop1 = subOverlay1.getBoundingClientRect().top;
+            const subBRCTop2 = subOverlay2.getBoundingClientRect().top;
 
             scrollElm.scrollTop = scrollDistance;
             Polymer.RenderStatus.afterNextRender(rootMenu, () => {
-              expect(rootOverlay.getBoundingClientRect().top).to.equal(16 - scrollDistance);
-              expect(subOverlay1.getBoundingClientRect().top).to.equal(16 - scrollDistance);
-              expect(subOverlay2.getBoundingClientRect().top).to.equal(88 - scrollDistance);
+              expect(rootOverlay.getBoundingClientRect().top).to.be.closeTo(rootBRCTop - scrollDistance, 1);
+              expect(subOverlay1.getBoundingClientRect().top).to.be.closeTo(subBRCTop1 - scrollDistance, 1);
+              expect(subOverlay2.getBoundingClientRect().top).to.be.closeTo(subBRCTop2 - scrollDistance, 1);
               done();
             });
           });
@@ -466,15 +466,15 @@
             const scrollDistance = 150;
 
             // Default indentation is 16
-            expect(rootOverlay.getBoundingClientRect().left).to.equal(16);
-            expect(subOverlay1.getBoundingClientRect().left).to.be.closeTo(126, 5);
-            expect(subOverlay2.getBoundingClientRect().left).to.be.closeTo(253, 5);
+            const rootBRCLeft = rootOverlay.getBoundingClientRect().left;
+            const subBRCLeft1 = subOverlay1.getBoundingClientRect().left;
+            const subBRCLeft2 = subOverlay2.getBoundingClientRect().left;
 
             scrollElm.scrollLeft = scrollDistance;
             Polymer.RenderStatus.afterNextRender(rootMenu, () => {
-              expect(rootOverlay.getBoundingClientRect().left).to.equal(16 - scrollDistance);
-              expect(subOverlay1.getBoundingClientRect().left).to.be.closeTo(126 - scrollDistance, 5);
-              expect(subOverlay2.getBoundingClientRect().left).to.be.closeTo(253 - scrollDistance, 5);
+              expect(rootOverlay.getBoundingClientRect().left).to.be.closeTo(rootBRCLeft - scrollDistance, 1);
+              expect(subOverlay1.getBoundingClientRect().left).to.be.closeTo(subBRCLeft1 - scrollDistance, 1);
+              expect(subOverlay2.getBoundingClientRect().left).to.be.closeTo(subBRCLeft2 - scrollDistance, 1);
               done();
             });
           });
