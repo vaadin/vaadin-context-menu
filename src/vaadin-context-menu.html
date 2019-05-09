@@ -548,14 +548,11 @@ This program is available under Apache License Version 2.0, available at https:/
               e.stopPropagation();
 
               // Used in alignment which is delayed until overlay is rendered
-              this.__x = {
-                eventOffset: this._getEventCoordinate(e, 'x'),
-                pageOffset: window.pageXOffset
-              };
-              this.__y = {
-                eventOffset: this._getEventCoordinate(e, 'y'),
-                pageOffset: window.pageYOffset
-              };
+              this.__x = this._getEventCoordinate(e, 'x');
+              this.__pageXOffset = window.pageXOffset;
+
+              this.__y = this._getEventCoordinate(e, 'y');
+              this.__pageYOffset = window.pageYOffset;
 
               this.$.overlay.style.opacity = '0';
               this._setOpened(true);
@@ -568,8 +565,8 @@ This program is available under Apache License Version 2.0, available at https:/
             return;
           }
 
-          const yDiff = window.pageYOffset - this.__y.pageOffset;
-          const xDiff = window.pageXOffset - this.__x.pageOffset;
+          const yDiff = window.pageYOffset - this.__pageYOffset;
+          const xDiff = window.pageXOffset - this.__pageXOffset;
 
           this.__adjustPosition('left', -xDiff);
           this.__adjustPosition('right', xDiff);
@@ -577,8 +574,8 @@ This program is available under Apache License Version 2.0, available at https:/
           this.__adjustPosition('top', -yDiff);
           this.__adjustPosition('bottom', yDiff);
 
-          this.__y.pageOffset += yDiff;
-          this.__x.pageOffset += xDiff;
+          this.__pageYOffset += yDiff;
+          this.__pageXOffset += xDiff;
         }
 
         __adjustPosition(coord, diff) {
@@ -600,8 +597,8 @@ This program is available under Apache License Version 2.0, available at https:/
           const {xMax, yMax, left, top, width} = overlay.getBoundaries();
           // Reuse saved x and y event values, in order to this method be used async
           // in the `vaadin-overlay-change` which guarantees that overlay is ready
-          const x = this.__x && this.__x.eventOffset || left;
-          const y = this.__y && this.__y.eventOffset || top;
+          const x = this.__x || left;
+          const y = this.__y || top;
 
           // Select one overlay corner and move to the event x/y position.
           // Then set styling attrs for flex-aligning the content appropriately.
