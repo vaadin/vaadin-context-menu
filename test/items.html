@@ -20,6 +20,14 @@
     </template>
   </test-fixture>
 
+  <test-fixture id="theme">
+    <template>
+      <vaadin-context-menu theme="foo">
+        <button id="target"></button>
+      </vaadin-context-menu>
+    </template>
+  </test-fixture>
+
   <script>
     const MOBILE = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
     const OPENEVENT = MOBILE ? 'touchstart' : 'mouseover';
@@ -412,6 +420,97 @@
           subMenu.close();
           expect(menuComponents()[0].hasAttribute('expanded')).to.be.false;
           expect(menuComponents()[0].getAttribute('aria-expanded')).to.equal('false');
+        });
+      });
+
+      describe('theme propagation', () => {
+        let subMenu2;
+
+        beforeEach(done => {
+          rootMenu = fixture('theme');
+          rootMenu.openOn = OPENEVENT;
+          target = rootMenu.firstElementChild;
+          rootMenu.items = [
+            {text: 'foo-0', children:
+              [
+                {text: 'foo-0-0'},
+                {text: 'foo-0-1', children: [
+                  {text: 'foo-0-1-0'}
+                ]},
+              ]
+            },
+            {text: 'foo-1'}
+          ];
+          open();
+          flush(() => {
+            open(menuComponents()[0]);
+            subMenu = getSubMenu();
+            flush(() => {
+              open(menuComponents(subMenu)[1]);
+              subMenu2 = getSubMenu();
+              flush(done);
+            });
+          });
+        });
+
+        function themeAttributeEquals(theme, el, overlay = false, listBox = false, items = false) {
+          const elOverlay = el.$.overlay;
+          const elListBox = elOverlay.querySelector('vaadin-context-menu-list-box');
+          const elItems = Array.from(elListBox.querySelectorAll('vaadin-context-menu-item'));
+
+          if (overlay) {
+            return elOverlay.getAttribute('theme') === theme;
+          } else if (listBox) {
+            return elListBox.getAttribute('theme') === theme;
+          } else if (items) {
+            return elItems.filter(item => item.getAttribute('theme') !== theme).length === 0;
+          }
+
+          return el.getAttribute('theme') === theme;
+        }
+
+        ['propagate', 'remove'].forEach(condition => {
+          const theme = condition === 'remove' ? null : 'foo';
+
+          it(`should ${condition} theme attribute ${condition === 'remove' ? 'from' : 'to'} the nested context-menus`, () => {
+            if (condition === 'remove') {
+              rootMenu.removeAttribute('theme');
+            }
+
+            expect(themeAttributeEquals(theme, rootMenu)).to.be.true;
+            expect(themeAttributeEquals(theme, subMenu)).to.be.true;
+            expect(themeAttributeEquals(theme, subMenu2)).to.be.true;
+          });
+
+          it(`should ${condition} theme attribute ${condition === 'remove' ? 'from' : 'to'} the nested overlays`, () => {
+            if (condition === 'remove') {
+              rootMenu.removeAttribute('theme');
+            }
+
+            expect(themeAttributeEquals(theme, rootMenu, true)).to.be.true;
+            expect(themeAttributeEquals(theme, subMenu, true)).to.be.true;
+            expect(themeAttributeEquals(theme, subMenu2, true)).to.be.true;
+          });
+
+          it(`should ${condition} theme attribute ${condition === 'remove' ? 'from' : 'to'} the nested list-boxes`, () => {
+            if (condition === 'remove') {
+              rootMenu.removeAttribute('theme');
+            }
+
+            expect(themeAttributeEquals(theme, rootMenu, false, true)).to.be.true;
+            expect(themeAttributeEquals(theme, subMenu, false, true)).to.be.true;
+            expect(themeAttributeEquals(theme, subMenu2, false, true)).to.be.true;
+          });
+
+          it(`should ${condition} theme attribute ${condition === 'remove' ? 'from' : 'to'} the items`, () => {
+            if (condition === 'remove') {
+              rootMenu.removeAttribute('theme');
+            }
+
+            expect(themeAttributeEquals(theme, rootMenu, false, false, true)).to.be.true;
+            expect(themeAttributeEquals(theme, subMenu, false, false, true)).to.be.true;
+            expect(themeAttributeEquals(theme, subMenu2, false, false, true)).to.be.true;
+          });
         });
       });
     });
