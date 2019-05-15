@@ -157,9 +157,7 @@
       subMenu.$.overlay._setParentOverlay(parent);
 
       // Set theme attribute from parent element
-      if (parent.theme) {
-        subMenu.setAttribute('theme', parent.theme);
-      }
+      parent.theme && subMenu.setAttribute('theme', parent.theme);
 
       let x;
       content.style.minWidth = '';

@@ -522,19 +522,22 @@
         });
 
         it('should propagate theme attribute to the nested elements', () => {
-          const overlay = subMenu.$.overlay;
-          const listBox = overlay.querySelector('vaadin-context-menu-list-box');
-          const items = Array.from(listBox.querySelectorAll('vaadin-context-menu-item'));
+          [rootMenu, subMenu, subMenu2].forEach(subMenu => {
+            const overlay = subMenu.$.overlay;
+            const listBox = overlay.querySelector('vaadin-context-menu-list-box');
+            const items = Array.from(listBox.querySelectorAll('vaadin-context-menu-item'));
 
-          expect(overlay.getAttribute('theme')).to.equal('foo');
-          expect(listBox.getAttribute('theme')).to.equal('foo');
+            expect(overlay.getAttribute('theme')).to.equal('foo');
+            expect(listBox.getAttribute('theme')).to.equal('foo');
 
-          const itemsThemeEqualsFoo = items.filter(item => item.getAttribute('theme') !== 'foo').length === 0;
-          expect(itemsThemeEqualsFoo).to.be.true;
+            const itemsThemeEqualsFoo = items.filter(item => item.getAttribute('theme') !== 'foo').length === 0;
+            expect(itemsThemeEqualsFoo).to.be.true;
+          });
         });
 
-        it('should close the submenu on theme changed', () => {
+        it('should close the menu and submenu on theme changed', () => {
           rootMenu.setAttribute('theme', 'bar');
+          expect(rootMenu.opened).to.be.false;
           expect(subMenu.opened).to.be.false;
           expect(subMenu2.opened).to.be.false;
         });
