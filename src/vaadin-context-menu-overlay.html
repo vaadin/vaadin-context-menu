@@ -69,14 +69,12 @@ This program is available under Apache License Version 2.0, available at https:/
             parentOverlay: {
               type: Object,
               readOnly: true
-            },
-
-            theme: {
-              type: String,
-              reflectToAttribute: true,
-              observer: '_themeChanged'
             }
           };
+        }
+
+        static get observers() {
+          return ['_themeChanged(theme)'];
         }
 
         ready() {
