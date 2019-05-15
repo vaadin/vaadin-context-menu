@@ -156,6 +156,12 @@
       // Store the reference to align based on parent overlay coordinates
       subMenu.$.overlay._setParentOverlay(parent);
 
+      // Set theme attribute from parent element
+      const parentTheme = parent.getAttribute('theme');
+      if (parentTheme && parentTheme !== '') {
+        subMenu.setAttribute('theme', parentTheme);
+      }
+
       let x;
       content.style.minWidth = '';
       if (document.documentElement.clientWidth - itemRect.right > itemRect.width) {
@@ -200,6 +206,7 @@
           component.setAttribute('role', 'separator');
         }
         component.classList.add('vaadin-menu-item');
+        component.setAttribute('theme', this.theme);
 
         component._item = item;
 
@@ -236,7 +243,7 @@
     __initMenu(root, menu) {
       if (!root.firstElementChild) {
         root.innerHTML = `
-          <vaadin-context-menu-list-box></vaadin-context-menu-list-box>
+          <vaadin-context-menu-list-box theme="${this.theme}"></vaadin-context-menu-list-box>
           <vaadin-context-menu hidden></vaadin-context-menu>
         `;
         Polymer.flush();
