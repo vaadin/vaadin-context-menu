@@ -100,28 +100,8 @@ This program is available under Apache License Version 2.0, available at https:/
         }
 
         _themeChanged(theme) {
-          const childContextMenu = this.querySelector('vaadin-context-menu');
-          const childListBox = this.querySelector('vaadin-context-menu-list-box');
-
-          if (childListBox) {
-            if (theme && theme !== '') {
-              childListBox.setAttribute('theme', theme);
-              Array.from(childListBox.querySelectorAll('vaadin-context-menu-item'))
-                .forEach(item => item.setAttribute('theme', theme));
-            } else {
-              childListBox.removeAttribute('theme');
-              Array.from(childListBox.querySelectorAll('vaadin-context-menu-item'))
-                .forEach(item => item.removeAttribute('theme'));
-            }
-          }
-
-          if (childContextMenu) {
-            if (theme && theme !== '') {
-              childContextMenu.setAttribute('theme', theme);
-            } else {
-              childContextMenu.removeAttribute('theme');
-            }
-          }
+          this.close();
+          this.innerHTML = '';
         }
 
         getBoundaries() {

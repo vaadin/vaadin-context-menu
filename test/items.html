@@ -521,64 +521,22 @@
           });
         });
 
-        function themeAttributeEquals(theme, el, overlay = false, listBox = false, items = false) {
-          const elOverlay = el.$.overlay;
-          const elListBox = elOverlay.querySelector('vaadin-context-menu-list-box');
-          const elItems = Array.from(elListBox.querySelectorAll('vaadin-context-menu-item'));
+        it('should propagate theme attribute to the nested elements', () => {
+          const overlay = subMenu.$.overlay;
+          const listBox = overlay.querySelector('vaadin-context-menu-list-box');
+          const items = Array.from(listBox.querySelectorAll('vaadin-context-menu-item'));
 
-          if (overlay) {
-            return elOverlay.getAttribute('theme') === theme;
-          } else if (listBox) {
-            return elListBox.getAttribute('theme') === theme;
-          } else if (items) {
-            return elItems.filter(item => item.getAttribute('theme') !== theme).length === 0;
-          }
+          expect(overlay.getAttribute('theme')).to.equal('foo');
+          expect(listBox.getAttribute('theme')).to.equal('foo');
 
-          return el.getAttribute('theme') === theme;
-        }
+          const itemsThemeEqualsFoo = items.filter(item => item.getAttribute('theme') !== 'foo').length === 0;
+          expect(itemsThemeEqualsFoo).to.be.true;
+        });
 
-        ['propagate', 'remove'].forEach(condition => {
-          const theme = condition === 'remove' ? null : 'foo';
-
-          it(`should ${condition} theme attribute ${condition === 'remove' ? 'from' : 'to'} the nested context-menus`, () => {
-            if (condition === 'remove') {
-              rootMenu.removeAttribute('theme');
-            }
-
-            expect(themeAttributeEquals(theme, rootMenu)).to.be.true;
-            expect(themeAttributeEquals(theme, subMenu)).to.be.true;
-            expect(themeAttributeEquals(theme, subMenu2)).to.be.true;
-          });
-
-          it(`should ${condition} theme attribute ${condition === 'remove' ? 'from' : 'to'} the nested overlays`, () => {
-            if (condition === 'remove') {
-              rootMenu.removeAttribute('theme');
-            }
-
-            expect(themeAttributeEquals(theme, rootMenu, true)).to.be.true;
-            expect(themeAttributeEquals(theme, subMenu, true)).to.be.true;
-            expect(themeAttributeEquals(theme, subMenu2, true)).to.be.true;
-          });
-
-          it(`should ${condition} theme attribute ${condition === 'remove' ? 'from' : 'to'} the nested list-boxes`, () => {
-            if (condition === 'remove') {
-              rootMenu.removeAttribute('theme');
-            }
-
-            expect(themeAttributeEquals(theme, rootMenu, false, true)).to.be.true;
-            expect(themeAttributeEquals(theme, subMenu, false, true)).to.be.true;
-            expect(themeAttributeEquals(theme, subMenu2, false, true)).to.be.true;
-          });
-
-          it(`should ${condition} theme attribute ${condition === 'remove' ? 'from' : 'to'} the items`, () => {
-            if (condition === 'remove') {
-              rootMenu.removeAttribute('theme');
-            }
-
-            expect(themeAttributeEquals(theme, rootMenu, false, false, true)).to.be.true;
-            expect(themeAttributeEquals(theme, subMenu, false, false, true)).to.be.true;
-            expect(themeAttributeEquals(theme, subMenu2, false, false, true)).to.be.true;
-          });
+        it('should close the submenu on theme changed', () => {
+          rootMenu.setAttribute('theme', 'bar');
+          expect(subMenu.opened).to.be.false;
+          expect(subMenu2.opened).to.be.false;
         });
       });
     });
