@@ -157,7 +157,11 @@
       subMenu.$.overlay._setParentOverlay(parent);
 
       // Set theme attribute from parent element
-      parent.theme && subMenu.setAttribute('theme', parent.theme);
+      if (parent.theme) {
+        subMenu.setAttribute('theme', parent.theme);
+      } else {
+        subMenu.removeAttribute('theme');
+      }
 
       let x;
       content.style.minWidth = '';
@@ -203,7 +207,7 @@
           component.setAttribute('role', 'separator');
         }
         component.classList.add('vaadin-menu-item');
-        component.setAttribute('theme', this.theme);
+        this.theme && component.setAttribute('theme', this.theme);
 
         component._item = item;
 
@@ -328,6 +332,13 @@
         menu.$.overlay.addEventListener(openEvent, openSubMenu);
         menu.$.overlay.addEventListener('keydown', e =>
           (e.keyCode === 39 || e.keyCode === 13 || e.keyCode === 32) && openSubMenu(e));
+      } else {
+        const listBox = root.querySelector('vaadin-context-menu-list-box');
+        if (this.theme) {
+          listBox.setAttribute('theme', this.theme);
+        } else {
+          listBox.removeAttribute('theme');
+        }
       }
     }
 

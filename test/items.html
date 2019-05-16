@@ -541,6 +541,34 @@
           expect(subMenu.opened).to.be.false;
           expect(subMenu2.opened).to.be.false;
         });
+
+        it('should remove theme attribute from the nested elements', async() => {
+          rootMenu.removeAttribute('theme');
+
+          // Should wait until submenus will be opened again.
+          await new Promise(resolve => {
+            open();
+            flush(() => {
+              open(menuComponents()[0]);
+              flush(() => {
+                open(menuComponents(subMenu)[1]);
+                flush(resolve);
+              });
+            });
+          });
+
+          [rootMenu, subMenu, subMenu2].forEach(subMenu => {
+            const overlay = subMenu.$.overlay;
+            const listBox = overlay.querySelector('vaadin-context-menu-list-box');
+            const items = Array.from(listBox.querySelectorAll('vaadin-context-menu-item'));
+
+            expect(overlay.hasAttribute('theme')).to.be.false;
+            expect(listBox.hasAttribute('theme')).to.be.false;
+
+            const itemsDoNotHaveTheme = items.filter(item => item.hasAttribute('theme')).length === 0;
+            expect(itemsDoNotHaveTheme).to.be.true;
+          });
+        });
       });
     });
   </script>
