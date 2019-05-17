@@ -47,12 +47,12 @@
     if (listBox) {
       listBox.innerHTML = '';
     } else {
-      listBox = window.document.createElement('vaadin-list-box');
+      listBox = document.createElement('vaadin-list-box');
       root.appendChild(listBox);
     }
 
     ['First', 'Second', 'Third'].forEach(function(name) {
-      const item = window.document.createElement('vaadin-item');
+      const item = document.createElement('vaadin-item');
       item.textContent = name + ' menu item';
       listBox.appendChild(item);
     });
