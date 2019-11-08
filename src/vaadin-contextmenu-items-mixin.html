@@ -201,7 +201,7 @@
           component = document.createElement(item.component || 'vaadin-context-menu-item');
         }
 
-        if (component.localName === 'vaadin-context-menu-item') {
+        if (component instanceof Vaadin.ItemElement) {
           component.setAttribute('role', 'menuitem');
           component.classList.add('vaadin-menu-item');
         } else if (component.localName === 'hr') {
