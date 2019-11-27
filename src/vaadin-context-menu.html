@@ -420,13 +420,15 @@ This program is available under Apache License Version 2.0, available at https:/
           if (listenOn && openOn) {
             this._listen(listenOn, openOn, this._boundOpen);
 
-            // note: these styles don't seem to work in Firefox on iOS.
-            listenOn.style.webkitTouchCallout = 'none';
-            listenOn.style.webkitUserSelect = 'none';
-
             this._oldListenOn = listenOn;
             this._oldOpenOn = openOn;
           }
+        }
+
+        _setListenOnUserSelect(value) {
+          // note: these styles don't seem to work in Firefox on iOS.
+          this.listenOn.style.webkitTouchCallout = value;
+          this.listenOn.style.webkitUserSelect = value;
         }
 
         _closeOnChanged(closeOn, oldCloseOn) {
@@ -460,8 +462,10 @@ This program is available under Apache License Version 2.0, available at https:/
               this._instance = this.$.overlay._instance;
             }
             document.documentElement.addEventListener('contextmenu', this._boundOnGlobalContextMenu, true);
+            this._setListenOnUserSelect('none');
           } else {
             document.documentElement.removeEventListener('contextmenu', this._boundOnGlobalContextMenu, true);
+            this._setListenOnUserSelect('');
           }
 
           // Has to be set after instance has been created
