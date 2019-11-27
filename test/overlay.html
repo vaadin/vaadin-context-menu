@@ -109,11 +109,18 @@
           it('should set `user-select` to `none` on opening', done => {
             listenOnce(overlay, 'vaadin-overlay-open', () => {
               expect(menu.opened).to.eql(true);
-              expect(getComputedStyle(menu).userSelect).to.equal('none');
+
+              const userSelect = getComputedStyle(menu).webkitUserSelect ||
+                getComputedStyle(menu).MozUserSelect ||
+                getComputedStyle(menu).msUserSelect ||
+                getComputedStyle(menu).userSelect;
+
+              expect(userSelect).to.equal('none');
               done();
             });
 
-            expect(getComputedStyle(menu).userSelect).to.not.equal('none');
+            ['webkitUserSelect', 'MozUserSelect', 'msUserSelect', 'userSelect'].forEach(prop =>
+              expect(getComputedStyle(menu)[prop]).not.to.equal('none'));
             contextmenu();
           });
 
@@ -124,7 +131,10 @@
               newTarget.textContent = 'New target';
               menu.listenOn.parentElement.appendChild(newTarget);
               menu.listenOn = newTarget;
-              expect(getComputedStyle(menu).userSelect).not.to.equal('none');
+
+              ['webkitUserSelect', 'MozUserSelect', 'msUserSelect', 'userSelect'].forEach(prop =>
+                expect(getComputedStyle(menu)[prop]).not.to.equal('none'));
+
               done();
             });
 
