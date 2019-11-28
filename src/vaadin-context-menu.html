@@ -435,6 +435,11 @@ This program is available under Apache License Version 2.0, available at https:/
           this.listenOn.style.MozUserSelect = value; // Firefox
           this.listenOn.style.msUserSelect = value; // IE 10+
           this.listenOn.style.userSelect = value;
+
+          // note: because user-selection is disabled on the overlay
+          // before opening the menu the text could be already selected
+          // so we need to clear that selection
+          document.getSelection().removeAllRanges();
         }
 
         _closeOnChanged(closeOn, oldCloseOn) {

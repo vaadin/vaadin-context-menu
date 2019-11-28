@@ -106,7 +106,19 @@
             contextmenu();
           });
 
-          it('should set `user-select` to `none` on opening', done => {
+          it('should clear selected ranges on openning', done => {
+            listenOnce(overlay, 'vaadin-overlay-open', () => {
+              expect(window.getSelection().rangeCount).to.equal(0);
+              done();
+            });
+
+            const range = document.createRange();
+            range.selectNode(menu.listenOn.querySelector('#target'));
+            window.getSelection().addRange(range);
+            contextmenu();
+          });
+
+          it('should set `user-select` to `none` on openning', done => {
             listenOnce(overlay, 'vaadin-overlay-open', () => {
               expect(menu.opened).to.eql(true);
 
