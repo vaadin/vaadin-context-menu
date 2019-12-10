@@ -20,7 +20,7 @@
             contextMenu.items = [
               {text: 'Menu Item 1', children:
                 [
-                  {text: 'Menu Item 1-1', checkable: true, checked: true},
+                  {text: 'Menu Item 1-1 very long item', checkable: true, checked: true},
                   {text: 'Menu Item 1-2', checkable: true}
                 ]
               },
@@ -31,9 +31,12 @@
                   {text: 'Menu Item 2-2', children:
                     [
                       {text: 'Menu Item 2-2-1'},
-                      {text: 'Menu Item 2-2-2', disabled: true},
-                      {component: 'hr'},
-                      {text: 'Menu Item 2-2-3'}
+                      {text: 'Menu Item 2-2-2', children: [
+                        {text: 'Menu Item 2-2-2-1'},
+                        {text: 'Menu Item 2-2-3-2', disabled: true},
+                        {component: 'hr'},
+                        {text: 'Menu Item 2-2-2-3'}
+                      ]}
                     ]
                   }
                 ]

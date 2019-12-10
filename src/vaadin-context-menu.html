@@ -614,7 +614,7 @@ This program is available under Apache License Version 2.0, available at https:/
           const {xMax, yMax, left, top, width} = overlay.getBoundaries();
           // Reuse saved x and y event values, in order to this method be used async
           // in the `vaadin-overlay-change` which guarantees that overlay is ready
-          const x = this.__x || left;
+          let x = this.__x || left;
           const y = this.__y || top;
 
           // Select one overlay corner and move to the event x/y position.
@@ -642,12 +642,19 @@ This program is available under Apache License Version 2.0, available at https:/
                 style.right = right - padding + 'px';
                 alignedToParent = true;
               }
+            } else if (x < parentContentRect.x) {
+              // Check if sub menu opens on the left side and the parent menu is not right aligned.
+              // If so, use actual width of the submenu content instead of the parent menu content.
+              x = x - (width - parentContentRect.width);
             }
           }
 
           if (!alignedToParent) {
             if (x < wdthVport / 2 || x < xMax) {
               style.left = x + 'px';
+            } else if (parent && !parent.hasAttribute('right-aligned')) {
+              style.right = Math.max(0, (wdthVport - x - width)) + 'px';
+              overlay.setAttribute('right-aligned', '');
             } else {
               style.right = Math.max(0, (wdthVport - x)) + 'px';
               overlay.setAttribute('right-aligned', '');
