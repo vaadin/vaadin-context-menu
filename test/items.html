@@ -191,7 +191,7 @@
             const subMenu2 = getSubMenu(subMenu);
             expect(subMenu2.$.overlay.hasAttribute('right-aligned')).to.be.false;
             const subMenu2Rect = subMenu2.$.overlay.$.content.getBoundingClientRect();
-            expect(subMenu2Rect.left).to.be.closeTo(nestedItemRect.right, 1);
+            expect(subMenu2Rect.left).to.be.closeTo(nestedItemRect.right + padding / 2, 1);
           });
         }
 
