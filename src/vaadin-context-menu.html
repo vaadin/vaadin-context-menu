@@ -657,7 +657,7 @@ This program is available under Apache License Version 2.0, available at https:/
               wdthVport - parent.$.overlay.getBoundingClientRect().width - parent.$.overlay.getBoundingClientRect().x
               > parent.$.overlay.getBoundingClientRect().width) {
               style.left = parent.$.overlay.getBoundingClientRect().x + parent.$.overlay.getBoundingClientRect().width + 'px';
-            } else if (parent && !parent.hasAttribute('right-aligned')) {
+            } else if (parent) {
               style.right = 'auto';
               style.left = Math.max(overlay.getBoundingClientRect().x,
                 parent.$.overlay.getBoundingClientRect().x - overlay.getBoundingClientRect().width) + 'px';
