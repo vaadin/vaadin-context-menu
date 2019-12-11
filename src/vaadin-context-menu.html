@@ -625,8 +625,9 @@ This program is available under Apache License Version 2.0, available at https:/
           // Align to the parent menu overlay, if any.
           const parent = overlay.parentOverlay;
           let alignedToParent = false;
+          let parentContentRect;
           if (parent) {
-            const parentContentRect = parent.$.overlay.getBoundingClientRect();
+            parentContentRect = parent.$.overlay.getBoundingClientRect();
             if (parent.hasAttribute('right-aligned')) {
               const parentStyle = getComputedStyle(parent);
 
@@ -639,7 +640,7 @@ This program is available under Apache License Version 2.0, available at https:/
               // Preserve right-aligned, if possible.
               if ((wdthVport - (right - padding)) > width) {
                 overlay.setAttribute('right-aligned', '');
-                style.right = right - padding + 'px';
+                style.right = right + 'px';
                 alignedToParent = true;
               }
             } else if (x < parentContentRect.x) {
