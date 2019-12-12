@@ -630,7 +630,6 @@ This program is available under Apache License Version 2.0, available at https:/
             parentContentRect = parent.$.overlay.getBoundingClientRect();
             if (parent.hasAttribute('right-aligned')) {
               const parentStyle = getComputedStyle(parent);
-
               const getPadding = (el, direction) => {
                 return parseFloat(getComputedStyle(el.$.content)['padding' + direction]);
               };
@@ -651,18 +650,18 @@ This program is available under Apache License Version 2.0, available at https:/
           }
 
           if (!alignedToParent) {
+            // Sub-menu is displayed in the right side of root menu
             if ((x < wdthVport / 2 || x < xMax) && !parent) {
               style.left = x + 'px';
-            } else if ((x < wdthVport / 2 || x < xMax) && parent &&
-              wdthVport - parent.$.overlay.getBoundingClientRect().width - parent.$.overlay.getBoundingClientRect().x
-              > parent.$.overlay.getBoundingClientRect().width) {
-              style.left = parent.$.overlay.getBoundingClientRect().x + parent.$.overlay.getBoundingClientRect().width + 'px';
-            } else if (parent) {
+            } else if ((parent && (wdthVport - parentContentRect.width - parentContentRect.left
+              >= parentContentRect.width))) { // Sub-menu is displayed in the right side of root menu If it is nested menu
+              style.left = parentContentRect.left + parentContentRect.width + 'px';
+            } else if (parent) { // Sub-menu is displayed in the left side of root menu If it is nested menu
               style.right = 'auto';
-              style.left = Math.max(overlay.getBoundingClientRect().x,
-                parent.$.overlay.getBoundingClientRect().x - overlay.getBoundingClientRect().width) + 'px';
+              style.left = Math.max(overlay.getBoundingClientRect().left,
+                parentContentRect.left - overlay.getBoundingClientRect().width) + 'px';
               overlay.setAttribute('right-aligned', '');
-            } else {
+            } else { // Sub-menu is displayed in the left side of root menu
               style.right = Math.max(0, (wdthVport - x)) + 'px';
               overlay.setAttribute('right-aligned', '');
             }
