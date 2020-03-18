@@ -54,7 +54,7 @@
         padding-right: calc(var(--lumo-space-l) + var(--lumo-border-radius) / 4);
       }
 
-      :host(.vaadin-menu-list-box) [part="items"] ::slotted(.vaadin-menu-item) {
+            :host(.vaadin-menu-list-box) [part="items"] ::slotted(.vaadin-menu-item) {
         padding-left: calc(var(--lumo-border-radius) / 4);
         padding-right: calc(var(--lumo-space-l) + var(--lumo-border-radius) / 4);
       }
@@ -70,6 +70,17 @@
       [part="items"] ::slotted(.vaadin-menu-item:hover:not([disabled])),
       [part="items"] ::slotted(.vaadin-menu-item[expanded]:not([disabled])) {
         background-color: var(--lumo-primary-color-10pct);
+      }
+
+      /* RTL styles */
+      :host([dir="rtl"])[part="items"] ::slotted(.vaadin-menu-item) {
+        padding-left: calc(var(--lumo-space-l) + var(--lumo-border-radius) / 4);
+        padding-right: var(--_lumo-list-box-item-padding-left, calc(var(--lumo-border-radius) / 4));
+      }
+
+      :host([dir="rtl"].vaadin-menu-list-box) [part="items"] ::slotted(.vaadin-menu-item) {
+        padding-left: calc(var(--lumo-space-l) + var(--lumo-border-radius) / 4);
+        padding-right: calc(var(--lumo-border-radius) / 4);
       }
 
       /* Focused item */
@@ -108,6 +119,16 @@
       :host([expanded]) {
         background-color: var(--lumo-primary-color-10pct);
       }
+
+      /* RTL styles */
+      :host([dir="rtl"].vaadin-menu-item.vaadin-context-menu-parent-item)::after {
+        content: var(--lumo-icons-angle-left);
+        margin-right: initial;
+        padding-left: initial;
+        margin-left: calc(var(--lumo-space-m) * -1);
+        padding-right: var(--lumo-space-m);
+      }
+
     </style>
   </template>
 </dom-module>
