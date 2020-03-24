@@ -81,6 +81,10 @@
           });
         });
 
+        afterEach(() => {
+          document.documentElement.removeAttribute('dir');
+        });
+
         it('should render root level items', () => {
           expect(menuComponents()[0].textContent).to.equal('foo-0');
         });
@@ -269,6 +273,17 @@
           expect(focusSpy).to.have.been.called;
         });
 
+        it('should close the submenu on right arrow if RTL', (done) => {
+          document.documentElement.setAttribute('dir', 'rtl');
+          requestAnimationFrame(() => {
+            const focusSpy = sinon.spy(menuComponents()[0], 'focus');
+            fire(menuComponents(subMenu)[0], 'keydown', {}, {keyCode: 39, key: 'ArrowRight'});
+            expect(subMenu.opened).to.be.false;
+            expect(focusSpy).to.have.been.called;
+            done();
+          });
+        });
+
         it('should close all menus on esc', () => {
           fire(menuComponents(subMenu)[0], 'keydown', {}, {keyCode: 27, key: 'Esc'});
           expect(rootMenu.opened).to.be.false;
@@ -308,6 +323,16 @@
           subMenu.close();
           fire(menuComponents()[0], 'keydown', {}, {keyCode: 39, key: 'ArrowRight'});
           expect(subMenu.opened).to.be.true;
+        });
+
+        it('should open item on left arrow if RTL', (done) => {
+          document.documentElement.setAttribute('dir', 'rtl');
+          requestAnimationFrame(() => {
+            subMenu.close();
+            fire(menuComponents()[0], 'keydown', {}, {keyCode: 37, key: 'ArrowLeft'});
+            expect(subMenu.opened).to.be.true;
+            done();
+          });
         });
 
         it('should open item on enter', () => {
