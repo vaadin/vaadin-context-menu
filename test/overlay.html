@@ -359,7 +359,7 @@
             it('should be positioned on click target', done => {
               listenOnce(overlay, 'vaadin-overlay-open', () => {
                 const rect = overlay.getBoundingClientRect();
-                expect(rect.right).to.closeTo(menu._phone ? 0 : 450, 0.1);
+                expect(rect.right).to.closeTo(menu._phone ? viewWidth : 450, 0.1);
                 expect(rect.top).to.eql(menu._phone ? 0 : 10);
                 done();
               });
@@ -370,7 +370,7 @@
             it('should be positioned on detailed mouse event', done => {
               listenOnce(overlay, 'vaadin-overlay-open', () => {
                 const rect = overlay.getBoundingClientRect();
-                expect(rect.right).to.closeTo(menu._phone ? 0 : 450, 0.1);
+                expect(rect.right).to.closeTo(menu._phone ? viewWidth : 450, 0.1);
                 expect(rect.top).to.eql(menu._phone ? 0 : 20);
                 done();
               });
@@ -383,7 +383,7 @@
             it('should be positioned by gesture event', done => {
               listenOnce(overlay, 'vaadin-overlay-open', () => {
                 const rect = overlay.getBoundingClientRect();
-                expect(rect.right).to.closeTo(menu._phone ? 0 : 450, 0.1);
+                expect(rect.right).to.closeTo(menu._phone ? viewWidth : 450, 0.1);
                 expect(rect.top).to.eql(menu._phone ? 0 : 5);
                 done();
               });
@@ -396,7 +396,7 @@
             it('should be positioned by detailed gesture event', done => {
               listenOnce(overlay, 'vaadin-overlay-open', () => {
                 const rect = overlay.getBoundingClientRect();
-                expect(rect.right).to.closeTo(menu._phone ? 0 : 450, 0.1);
+                expect(rect.right).to.closeTo(menu._phone ? viewWidth : 450, 0.1);
                 expect(rect.top).to.eql(menu._phone ? 0 : 5);
                 done();
               });
@@ -409,7 +409,7 @@
             it('should be positioned by touch event', done => {
               listenOnce(overlay, 'vaadin-overlay-open', () => {
                 const rect = overlay.getBoundingClientRect();
-                expect(rect.right).to.closeTo(menu._phone ? 0 : 450, 0.1);
+                expect(rect.right).to.closeTo(menu._phone ? viewWidth : 450, 0.1);
                 expect(rect.top).to.eql(menu._phone ? 0 : 20);
                 done();
               });
@@ -425,7 +425,7 @@
             it('should be positioned by detailed touch event', done => {
               listenOnce(overlay, 'vaadin-overlay-open', () => {
                 const rect = overlay.getBoundingClientRect();
-                expect(rect.right).to.closeTo(menu._phone ? 0 : 450, 0.1);
+                expect(rect.right).to.closeTo(menu._phone ? viewWidth : 450, 0.1);
                 expect(rect.top).to.eql(menu._phone ? 0 : 20);
                 done();
               });
