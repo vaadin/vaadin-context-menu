@@ -350,7 +350,9 @@
             });
 
             after(() => {
-              document.documentElement.removeAttribute('dir');
+              // Forcing dir to ltr because Safari scroll can get lost if attribute
+              // is set to `rtl` and then removed
+              document.documentElement.setAttribute('dir', 'ltr');
               document.body.style.margin = null;
             });
 
