@@ -280,6 +280,7 @@
             fire(menuComponents(subMenu)[0], 'keydown', {}, {keyCode: 39, key: 'ArrowRight'});
             expect(subMenu.opened).to.be.false;
             expect(focusSpy).to.have.been.called;
+            document.documentElement.setAttribute('dir', 'ltr');
             done();
           });
         });
@@ -331,6 +332,7 @@
             subMenu.close();
             fire(menuComponents()[0], 'keydown', {}, {keyCode: 37, key: 'ArrowLeft'});
             expect(subMenu.opened).to.be.true;
+            document.documentElement.setAttribute('dir', 'ltr');
             done();
           });
         });
