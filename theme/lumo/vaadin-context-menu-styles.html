@@ -112,6 +112,9 @@
         font-size: var(--lumo-icon-size-xs);
         content: var(--lumo-icons-angle-right);
         color: var(--lumo-tertiary-text-color);
+      }
+
+      :host(:not([dir="rtl"]).vaadin-menu-item.vaadin-context-menu-parent-item)::after {
         margin-right: calc(var(--lumo-space-m) * -1);
         padding-left: var(--lumo-space-m);
       }
@@ -123,8 +126,6 @@
       /* RTL styles */
       :host([dir="rtl"].vaadin-menu-item.vaadin-context-menu-parent-item)::after {
         content: var(--lumo-icons-angle-left);
-        margin-right: initial;
-        padding-left: initial;
         margin-left: calc(var(--lumo-space-m) * -1);
         padding-right: var(--lumo-space-m);
       }
