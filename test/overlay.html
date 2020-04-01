@@ -156,10 +156,9 @@
             describe(`[dir=${direction}] opening`, () => {
               let isRTL;
               before((done) => {
-                // debugger;
                 isRTL = direction === 'rtl';
+                document.documentElement.setAttribute('dir', direction);
                 if (isRTL) {
-                  document.documentElement.setAttribute('dir', 'rtl');
                   document.body.style.margin = 0;
                 }
                 requestAnimationFrame(() => {
@@ -286,10 +285,9 @@
               if (!MOBILE) {
                 let isRTL;
                 before((done) => {
-                  // debugger;
                   isRTL = direction === 'rtl';
+                  document.documentElement.setAttribute('dir', direction);
                   if (isRTL) {
-                    document.documentElement.setAttribute('dir', 'rtl');
                     document.body.style.margin = 0;
                   }
                   requestAnimationFrame(() => {
