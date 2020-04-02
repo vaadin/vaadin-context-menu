@@ -125,7 +125,7 @@
       document.documentElement.removeEventListener('click', this.__itemsOutsideClickListener);
     }
 
-    __isRTL() {
+    get __isRTL() {
       return this.getAttribute('dir') === 'rtl';
     }
 
@@ -297,7 +297,7 @@
         menu.$.overlay.$.backdrop.addEventListener('click', () => menu.close());
 
         menu.$.overlay.addEventListener('keydown', e => {
-          const isRTL = this.__isRTL();
+          const isRTL = this.__isRTL;
           if ((!isRTL && e.keyCode === 37) || (isRTL && e.keyCode === 39)) {
             menu.close();
             menu.listenOn.focus();
@@ -338,7 +338,7 @@
 
         menu.$.overlay.addEventListener('mouseover', openSubMenu);
         menu.$.overlay.addEventListener('keydown', e => {
-          const isRTL = this.__isRTL();
+          const isRTL = this.__isRTL;
           const shouldOpenSubMenu = (!isRTL && e.keyCode === 39)
               || (isRTL && e.keyCode === 37)
               || e.keyCode === 13

@@ -307,7 +307,7 @@
 
                 it(`should be aligned relative to top-${isRTL ? 'right' : 'left'} corner`, done => {
                   listenOnce(overlay, 'vaadin-overlay-open', () => {
-                    expect(overlay.hasAttribute('right-aligned')).to.be.false;
+                    expect(overlay.hasAttribute('end-aligned')).to.be.false;
                     expect(overlay.hasAttribute('bottom-aligned')).to.be.false;
                     expect(overlay.style[isRTL ? 'right' : 'left']).to.be.equal(menu._phone ? '' : isRTL ? `${viewWidth - 450}px` : '10px');
                     expect(overlay.style.top).to.be.equal(menu._phone ? '' : '10px');
@@ -319,9 +319,9 @@
                 it('should be aligned relative to bottom-right corner', done => {
                   listenOnce(overlay, 'vaadin-overlay-open', () => {
                     if (isRTL) {
-                      expect(menu._phone || overlay.hasAttribute('right-aligned')).to.be.false;
+                      expect(menu._phone || overlay.hasAttribute('end-aligned')).to.be.false;
                     } else {
-                      expect(menu._phone || overlay.hasAttribute('right-aligned')).to.be.true;
+                      expect(menu._phone || overlay.hasAttribute('end-aligned')).to.be.true;
                     }
                     expect(menu._phone || overlay.hasAttribute('bottom-aligned')).to.be.true;
                     expect(overlay.style.right).to.be.equal(menu._phone ? '' : '0px');
@@ -352,9 +352,9 @@
                       !menu._phone && expect(rect.left).to.be.closeTo(16, 0.5);
                       !menu._phone && expect(rect.top).to.be.closeTo(16, 0.5);
                       if (isRTL) {
-                        expect(overlay.hasAttribute('right-aligned')).to.be.true;
+                        expect(overlay.hasAttribute('end-aligned')).to.be.true;
                       } else {
-                        expect(overlay.hasAttribute('right-aligned')).to.be.false;
+                        expect(overlay.hasAttribute('end-aligned')).to.be.false;
                       }
                       expect(overlay.hasAttribute('bottom-aligned')).to.be.false;
                       expect(overlay.style.right).to.be.empty;
