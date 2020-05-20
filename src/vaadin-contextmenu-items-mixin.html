@@ -128,11 +128,15 @@
       document.documentElement.removeEventListener('click', this.__itemsOutsideClickListener);
     }
 
+    /**
+     * @return {boolean}
+     * @protected
+     */
     get __isRTL() {
       return this.getAttribute('dir') === 'rtl';
     }
 
-    /** @private */
+    /** @protected */
     __forwardFocus() {
       const overlay = this.$.overlay;
       const child = overlay.getFirstChild();
@@ -191,7 +195,12 @@
       }}));
     }
 
-    /** @private */
+    /**
+     * @param {!HTMLElement} root
+     * @param {!ContextMenuElement} menu
+     * @param {!ContextMenuRendererContext} context
+     * @protected
+     */
     __itemsRenderer(root, menu, context) {
       this.__initMenu(root, menu);
 

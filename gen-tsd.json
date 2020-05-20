@@ -12,6 +12,7 @@
   "autoImport": {
     "./@types/interfaces": [
       "ContextMenuItem",
+      "ContextMenuRendererContext",
       "ContextMenuRenderer"
     ]
   }
