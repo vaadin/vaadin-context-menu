@@ -13,6 +13,23 @@
       static get is() {
         return 'vaadin-context-menu-item';
       }
+      
+      /**
+       * @param {!KeyboardEvent} event
+       * @protected
+       */
+      _onKeyup(event) {
+        const willClick = this.hasAttribute('active');
+
+        super._onKeyup(event);
+
+        if (willClick) {
+          const anchor = this.querySelector('a');
+          if (anchor) {
+            anchor.click();
+          }
+        }
+      }
     }
 
     /**
