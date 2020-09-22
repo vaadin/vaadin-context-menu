@@ -238,7 +238,12 @@
         this.__toggleMenuComponentAttribute(component, 'menu-item-checked', item.checked);
         this.__toggleMenuComponentAttribute(component, 'disabled', item.disabled);
 
-        component.setAttribute('aria-haspopup', 'false');
+        // The user may have set this already according to what happens when the menu action is executed;
+        // example: may be set to 'dialog' when the action is to show a modal Dialog pop-up window.
+        var ariaUnset = (null === component.getAttribute('aria-haspopup'));
+        if (ariaUnset) {
+          component.setAttribute('aria-haspopup', 'false');
+        }
         component.classList.remove('vaadin-context-menu-parent-item');
         if (item.children && item.children.length) {
           component.classList.add('vaadin-context-menu-parent-item');
