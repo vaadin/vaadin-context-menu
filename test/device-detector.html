@@ -4,11 +4,11 @@
 <head>
   <meta charset="utf-8">
   <title></title>
-  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
-  <script src="../../web-component-tester/browser.js"></script>
-  <link rel="import" href="../../iron-test-helpers/iron-test-helpers.html">
-  <link rel="import" href="../../test-fixture/test-fixture.html">
-  <link rel="import" href="../src/vaadin-device-detector.html">
+  <script src="../../../@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
+  <script src="../../../wct-browser-legacy/browser.js"></script>
+  <script type="module" src="../../../@polymer/iron-test-helpers/iron-test-helpers.js"></script>
+  <script type="module" src="../../../@polymer/test-fixture/test-fixture.js"></script>
+  <script type="module" src="../src/vaadin-device-detector.js"></script>
 </head>
 
 <body>
@@ -18,31 +18,34 @@
     </template>
   </test-fixture>
 
-  <script>
-    describe('device detection', () => {
-      let detector, iphone, ipad, android;
+  <script type="module">
+import '@polymer/iron-test-helpers/iron-test-helpers.js';
+import '@polymer/test-fixture/test-fixture.js';
+import '../src/vaadin-device-detector.js';
+describe('device detection', () => {
+  let detector, iphone, ipad, android;
 
-      before(() => {
-        detector = fixture('default');
+  before(() => {
+    detector = fixture('default');
 
-        iphone = !!navigator.userAgent.match(/iPhone/i);
-        ipad = !!navigator.userAgent.match(/iPad/i);
-        android = !!navigator.userAgent.match(/android/i);
-      });
+    iphone = !!navigator.userAgent.match(/iPhone/i);
+    ipad = !!navigator.userAgent.match(/iPad/i);
+    android = !!navigator.userAgent.match(/android/i);
+  });
 
-      it('should detect wide screen', () => {
-        expect(detector.wide).to.eql(!iphone && !android);
-      });
+  it('should detect wide screen', () => {
+    expect(detector.wide).to.eql(!iphone && !android);
+  });
 
-      it('should detect touch support', () => {
-        expect(detector.touch).to.eql(iphone || ipad || android);
-      });
+  it('should detect touch support', () => {
+    expect(detector.touch).to.eql(iphone || ipad || android);
+  });
 
-      it('should detect phone', () => {
-        expect(detector.phone).to.eql(iphone || android);
-      });
-    });
-  </script>
+  it('should detect phone', () => {
+    expect(detector.phone).to.eql(iphone || android);
+  });
+});
+</script>
 
 </body>
 

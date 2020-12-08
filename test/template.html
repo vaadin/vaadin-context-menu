@@ -3,13 +3,13 @@
   <head>
     <meta charset="utf-8">
     <title></title>
-    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
-    <script src="../../web-component-tester/browser.js"></script>
-    <link rel="import" href="../../test-fixture/test-fixture.html">
-    <link rel="import" href="../../iron-test-helpers/iron-test-helpers.html">
-    <link rel="import" href="../vaadin-context-menu.html">
-    <script src="../../iron-test-helpers/mock-interactions.js"></script>
-    <script src="common.js"></script>
+    <script src="../../../@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
+    <script src="../../../wct-browser-legacy/browser.js"></script>
+    <script type="module" src="../../../@polymer/test-fixture/test-fixture.js"></script>
+    <script type="module" src="../../../@polymer/iron-test-helpers/iron-test-helpers.js"></script>
+    <script type="module" src="../vaadin-context-menu.js"></script>
+    <script src="../../../@polymer/iron-test-helpers/mock-interactions.js" type="module"></script>
+    <script src="./common.js"></script>
   </head>
   <body>
     <test-fixture id="default">
@@ -21,45 +21,48 @@
       </template>
     </test-fixture>
 
-    <script>
-      describe('template', () => {
-        let menu, target;
+    <script type="module">
+import '@polymer/test-fixture/test-fixture.js';
+import '@polymer/iron-test-helpers/iron-test-helpers.js';
+import '../vaadin-context-menu.js';
+describe('template', () => {
+  let menu, target;
 
-        beforeEach(() => {
-          menu = fixture('default');
-          target = document.querySelector('#target');
-        });
+  beforeEach(() => {
+    menu = fixture('default');
+    target = document.querySelector('#target');
+  });
 
-        it('should stamp template on open', done => {
-          expect(menu.$.overlay.content).to.be.undefined;
+  it('should stamp template on open', done => {
+    expect(menu.$.overlay.content).to.be.undefined;
 
-          listenOnce(menu, 'opened-changed', () => {
-            expect(menu.$.overlay.content.textContent).to.contain('FOOBAR');
-            done();
-          });
+    listenOnce(menu, 'opened-changed', () => {
+      expect(menu.$.overlay.content.textContent).to.contain('FOOBAR');
+      done();
+    });
 
-          menu._setOpened(true);
-        });
+    menu._setOpened(true);
+  });
 
-        it('should bind target property', done => {
-          listenOnce(menu, 'opened-changed', () => {
-            expect(menu.$.overlay.content.textContent).to.contain('target');
-            done();
-          });
+  it('should bind target property', done => {
+    listenOnce(menu, 'opened-changed', () => {
+      expect(menu.$.overlay.content.textContent).to.contain('target');
+      done();
+    });
 
-          fire(target, 'vaadin-contextmenu');
-        });
+    fire(target, 'vaadin-contextmenu');
+  });
 
-        it('should bind detail property', done => {
-          listenOnce(menu, 'opened-changed', () => {
-            expect(menu.$.overlay.content.textContent).to.contain('bar');
-            done();
-          });
+  it('should bind detail property', done => {
+    listenOnce(menu, 'opened-changed', () => {
+      expect(menu.$.overlay.content.textContent).to.contain('bar');
+      done();
+    });
 
-          fire(target, 'vaadin-contextmenu', {foo: 'bar'});
-        });
-      });
-    </script>
+    fire(target, 'vaadin-contextmenu', {foo: 'bar'});
+  });
+});
+</script>
 
   </body>
 </html>

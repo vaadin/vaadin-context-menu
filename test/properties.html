@@ -3,13 +3,13 @@
   <head>
     <meta charset="utf-8">
     <title></title>
-    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
-    <script src="../../web-component-tester/browser.js"></script>
-    <link rel="import" href="../../test-fixture/test-fixture.html">
-    <link rel="import" href="../../iron-test-helpers/iron-test-helpers.html">
-    <link rel="import" href="../vaadin-context-menu.html">
-    <link rel="import" href="not-animated-styles.html">
-    <script src="common.js"></script>
+    <script src="../../../@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
+    <script src="../../../wct-browser-legacy/browser.js"></script>
+    <script type="module" src="../../../@polymer/test-fixture/test-fixture.js"></script>
+    <script type="module" src="../../../@polymer/iron-test-helpers/iron-test-helpers.js"></script>
+    <script type="module" src="../vaadin-context-menu.js"></script>
+    <script type="module" src="./not-animated-styles.js"></script>
+    <script src="./common.js"></script>
   </head>
   <body>
     <test-fixture id="default">
@@ -42,159 +42,162 @@
       </template>
     </test-fixture>
 
-    <script>
-      describe('properties', () => {
-        describe('context', () => {
-          let menu, target;
+    <script type="module">
+import '@polymer/test-fixture/test-fixture.js';
+import '@polymer/iron-test-helpers/iron-test-helpers.js';
+import '../vaadin-context-menu.js';
+import './not-animated-styles.js';
+describe('properties', () => {
+  describe('context', () => {
+    let menu, target;
 
-          beforeEach(() => {
-            menu = fixture('default');
-            target = menu.querySelector('#target');
-          });
+    beforeEach(() => {
+      menu = fixture('default');
+      target = menu.querySelector('#target');
+    });
 
-          it('should use event target as context target', () => {
-            fire(target, 'contextmenu');
+    it('should use event target as context target', () => {
+      fire(target, 'contextmenu');
 
-            expect(menu._context.target).to.eql(target);
-          });
+      expect(menu._context.target).to.eql(target);
+    });
 
-          it('should use context-selector scope to target', () => {
-            menu.selector = 'section';
+    it('should use context-selector scope to target', () => {
+      menu.selector = 'section';
 
-            fire(target, 'contextmenu');
+      fire(target, 'contextmenu');
 
-            expect(menu._context.target).to.eql(target.parentElement);
-          });
-        });
+      expect(menu._context.target).to.eql(target.parentElement);
+    });
+  });
 
-        describe('openOn', () => {
-          let menu;
-          beforeEach(() => {
-            menu = fixture('external')[0];
-          });
+  describe('openOn', () => {
+    let menu;
+    beforeEach(() => {
+      menu = fixture('external')[0];
+    });
 
-          it('should open on custom event', () => {
-            menu.openOn = 'click';
+    it('should open on custom event', () => {
+      menu.openOn = 'click';
 
-            menu.click();
+      menu.click();
 
-            expect(menu.opened).to.eql(true);
-          });
+      expect(menu.opened).to.eql(true);
+    });
 
-          it('should not open on `contextmenu`', () => {
-            menu.openOn = 'click';
+    it('should not open on `contextmenu`', () => {
+      menu.openOn = 'click';
 
-            fire(menu, 'contextmenu');
+      fire(menu, 'contextmenu');
 
-            expect(menu.opened).to.eql(false);
-          });
+      expect(menu.opened).to.eql(false);
+    });
 
-          describe('event listener', () => {
+    describe('event listener', () => {
 
-            it('should not add listener when set to empty', () => {
-              expect(menu._oldOpenOn).to.be.ok;
-              menu.openOn = '';
-              expect(menu._oldOpenOn).not.to.be.ok;
-            });
-          });
-        });
-
-        describe('opened', () => {
-          let menu;
-          beforeEach(() => {
-            menu = fixture('external')[0];
-          });
-
-          it('should be read-only', () => {
-            expect(menu.opened).to.eql(false);
-
-            menu.opened = true;
-            expect(menu.opened).to.eql(false);
-          });
-
-          it('should be set using the private setter', () => {
-            expect(menu.opened).to.eql(false);
-
-            menu._setOpened(true);
-            expect(menu.opened).to.be.true;
-          });
-        });
-
-        describe('closeOn', () => {
-          let menu;
-          beforeEach(() => {
-            menu = fixture('external')[0];
-            menu._setOpened(true);
-          });
-
-          it('should not close on `click`', () => {
-            menu.closeOn = '';
-
-            menu.$.overlay.dispatchEvent(new CustomEvent('click'));
-
-            expect(menu.opened).to.eql(true);
-          });
-
-          it('should close on custom event', () => {
-            menu.closeOn = 'foobar';
-
-            fire(menu.$.overlay, 'foobar');
-
-            expect(menu.opened).to.eql(false);
-          });
-        });
-
-        describe('external target', () => {
-          let menu, target;
-          beforeEach(() => {
-            menu = fixture('external')[0];
-            target = document.body.querySelector('#target');
-
-            menu.listenOn = target;
-          });
-
-          it('should open on external target', () => {
-            fire(target, 'contextmenu');
-
-            expect(menu.opened).to.eql(true);
-          });
-
-          it('should select context target on external target', () => {
-            fire(target, 'contextmenu');
-
-            expect(menu._context.target).to.eql(target);
-          });
-
-          it('should use context selector on external target', () => {
-            menu.selector = 'section'; // parent of #target
-            menu.listenOn = menu.parentElement;
-            fire(target, 'contextmenu');
-
-            expect(menu._context.target).to.eql(target.parentElement);
-          });
-
-          describe('event listeners', () => {
-
-            it('should not target listeners when set to null', () => {
-              expect(menu._oldOpenOn).to.be.ok;
-              menu.listenOn = null;
-              expect(menu._oldOpenOn).not.to.be.ok;
-            });
-          });
-        });
-
-        describe('theme attribute', () => {
-          let menu;
-
-          beforeEach(() => menu = fixture('withTheme'));
-
-          it('should propagate theme attribute to overlay', () => {
-            expect(menu.$.overlay.getAttribute('theme')).to.equal('foo');
-          });
-        });
+      it('should not add listener when set to empty', () => {
+        expect(menu._oldOpenOn).to.be.ok;
+        menu.openOn = '';
+        expect(menu._oldOpenOn).not.to.be.ok;
       });
+    });
+  });
 
-    </script>
+  describe('opened', () => {
+    let menu;
+    beforeEach(() => {
+      menu = fixture('external')[0];
+    });
+
+    it('should be read-only', () => {
+      expect(menu.opened).to.eql(false);
+
+      menu.opened = true;
+      expect(menu.opened).to.eql(false);
+    });
+
+    it('should be set using the private setter', () => {
+      expect(menu.opened).to.eql(false);
+
+      menu._setOpened(true);
+      expect(menu.opened).to.be.true;
+    });
+  });
+
+  describe('closeOn', () => {
+    let menu;
+    beforeEach(() => {
+      menu = fixture('external')[0];
+      menu._setOpened(true);
+    });
+
+    it('should not close on `click`', () => {
+      menu.closeOn = '';
+
+      menu.$.overlay.dispatchEvent(new CustomEvent('click'));
+
+      expect(menu.opened).to.eql(true);
+    });
+
+    it('should close on custom event', () => {
+      menu.closeOn = 'foobar';
+
+      fire(menu.$.overlay, 'foobar');
+
+      expect(menu.opened).to.eql(false);
+    });
+  });
+
+  describe('external target', () => {
+    let menu, target;
+    beforeEach(() => {
+      menu = fixture('external')[0];
+      target = document.body.querySelector('#target');
+
+      menu.listenOn = target;
+    });
+
+    it('should open on external target', () => {
+      fire(target, 'contextmenu');
+
+      expect(menu.opened).to.eql(true);
+    });
+
+    it('should select context target on external target', () => {
+      fire(target, 'contextmenu');
+
+      expect(menu._context.target).to.eql(target);
+    });
+
+    it('should use context selector on external target', () => {
+      menu.selector = 'section'; // parent of #target
+      menu.listenOn = menu.parentElement;
+      fire(target, 'contextmenu');
+
+      expect(menu._context.target).to.eql(target.parentElement);
+    });
+
+    describe('event listeners', () => {
+
+      it('should not target listeners when set to null', () => {
+        expect(menu._oldOpenOn).to.be.ok;
+        menu.listenOn = null;
+        expect(menu._oldOpenOn).not.to.be.ok;
+      });
+    });
+  });
+
+  describe('theme attribute', () => {
+    let menu;
+
+    beforeEach(() => menu = fixture('withTheme'));
+
+    it('should propagate theme attribute to overlay', () => {
+      expect(menu.$.overlay.getAttribute('theme')).to.equal('foo');
+    });
+  });
+});
+</script>
 
   </body>
 </html>

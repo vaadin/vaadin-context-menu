@@ -1,12 +1,13 @@
-<link rel="import" href="../../../vaadin-lumo-styles/spacing.html">
-<link rel="import" href="../../../vaadin-lumo-styles/style.html">
-<link rel="import" href="../../../vaadin-lumo-styles/mixins/menu-overlay.html">
-<link rel="import" href="../../../vaadin-lumo-styles/font-icons.html">
-<link rel="import" href="../../../vaadin-lumo-styles/color.html">
-<link rel="import" href="../../../vaadin-lumo-styles/sizing.html">
-<link rel="import" href="../../../vaadin-lumo-styles/typography.html">
+import '@vaadin/vaadin-lumo-styles/spacing.js';
+import '@vaadin/vaadin-lumo-styles/style.js';
+import '@vaadin/vaadin-lumo-styles/mixins/menu-overlay.js';
+import '@vaadin/vaadin-lumo-styles/font-icons.js';
+import '@vaadin/vaadin-lumo-styles/color.js';
+import '@vaadin/vaadin-lumo-styles/sizing.js';
+import '@vaadin/vaadin-lumo-styles/typography.js';
+import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 
-<dom-module id="lumo-context-menu-overlay" theme-for="vaadin-context-menu-overlay">
+const $_documentContainer = html`<dom-module id="lumo-context-menu-overlay" theme-for="vaadin-context-menu-overlay">
   <template>
     <style include="lumo-menu-overlay">
       :host([phone]) {
@@ -31,9 +32,7 @@
       }
     </style>
   </template>
-</dom-module>
-
-<dom-module id="lumo-context-menu-list-box" theme-for="vaadin-context-menu-list-box">
+</dom-module><dom-module id="lumo-context-menu-list-box" theme-for="vaadin-context-menu-list-box">
   <template>
     <style>
       :host(.vaadin-menu-list-box) {
@@ -92,9 +91,7 @@
       }
     </style>
   </template>
-</dom-module>
-
-<dom-module id="lumo-context-menu-item" theme-for="vaadin-context-menu-item">
+</dom-module><dom-module id="lumo-context-menu-item" theme-for="vaadin-context-menu-item">
   <template>
     <style>
       :host {
@@ -132,5 +129,6 @@
 
     </style>
   </template>
-</dom-module>
+</dom-module>`;
 
+document.head.appendChild($_documentContainer.content);

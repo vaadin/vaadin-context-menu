@@ -1,9 +1,10 @@
-<link rel="import" href="../../../vaadin-material-styles/font-icons.html">
-<link rel="import" href="../../../vaadin-material-styles/color.html">
-<link rel="import" href="../../../vaadin-material-styles/mixins/menu-overlay.html">
-<link rel="import" href="../../../vaadin-material-styles/typography.html">
+import '@vaadin/vaadin-material-styles/font-icons.js';
+import '@vaadin/vaadin-material-styles/color.js';
+import '@vaadin/vaadin-material-styles/mixins/menu-overlay.js';
+import '@vaadin/vaadin-material-styles/typography.js';
+import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 
-<dom-module id="material-context-menu-overlay" theme-for="vaadin-context-menu-overlay">
+const $_documentContainer = html`<dom-module id="material-context-menu-overlay" theme-for="vaadin-context-menu-overlay">
   <template>
     <style include="material-menu-overlay">
       [part="overlay"] {
@@ -11,9 +12,7 @@
       }
     </style>
   </template>
-</dom-module>
-
-<dom-module id="material-context-menu-list-box" theme-for="vaadin-context-menu-list-box">
+</dom-module><dom-module id="material-context-menu-list-box" theme-for="vaadin-context-menu-list-box">
   <template>
     <style>
       /* ShadyCSS workaround */
@@ -48,9 +47,7 @@
       }
     </style>
   </template>
-</dom-module>
-
-<dom-module id="material-context-menu-item" theme-for="vaadin-context-menu-item">
+</dom-module><dom-module id="material-context-menu-item" theme-for="vaadin-context-menu-item">
   <template>
     <style>
       :host(.vaadin-menu-item.vaadin-context-menu-parent-item)::after {
@@ -83,5 +80,6 @@
       }
     </style>
   </template>
-</dom-module>
+</dom-module>`;
 
+document.head.appendChild($_documentContainer.content);

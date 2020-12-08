@@ -3,16 +3,16 @@
   <head>
     <meta charset="utf-8">
     <title></title>
-    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
-    <script src="../../web-component-tester/browser.js"></script>
-    <link rel="import" href="../../polymer/polymer-element.html">
-    <link rel="import" href="../../test-fixture/test-fixture.html">
-    <link rel="import" href="../../iron-test-helpers/iron-test-helpers.html">
-    <link rel="import" href="../vaadin-context-menu.html">
-    <link rel="import" href="external-imports.html">
-    <link rel="import" href="not-animated-styles.html">
-    <script src="../../iron-test-helpers/mock-interactions.js"></script>
-    <script src="common.js"></script>
+    <script src="../../../@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
+    <script src="../../../wct-browser-legacy/browser.js"></script>
+    <script type="module" src="../../../@polymer/polymer/polymer-element.js"></script>
+    <script type="module" src="../../../@polymer/test-fixture/test-fixture.js"></script>
+    <script type="module" src="../../../@polymer/iron-test-helpers/iron-test-helpers.js"></script>
+    <script type="module" src="../vaadin-context-menu.js"></script>
+    <script type="module" src="./external-imports.js"></script>
+    <script type="module" src="./not-animated-styles.js"></script>
+    <script src="../../../@polymer/iron-test-helpers/mock-interactions.js" type="module"></script>
+    <script src="./common.js"></script>
   </head>
   <body>
     <dom-module id="x-foo">
@@ -21,17 +21,23 @@
           <div id="content"></div>
         </div>
       </template>
-      <script>
-        customElements.whenDefined('vaadin-context-menu').then(() => {
-          class Xfoo extends Polymer.Element {
-            static get is() {
-              return 'x-foo';
-            }
-          }
+      <script type="module">
+import { PolymerElement } from '@polymer/polymer/polymer-element.js';
+import '@polymer/test-fixture/test-fixture.js';
+import '@polymer/iron-test-helpers/iron-test-helpers.js';
+import '../vaadin-context-menu.js';
+import './external-imports.js';
+import './not-animated-styles.js';
+customElements.whenDefined('vaadin-context-menu').then(() => {
+  class Xfoo extends PolymerElement {
+    static get is() {
+      return 'x-foo';
+    }
+  }
 
-          customElements.define(Xfoo.is, Xfoo);
-        });
-      </script>
+  customElements.define(Xfoo.is, Xfoo);
+});
+</script>
     </dom-module>
 
     <test-fixture id="default">
@@ -51,91 +57,97 @@
       </template>
     </test-fixture>
 
-    <script>
-      describe('context', () => {
-        let menu, foo, target, another;
+    <script type="module">
+import '@polymer/polymer/polymer-element.js';
+import '@polymer/test-fixture/test-fixture.js';
+import '@polymer/iron-test-helpers/iron-test-helpers.js';
+import '../vaadin-context-menu.js';
+import './external-imports.js';
+import './not-animated-styles.js';
+describe('context', () => {
+  let menu, foo, target, another;
 
-        beforeEach(() => {
-          menu = fixture('default');
-          foo = document.querySelector('x-foo');
-          target = document.querySelector('#target');
-          another = document.querySelector('#another');
-        });
+  beforeEach(() => {
+    menu = fixture('default');
+    foo = document.querySelector('x-foo');
+    target = document.querySelector('#target');
+    another = document.querySelector('#another');
+  });
 
-        it('should use target as default context', () => {
-          fire(target, 'vaadin-contextmenu');
+  it('should use target as default context', () => {
+    fire(target, 'vaadin-contextmenu');
 
-          expect(menu._context.target).to.eql(target);
-          expect(menu.$.overlay.content.textContent).to.contain(target.textContent);
+    expect(menu._context.target).to.eql(target);
+    expect(menu.$.overlay.content.textContent).to.contain(target.textContent);
 
-          menu.close();
-          fire(another, 'vaadin-contextmenu');
+    menu.close();
+    fire(another, 'vaadin-contextmenu');
 
-          expect(menu._context.target).to.eql(another);
-          expect(menu.$.overlay.content.textContent).to.contain(another.textContent);
-        });
+    expect(menu._context.target).to.eql(another);
+    expect(menu.$.overlay.content.textContent).to.contain(another.textContent);
+  });
 
-        it('should use details as context details', () => {
-          const detail = {};
-          fire(menu, 'vaadin-contextmenu', detail);
+  it('should use details as context details', () => {
+    const detail = {};
+    fire(menu, 'vaadin-contextmenu', detail);
 
-          expect(menu._context.detail).to.eql(detail);
-        });
+    expect(menu._context.detail).to.eql(detail);
+  });
 
-        it('should use local target when targeting inside shadow root', () => {
-          fire(foo.$.content, 'contextmenu');
+  it('should use local target when targeting inside shadow root', () => {
+    fire(foo.$.content, 'contextmenu');
 
-          expect(menu._context.target).to.eql(foo);
-        });
+    expect(menu._context.target).to.eql(foo);
+  });
 
-        it('should not penerate shadow root to change context', () => {
-          menu.selector = '#content';
-          fire(foo.$.content, 'contextmenu');
+  it('should not penerate shadow root to change context', () => {
+    menu.selector = '#content';
+    fire(foo.$.content, 'contextmenu');
 
-          expect(menu._context.target).to.be.undefined;
-        });
+    expect(menu._context.target).to.be.undefined;
+  });
 
-        it('should use selector outside shadow root to change context', () => {
-          menu.selector = '#target';
-          fire(foo, 'contextmenu');
+  it('should use selector outside shadow root to change context', () => {
+    menu.selector = '#target';
+    fire(foo, 'contextmenu');
 
-          expect(menu._context.target).to.eql(target);
-        });
+    expect(menu._context.target).to.eql(target);
+  });
 
-        it('should not open if no context available', () => {
-          menu.selector = 'foobar';
-          fire(foo.$.content, 'contextmenu');
+  it('should not open if no context available', () => {
+    menu.selector = 'foobar';
+    fire(foo.$.content, 'contextmenu');
 
-          expect(menu.opened).to.eql(false);
-        });
+    expect(menu.opened).to.eql(false);
+  });
 
-        it('should not prevent default if no context available', () => {
-          menu.selector = 'foobar';
-          const evt = fire(foo.$.content, 'contextmenu');
+  it('should not prevent default if no context available', () => {
+    menu.selector = 'foobar';
+    const evt = fire(foo.$.content, 'contextmenu');
 
-          expect(evt.defaultPrevented).to.eql(false);
-        });
+    expect(evt.defaultPrevented).to.eql(false);
+  });
 
-        it('should target multiple elements', () => {
-          menu.selector = 'div';
+  it('should target multiple elements', () => {
+    menu.selector = 'div';
 
-          fire(another, 'contextmenu');
+    fire(another, 'contextmenu');
 
-          expect(menu.opened).to.be.true;
-        });
+    expect(menu.opened).to.be.true;
+  });
 
-        it('should be closed after detached', () => {
-          fire(target, 'contextmenu');
-          expect(menu.opened).to.be.true;
+  it('should be closed after detached', () => {
+    fire(target, 'contextmenu');
+    expect(menu.opened).to.be.true;
 
-          const spy = sinon.spy(menu, 'close');
+    const spy = sinon.spy(menu, 'close');
 
-          menu.parentNode.removeChild(menu);
-          expect(spy).to.be.calledOnce;
-          expect(menu.opened).to.be.false;
-        });
-      });
-    </script>
+    menu.parentNode.removeChild(menu);
+    expect(spy).to.be.calledOnce;
+    expect(menu.opened).to.be.false;
+  });
+});
+</script>
 
   </body>
 </html>
