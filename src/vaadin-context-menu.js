@@ -225,7 +225,7 @@ import { gestures, addListener, removeListener } from '@polymer/polymer/lib/util
  * In case of using nested menu items, the `theme` attribute is also propagated
  * to internal `vaadin-context-menu-list-box` and `vaadin-context-menu-item`'s.
  *
- * @extends PolymerElement
+ * @extends HTMLElement
  * @mixes ElementMixin
  * @mixes ThemePropertyMixin
  * @mixes ItemsMixin

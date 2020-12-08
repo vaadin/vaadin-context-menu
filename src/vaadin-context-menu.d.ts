@@ -1,18 +1,10 @@
-import {PolymerElement} from '@polymer/polymer/polymer-element.js';
-
 import {GestureEventListeners} from '@polymer/polymer/lib/mixins/gesture-event-listeners.js';
-
-import {FlattenedNodesObserver} from '@polymer/polymer/lib/utils/flattened-nodes-observer.js';
 
 import {ItemsMixin} from './vaadin-contextmenu-items-mixin.js';
 
 import {ElementMixin} from '@vaadin/vaadin-element-mixin/vaadin-element-mixin.js';
 
 import {ThemePropertyMixin} from '@vaadin/vaadin-themable-mixin/vaadin-theme-property-mixin.js';
-
-import {html} from '@polymer/polymer/lib/utils/html-tag.js';
-
-import {addListener, removeListener} from '@polymer/polymer/lib/utils/gestures.js';
 
 /**
  * `<vaadin-context-menu>` is a Web Component for creating context menus. The content of the
@@ -228,7 +220,7 @@ declare class ContextMenuElement extends
   ThemePropertyMixin(
   ItemsMixin(
   GestureEventListeners(
-  PolymerElement)))) {
+  HTMLElement)))) {
 
   /**
    * CSS selector that can be used to target any child element
@@ -271,9 +263,6 @@ declare class ContextMenuElement extends
    *   - `context.detail` the menu opening event detail.
    */
   renderer: ContextMenuRenderer|null|undefined;
-  ready(): void;
-  connectedCallback(): void;
-  disconnectedCallback(): void;
 
   /**
    * Manually invoke existing renderer.

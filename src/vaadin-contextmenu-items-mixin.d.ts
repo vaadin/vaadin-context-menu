@@ -2,8 +2,6 @@ import {ItemElement} from '@vaadin/vaadin-item/src/vaadin-item.js';
 
 import {ListBoxElement} from '@vaadin/vaadin-list-box/src/vaadin-list-box.js';
 
-import {flush} from '@polymer/polymer/lib/utils/flush.js';
-
 /**
  * The vaadin-context-menu-item element.
  */
@@ -66,10 +64,9 @@ interface ItemsMixin {
    * ```
    */
   items: ContextMenuItem[]|undefined;
-  ready(): void;
-  connectedCallback(): void;
-  disconnectedCallback(): void;
+
   __forwardFocus(): void;
+
   __itemsRenderer(root: HTMLElement, menu: ContextMenuElement, context: ContextMenuRendererContext): void;
 }
 
