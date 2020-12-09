@@ -17,11 +17,6 @@ registerStyles(
 registerStyles(
   'vaadin-context-menu-list-box',
   css`
-    /* ShadyCSS workaround */
-    [part='items'] ::slotted(.vaadin-menu-item:not(hr))::before {
-      display: block;
-    }
-
     [part='items'] ::slotted(.vaadin-menu-item:not(hr)) {
       min-height: 36px;
       padding: 8px 32px 8px 10px;

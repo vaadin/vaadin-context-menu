@@ -436,7 +436,6 @@ class ContextMenuElement extends
 
       this._oldListenOn.style.webkitTouchCallout = '';
       this._oldListenOn.style.webkitUserSelect = '';
-      this._oldListenOn.style.msUserSelect = '';
       this._oldListenOn.style.userSelect = '';
 
       this._oldListenOn = null;
@@ -456,7 +455,6 @@ class ContextMenuElement extends
     // note: these styles don't seem to work in Firefox on iOS.
     this.listenOn.style.webkitTouchCallout = value;
     this.listenOn.style.webkitUserSelect = value; // Chrome, Safari, Firefox
-    this.listenOn.style.msUserSelect = value; // IE 10+
     this.listenOn.style.userSelect = value;
 
     // note: because user-selection is disabled on the overlay
