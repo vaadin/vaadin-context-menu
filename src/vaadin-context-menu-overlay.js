@@ -4,8 +4,8 @@ Copyright (c) 2017 Vaadin Ltd.
 This program is available under Apache License Version 2.0, available at https://vaadin.com/license/
 */
 import '@polymer/polymer/lib/elements/dom-module.js';
-
 import { OverlayElement } from '@vaadin/vaadin-overlay/src/vaadin-overlay.js';
+
 const $_documentContainer = document.createElement('template');
 
 $_documentContainer.innerHTML = `<dom-module id="vaadin-context-menu-overlay-styles" theme-for="vaadin-context-menu-overlay">

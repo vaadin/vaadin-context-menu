@@ -3,18 +3,17 @@
 Copyright (c) 2017 Vaadin Ltd.
 This program is available under Apache License Version 2.0, available at https://vaadin.com/license/
 */
-import { PolymerElement } from '@polymer/polymer/polymer-element.js';
-
+import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
+import { gestures, addListener, removeListener } from '@polymer/polymer/lib/utils/gestures.js';
 import { GestureEventListeners } from '@polymer/polymer/lib/mixins/gesture-event-listeners.js';
 import { FlattenedNodesObserver } from '@polymer/polymer/lib/utils/flattened-nodes-observer.js';
-import './vaadin-contextmenu-event.js';
-import './vaadin-device-detector.js';
 import { ItemsMixin } from './vaadin-contextmenu-items-mixin.js';
 import { ElementMixin } from '@vaadin/vaadin-element-mixin/vaadin-element-mixin.js';
 import { ThemePropertyMixin } from '@vaadin/vaadin-themable-mixin/vaadin-theme-property-mixin.js';
+import './vaadin-contextmenu-event.js';
+import './vaadin-device-detector.js';
 import './vaadin-context-menu-overlay.js';
-import { html } from '@polymer/polymer/lib/utils/html-tag.js';
-import { gestures, addListener, removeListener } from '@polymer/polymer/lib/utils/gestures.js';
+
 /**
  *
  * `<vaadin-context-menu>` is a Web Component for creating context menus. The content of the
