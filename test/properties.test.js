@@ -1,58 +1,28 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title></title>
-    <script src="../../../@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
-    <script src="../../../wct-browser-legacy/browser.js"></script>
-    <script type="module" src="../../../@polymer/test-fixture/test-fixture.js"></script>
-    <script type="module" src="../../../@polymer/iron-test-helpers/iron-test-helpers.js"></script>
-    <script type="module" src="../vaadin-context-menu.js"></script>
-    <script type="module" src="./not-animated-styles.js"></script>
-    <script src="./common.js"></script>
-  </head>
-  <body>
-    <test-fixture id="default">
-      <template>
+import { expect } from '@esm-bundle/chai';
+import { fixtureSync } from '@open-wc/testing-helpers';
+import { fire } from './common.js';
+import './not-animated-styles.js';
+import '../vaadin-context-menu.js';
+
+describe('properties', () => {
+  let menu;
+
+  afterEach(() => {
+    menu.close();
+  });
+
+  describe('context', () => {
+    let target;
+
+    beforeEach(() => {
+      menu = fixtureSync(`
         <vaadin-context-menu>
           <template></template>
           <section>
             <div id="target"></div>
           </section>
         </vaadin-context-menu>
-      </template>
-    </test-fixture>
-
-    <test-fixture id="external">
-      <template>
-        <vaadin-context-menu>
-          <template></template>
-        </vaadin-context-menu>
-        <section>
-          <div id="target"></div>
-        </section>
-      </template>
-    </test-fixture>
-
-    <test-fixture id="withTheme">
-      <template>
-        <vaadin-context-menu theme="foo">
-          <template></template>
-        </vaadin-context-menu>
-      </template>
-    </test-fixture>
-
-    <script type="module">
-import '@polymer/test-fixture/test-fixture.js';
-import '@polymer/iron-test-helpers/iron-test-helpers.js';
-import '../vaadin-context-menu.js';
-import './not-animated-styles.js';
-describe('properties', () => {
-  describe('context', () => {
-    let menu, target;
-
-    beforeEach(() => {
-      menu = fixture('default');
+      `);
       target = menu.querySelector('#target');
     });
 
@@ -72,9 +42,12 @@ describe('properties', () => {
   });
 
   describe('openOn', () => {
-    let menu;
     beforeEach(() => {
-      menu = fixture('external')[0];
+      menu = fixtureSync(`
+        <vaadin-context-menu>
+          <template></template>
+        </vaadin-context-menu>
+      `);
     });
 
     it('should open on custom event', () => {
@@ -94,7 +67,6 @@ describe('properties', () => {
     });
 
     describe('event listener', () => {
-
       it('should not add listener when set to empty', () => {
         expect(menu._oldOpenOn).to.be.ok;
         menu.openOn = '';
@@ -104,9 +76,12 @@ describe('properties', () => {
   });
 
   describe('opened', () => {
-    let menu;
     beforeEach(() => {
-      menu = fixture('external')[0];
+      menu = fixtureSync(`
+        <vaadin-context-menu>
+          <template></template>
+        </vaadin-context-menu>
+      `);
     });
 
     it('should be read-only', () => {
@@ -125,9 +100,12 @@ describe('properties', () => {
   });
 
   describe('closeOn', () => {
-    let menu;
     beforeEach(() => {
-      menu = fixture('external')[0];
+      menu = fixtureSync(`
+        <vaadin-context-menu>
+          <template></template>
+        </vaadin-context-menu>
+      `);
       menu._setOpened(true);
     });
 
@@ -149,10 +127,21 @@ describe('properties', () => {
   });
 
   describe('external target', () => {
-    let menu, target;
+    let wrapper, target;
+
     beforeEach(() => {
-      menu = fixture('external')[0];
-      target = document.body.querySelector('#target');
+      wrapper = fixtureSync(`
+        <div>
+          <vaadin-context-menu>
+            <template></template>
+          </vaadin-context-menu>
+          <section>
+            <div id="target"></div>
+          </section>
+        </div>
+      `);
+      menu = wrapper.firstElementChild;
+      target = wrapper.querySelector('#target');
 
       menu.listenOn = target;
     });
@@ -178,7 +167,6 @@ describe('properties', () => {
     });
 
     describe('event listeners', () => {
-
       it('should not target listeners when set to null', () => {
         expect(menu._oldOpenOn).to.be.ok;
         menu.listenOn = null;
@@ -188,16 +176,16 @@ describe('properties', () => {
   });
 
   describe('theme attribute', () => {
-    let menu;
-
-    beforeEach(() => menu = fixture('withTheme'));
+    beforeEach(() => {
+      menu = fixtureSync(`
+        <vaadin-context-menu theme="foo">
+          <template></template>
+        </vaadin-context-menu>
+      `);
+    });
 
     it('should propagate theme attribute to overlay', () => {
       expect(menu.$.overlay.getAttribute('theme')).to.equal('foo');
     });
   });
 });
-</script>
-
-  </body>
-</html>

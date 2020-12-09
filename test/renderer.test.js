@@ -1,53 +1,31 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <title></title>
-  <script src="../../../@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
-  <script src="../../../wct-browser-legacy/browser.js"></script>
-  <script type="module" src="../../../@polymer/test-fixture/test-fixture.js"></script>
-  <script type="module" src="../../../@polymer/iron-test-helpers/iron-test-helpers.js"></script>
-  <script type="module" src="../vaadin-context-menu.js"></script>
-  <script src="../../../@polymer/iron-test-helpers/mock-interactions.js" type="module"></script>
-  <script src="./common.js"></script>
-</head>
-<body>
-  <test-fixture id="default">
-    <template>
-      <vaadin-context-menu>
-        <div id="target"></div>
-      </vaadin-context-menu>
-    </template>
-  </test-fixture>
-
-  <test-fixture id="withTemplate">
-    <template>
-      <vaadin-context-menu>
-        <template>Template [[detail.foo]] [[target.id]]</template>
-        <div id="target"></div>
-      </vaadin-context-menu>
-    </template>
-  </test-fixture>
-
-  <script type="module">
-import '@polymer/test-fixture/test-fixture.js';
-import '@polymer/iron-test-helpers/iron-test-helpers.js';
+import { expect } from '@esm-bundle/chai';
+import sinon from 'sinon';
+import { fixtureSync } from '@open-wc/testing-helpers';
+import { fire } from './common.js';
+import './not-animated-styles.js';
 import '../vaadin-context-menu.js';
+
 describe('renderer', () => {
   let menu, target;
 
-  afterEach(() => menu.close());
+  afterEach(() => {
+    menu.close();
+  });
 
   describe('without template', () => {
     beforeEach(() => {
-      menu = fixture('default');
-      menu.renderer = sinon.spy((root, contextMenu, context) => {
+      menu = fixtureSync(`
+        <vaadin-context-menu>
+          <div id="target"></div>
+        </vaadin-context-menu>
+      `);
+      menu.renderer = sinon.spy((root, _, context) => {
         if (root.firstChild) {
           return;
         }
-        root.appendChild(document.createTextNode(
-          `Renderer ${context.detail && context.detail.foo} ${context.target.id}`
-        ));
+        root.appendChild(
+          document.createTextNode(`Renderer ${context.detail && context.detail.foo} ${context.target.id}`)
+        );
       });
       target = menu.querySelector('#target');
     });
@@ -68,7 +46,7 @@ describe('renderer', () => {
     });
 
     it('should have detail in context', () => {
-      fire(target, 'vaadin-contextmenu', {foo: 'bar'});
+      fire(target, 'vaadin-contextmenu', { foo: 'bar' });
 
       expect(menu.$.overlay.content.textContent).to.contain('bar');
     });
@@ -101,13 +79,13 @@ describe('renderer', () => {
     });
 
     it('should rerender with new detail on reopen', () => {
-      fire(target, 'vaadin-contextmenu', {foo: 'one'});
+      fire(target, 'vaadin-contextmenu', { foo: 'one' });
       menu.close();
-      fire(target, 'vaadin-contextmenu', {foo: 'two'});
+      fire(target, 'vaadin-contextmenu', { foo: 'two' });
 
       expect(menu.renderer.callCount).to.equal(2);
-      expect(menu.renderer.getCall(0).args[2].detail).to.deep.equal({foo: 'one'});
-      expect(menu.renderer.getCall(1).args[2].detail).to.deep.equal({foo: 'two'});
+      expect(menu.renderer.getCall(0).args[2].detail).to.deep.equal({ foo: 'one' });
+      expect(menu.renderer.getCall(1).args[2].detail).to.deep.equal({ foo: 'two' });
     });
 
     it('should remove template when added after renderer', () => {
@@ -122,21 +100,25 @@ describe('renderer', () => {
 
     it('should be possible to manually invoke renderer', () => {
       fire(target, 'vaadin-contextmenu');
-      expect(menu.renderer).to.be.calledOnce;
+      expect(menu.renderer.calledOnce).to.be.true;
       menu.render();
-      expect(menu.renderer).to.be.calledTwice;
+      expect(menu.renderer.calledTwice).to.be.true;
     });
   });
 
   describe('with template', () => {
-
     beforeEach(() => {
-      menu = fixture('withTemplate');
+      menu = fixtureSync(`
+        <vaadin-context-menu>
+          <template>Template [[detail.foo]] [[target.id]]</template>
+          <div id="target"></div>
+        </vaadin-context-menu>
+      `);
       target = menu.querySelector('#target');
     });
 
     it('should fallback to template if renderer is missing', () => {
-      fire(target, 'vaadin-contextmenu', {foo: 'bar'});
+      fire(target, 'vaadin-contextmenu', { foo: 'bar' });
 
       expect(menu.$.overlay.content.textContent).to.contain('Template bar target');
       expect(menu.$.overlay.content.textContent).to.not.contain('Renderer');
@@ -144,16 +126,13 @@ describe('renderer', () => {
 
     it('should throw an error when setting a renderer if there is already a template', () => {
       menu._observer.flush();
-      expect(() => menu.renderer = () => {}).to.throw(Error);
+      expect(() => (menu.renderer = () => {})).to.throw(Error);
     });
 
     it('should remove renderer when added after template', () => {
       menu._observer.flush();
-      expect(() => menu.renderer = () => {}).to.throw(Error);
+      expect(() => (menu.renderer = () => {})).to.throw(Error);
       expect(menu.renderer).to.be.not.ok;
     });
   });
 });
-</script>
-</body>
-</html>
