@@ -3,36 +3,33 @@
 Copyright (c) 2017 Vaadin Ltd.
 This program is available under Apache License Version 2.0, available at https://vaadin.com/license/
 */
-import '@polymer/polymer/lib/elements/dom-module.js';
+import { registerStyles, css } from '@vaadin/vaadin-themable-mixin/register-styles.js';
 import { OverlayElement } from '@vaadin/vaadin-overlay/src/vaadin-overlay.js';
 
-const $_documentContainer = document.createElement('template');
+registerStyles(
+  'vaadin-context-menu-overlay',
+  css`
+    :host {
+      align-items: flex-start;
+      justify-content: flex-start;
+    }
 
-$_documentContainer.innerHTML = `<dom-module id="vaadin-context-menu-overlay-styles" theme-for="vaadin-context-menu-overlay">
-  <template>
-    <style>
-      :host {
-        align-items: flex-start;
-        justify-content: flex-start;
-      }
+    :host([right-aligned]),
+    :host([end-aligned]) {
+      align-items: flex-end;
+    }
 
-      :host([right-aligned]),
-      :host([end-aligned]) {
-        align-items: flex-end;
-      }
+    :host([bottom-aligned]) {
+      justify-content: flex-end;
+    }
 
-      :host([bottom-aligned]) {
-        justify-content: flex-end;
-      }
+    [part='overlay'] {
+      background-color: #fff;
+    }
+  `,
+  { moduleId: 'vaadin-context-menu-overlay-styles' }
+);
 
-      [part="overlay"] {
-        background-color: #fff;
-      }
-    </style>
-  </template>
-</dom-module>`;
-
-document.head.appendChild($_documentContainer.content);
 /**
  * The overlay element.
  *

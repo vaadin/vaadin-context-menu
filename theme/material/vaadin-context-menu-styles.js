@@ -1,85 +1,87 @@
+import { registerStyles, css } from '@vaadin/vaadin-themable-mixin/register-styles.js';
 import '@vaadin/vaadin-material-styles/font-icons.js';
 import '@vaadin/vaadin-material-styles/color.js';
 import '@vaadin/vaadin-material-styles/mixins/menu-overlay.js';
 import '@vaadin/vaadin-material-styles/typography.js';
-import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 
-const $_documentContainer = html`<dom-module id="material-context-menu-overlay" theme-for="vaadin-context-menu-overlay">
-  <template>
-    <style include="material-menu-overlay">
-      [part="overlay"] {
-        outline: none;
-      }
-    </style>
-  </template>
-</dom-module><dom-module id="material-context-menu-list-box" theme-for="vaadin-context-menu-list-box">
-  <template>
-    <style>
-      /* ShadyCSS workaround */
-      [part="items"] ::slotted(.vaadin-menu-item:not(hr))::before {
-        display: block;
-      }
+registerStyles(
+  'vaadin-context-menu-overlay',
+  css`
+    [part='overlay'] {
+      outline: none;
+    }
+  `,
+  { include: ['material-menu-overlay'], moduleId: 'material-context-menu-overlay' }
+);
 
-      [part="items"] ::slotted(.vaadin-menu-item:not(hr)) {
-        min-height: 36px;
-        padding: 8px 32px 8px 10px;
-        font-size: var(--material-small-font-size);
-        line-height: 24px;
-      }
+registerStyles(
+  'vaadin-context-menu-list-box',
+  css`
+    /* ShadyCSS workaround */
+    [part='items'] ::slotted(.vaadin-menu-item:not(hr))::before {
+      display: block;
+    }
 
-      :host([dir="rtl"]) [part="items"] ::slotted(.vaadin-menu-item:not(hr)) {
-        padding: 8px 10px 8px 32px;
-      }
+    [part='items'] ::slotted(.vaadin-menu-item:not(hr)) {
+      min-height: 36px;
+      padding: 8px 32px 8px 10px;
+      font-size: var(--material-small-font-size);
+      line-height: 24px;
+    }
 
-      [part="items"] ::slotted(.vaadin-menu-item:hover:not([disabled])) {
-        background-color: var(--material-secondary-background-color);
-      }
+    :host([dir='rtl']) [part='items'] ::slotted(.vaadin-menu-item:not(hr)) {
+      padding: 8px 10px 8px 32px;
+    }
 
-      [part="items"] ::slotted(.vaadin-menu-item[focused]:not([disabled])) {
-        background-color: var(--material-divider-color);
-      }
+    [part='items'] ::slotted(.vaadin-menu-item:hover:not([disabled])) {
+      background-color: var(--material-secondary-background-color);
+    }
 
-      @media (pointer: coarse) {
-        [part="items"] ::slotted(.vaadin-menu-item:hover:not([disabled])),
-        [part="items"] ::slotted(.vaadin-menu-item[focused]:not([disabled])) {
-          background-color: transparent;
-        }
-      }
-    </style>
-  </template>
-</dom-module><dom-module id="material-context-menu-item" theme-for="vaadin-context-menu-item">
-  <template>
-    <style>
-      :host(.vaadin-menu-item.vaadin-context-menu-parent-item)::after {
-        font-family: material-icons;
-        font-size: var(--material-icon-font-size);
-      }
+    [part='items'] ::slotted(.vaadin-menu-item[focused]:not([disabled])) {
+      background-color: var(--material-divider-color);
+    }
 
-      :host(:not([dir="rtl"]).vaadin-menu-item.vaadin-context-menu-parent-item)::after {
-        content: var(--material-icons-chevron-right);
-        padding-left: 9px;
-        margin-right: -9px;
+    @media (pointer: coarse) {
+      [part='items'] ::slotted(.vaadin-menu-item:hover:not([disabled])),
+      [part='items'] ::slotted(.vaadin-menu-item[focused]:not([disabled])) {
+        background-color: transparent;
       }
+    }
+  `,
+  { moduleId: 'material-context-menu-list-box' }
+);
 
-      :host([dir="rtl"].vaadin-menu-item.vaadin-context-menu-parent-item)::after {
-        content: var(--material-icons-chevron-left);
-        padding-right: 9px;
-        margin-left: -9px;
-      }
+registerStyles(
+  'vaadin-context-menu-item',
+  css`
+    :host(.vaadin-menu-item.vaadin-context-menu-parent-item)::after {
+      font-family: material-icons;
+      font-size: var(--material-icon-font-size);
+    }
 
-      :host(.vaadin-menu-item)::before {
-        display: block;
-      }
+    :host(:not([dir='rtl']).vaadin-menu-item.vaadin-context-menu-parent-item)::after {
+      content: var(--material-icons-chevron-right);
+      padding-left: 9px;
+      margin-right: -9px;
+    }
 
-      :host(.vaadin-menu-item[menu-item-checked])::before {
-        content: var(--material-icons-check);
-      }
+    :host([dir='rtl'].vaadin-menu-item.vaadin-context-menu-parent-item)::after {
+      content: var(--material-icons-chevron-left);
+      padding-right: 9px;
+      margin-left: -9px;
+    }
 
-      :host([expanded]) {
-        background-color: var(--material-secondary-background-color);
-      }
-    </style>
-  </template>
-</dom-module>`;
+    :host(.vaadin-menu-item)::before {
+      display: block;
+    }
 
-document.head.appendChild($_documentContainer.content);
+    :host(.vaadin-menu-item[menu-item-checked])::before {
+      content: var(--material-icons-check);
+    }
+
+    :host([expanded]) {
+      background-color: var(--material-secondary-background-color);
+    }
+  `,
+  { moduleId: 'material-context-menu-item' }
+);
