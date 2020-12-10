@@ -2,6 +2,10 @@ import { ItemElement } from '@vaadin/vaadin-item/src/vaadin-item.js';
 
 import { ListBoxElement } from '@vaadin/vaadin-list-box/src/vaadin-list-box.js';
 
+import { ContextMenuElement } from './vaadin-context-menu.js';
+
+import { ContextMenuItem, ContextMenuRendererContext } from './interfaces';
+
 /**
  * The vaadin-context-menu-item element.
  */
@@ -19,15 +23,11 @@ declare global {
  */
 declare class ContextMenuListBoxElement extends ListBoxElement {}
 
-export { ItemsMixin };
-
 declare function ItemsMixin<T extends new (...args: any[]) => {}>(base: T): T & ItemsMixinConstructor;
 
 interface ItemsMixinConstructor {
   new (...args: any[]): ItemsMixin;
 }
-
-export { ItemsMixinConstructor };
 
 interface ItemsMixin {
   readonly __isRTL: boolean;
@@ -67,8 +67,4 @@ interface ItemsMixin {
   __itemsRenderer(root: HTMLElement, menu: ContextMenuElement, context: ContextMenuRendererContext): void;
 }
 
-import { ContextMenuItem } from '../@types/interfaces';
-
-import { ContextMenuElement } from './vaadin-context-menu.js';
-
-import { ContextMenuRendererContext } from '../@types/interfaces';
+export { ItemsMixin, ItemsMixinConstructor };

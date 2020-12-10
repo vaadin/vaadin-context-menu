@@ -6,6 +6,8 @@ import { ElementMixin } from '@vaadin/vaadin-element-mixin/vaadin-element-mixin.
 
 import { ThemePropertyMixin } from '@vaadin/vaadin-themable-mixin/vaadin-theme-property-mixin.js';
 
+import { ContextMenuRenderer } from './interfaces';
+
 /**
  * `<vaadin-context-menu>` is a Web Component for creating context menus. The content of the
  * menu can be populated in three ways: imperatively by using the items API or a renderer callback function and
@@ -285,5 +287,3 @@ declare global {
 }
 
 export { ContextMenuElement };
-
-import { ContextMenuRenderer } from '../@types/interfaces';
