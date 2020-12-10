@@ -80,7 +80,7 @@ class ContextMenuOverlayElement extends OverlayElement {
   ready() {
     super.ready();
 
-    this.addEventListener('keydown', e => {
+    this.addEventListener('keydown', (e) => {
       if (!e.defaultPrevented && e.composedPath()[0] === this.$.overlay && [38, 40].indexOf(e.keyCode) > -1) {
         const child = this.getFirstChild();
         if (child && Array.isArray(child.items) && child.items.length) {
@@ -99,7 +99,7 @@ class ContextMenuOverlayElement extends OverlayElement {
     return this.content.querySelector(':not(style):not(slot)');
   }
 
-  _themeChanged(theme) {
+  _themeChanged() {
     this.close();
   }
 

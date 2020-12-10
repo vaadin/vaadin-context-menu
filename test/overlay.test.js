@@ -29,7 +29,6 @@ describe('overlay', () => {
 
   function contextmenu(x, y, shiftKey, target) {
     shiftKey = shiftKey || false;
-    target = target || menu;
     const e = new MouseEvent('contextmenu', {
       bubbles: true,
       cancelable: true,
@@ -37,7 +36,7 @@ describe('overlay', () => {
       clientY: y,
       shiftKey: shiftKey
     });
-    menu.listenOn.dispatchEvent(e);
+    (target || menu.listenOn).dispatchEvent(e);
     return e;
   }
 
@@ -72,7 +71,7 @@ describe('overlay', () => {
       contextmenu();
     });
 
-    it('should clear selected ranges on openning', (done) => {
+    it('should clear selected ranges on opening', (done) => {
       listenOnce(overlay, 'vaadin-overlay-open', () => {
         expect(window.getSelection().rangeCount).to.equal(0);
         done();
@@ -84,7 +83,7 @@ describe('overlay', () => {
       contextmenu();
     });
 
-    it('should set `user-select` to `none` on openning', (done) => {
+    it('should set `user-select` to `none` on opening', (done) => {
       listenOnce(overlay, 'vaadin-overlay-open', () => {
         expect(menu.opened).to.eql(true);
 

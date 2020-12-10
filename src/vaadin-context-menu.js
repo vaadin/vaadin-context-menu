@@ -230,30 +230,34 @@ import './vaadin-context-menu-overlay.js';
  * @mixes ItemsMixin
  * @mixes GestureEventListeners
  */
-class ContextMenuElement extends
-  ElementMixin(
-    ThemePropertyMixin(
-      ItemsMixin(
-        GestureEventListeners(PolymerElement)))) {
+class ContextMenuElement extends ElementMixin(ThemePropertyMixin(ItemsMixin(GestureEventListeners(PolymerElement)))) {
   static get template() {
     return html`
-    <style>
-      :host {
-        display: block;
-      }
+      <style>
+        :host {
+          display: block;
+        }
 
-      :host([hidden]) {
-        display: none !important;
-      }
-    </style>
+        :host([hidden]) {
+          display: none !important;
+        }
+      </style>
 
-    <slot id="slot"></slot>
+      <slot id="slot"></slot>
 
-    <vaadin-device-detector phone="{{_phone}}" touch="{{_touch}}"></vaadin-device-detector>
+      <vaadin-device-detector phone="{{_phone}}" touch="{{_touch}}"></vaadin-device-detector>
 
-    <vaadin-context-menu-overlay id="overlay" on-opened-changed="_onOverlayOpened" on-vaadin-overlay-open="_onVaadinOverlayOpen" with-backdrop="[[_phone]]" phone\$="[[_phone]]" model="[[_context]]" theme\$="[[theme]]">
-    </vaadin-context-menu-overlay>
-`;
+      <vaadin-context-menu-overlay
+        id="overlay"
+        on-opened-changed="_onOverlayOpened"
+        on-vaadin-overlay-open="_onVaadinOverlayOpen"
+        with-backdrop="[[_phone]]"
+        phone$="[[_phone]]"
+        model="[[_context]]"
+        theme$="[[theme]]"
+      >
+      </vaadin-context-menu-overlay>
+    `;
   }
 
   static get is() {
@@ -266,7 +270,6 @@ class ContextMenuElement extends
 
   static get properties() {
     return {
-
       /**
        * CSS selector that can be used to target any child element
        * of the context menu to listen for `openOn` events.
@@ -305,7 +308,7 @@ class ContextMenuElement extends
        */
       listenOn: {
         type: Object,
-        value: function() {
+        value: function () {
           return this;
         }
       },
@@ -397,7 +400,7 @@ class ContextMenuElement extends
   /** @protected */
   ready() {
     super.ready();
-    this._observer = new FlattenedNodesObserver(this, info => {
+    this._observer = new FlattenedNodesObserver(this, (info) => {
       this._setTemplateFromNodes(info.addedNodes);
     });
   }
@@ -407,7 +410,8 @@ class ContextMenuElement extends
    * @private
    */
   _setTemplateFromNodes(nodes) {
-    this._contentTemplate = nodes.filter(node => node.localName && node.localName === 'template')[0] || this._contentTemplate;
+    this._contentTemplate =
+      nodes.filter((node) => node.localName && node.localName === 'template')[0] || this._contentTemplate;
   }
 
   /**
@@ -423,7 +427,7 @@ class ContextMenuElement extends
    * Runs after overlay is fully rendered
    * @private
    */
-  _onVaadinOverlayOpen(e) {
+  _onVaadinOverlayOpen() {
     this.__alignOverlayPosition();
     this.$.overlay.style.opacity = '';
     this.__forwardFocus();
@@ -544,7 +548,7 @@ class ContextMenuElement extends
       renderer = this.__itemsRenderer;
     }
     if (renderer && context) {
-      this.$.overlay.setProperties({owner: this, renderer: renderer});
+      this.$.overlay.setProperties({ owner: this, renderer: renderer });
     }
   }
 
@@ -569,7 +573,7 @@ class ContextMenuElement extends
     if (this.selector) {
       const targets = this.listenOn.querySelectorAll(this.selector);
 
-      return Array.prototype.filter.call(targets, el => {
+      return Array.prototype.filter.call(targets, (el) => {
         return e.composedPath().indexOf(el) > -1;
       })[0];
     } else {
@@ -638,11 +642,11 @@ class ContextMenuElement extends
     const style = overlay.style;
 
     // Reset all properties before measuring
-    ['top', 'right', 'bottom', 'left'].forEach(prop => style.removeProperty(prop));
-    ['right-aligned', 'end-aligned', 'bottom-aligned'].forEach(attr => overlay.removeAttribute(attr));
+    ['top', 'right', 'bottom', 'left'].forEach((prop) => style.removeProperty(prop));
+    ['right-aligned', 'end-aligned', 'bottom-aligned'].forEach((attr) => overlay.removeAttribute(attr));
 
     // Maximum x and y values are imposed by content size and overlay limits.
-    const {xMax, xMin, yMax, left, right, top, width} = overlay.getBoundaries();
+    const { xMax, xMin, yMax, left, right, top, width } = overlay.getBoundaries();
     // Reuse saved x and y event values, in order to this method be used async
     // in the `vaadin-overlay-change` which guarantees that overlay is ready
     let x = this.__x || (!this.__isRTL ? left : right);
@@ -668,7 +672,7 @@ class ContextMenuElement extends
         const padding = getPadding(parent, 'Left') + getPadding(overlay, 'Right');
 
         // Preserve end-aligned, if possible.
-        if ((wdthVport - (dimensionToSet - padding)) > width) {
+        if (wdthVport - (dimensionToSet - padding) > width) {
           this._setEndAligned(overlay);
           style[this.__isRTL ? 'left' : 'right'] = dimensionToSet + 'px';
           alignedToParent = true;
@@ -685,31 +689,41 @@ class ContextMenuElement extends
         // Sub-menu is displayed in the right side of root menu
         if ((x < wdthVport / 2 || x < xMax) && !parent) {
           style.left = x + 'px';
-        } else if ((parent && (wdthVport - parentContentRect.width - parentContentRect.left
-          >= parentContentRect.width))) { // Sub-menu is displayed in the right side of root menu If it is nested menu
+        } else if (parent && wdthVport - parentContentRect.width - parentContentRect.left >= parentContentRect.width) {
+          // Sub-menu is displayed in the right side of root menu If it is nested menu
           style.left = parentContentRect.left + parentContentRect.width + 'px';
-        } else if (parent) { // Sub-menu is displayed in the left side of root menu If it is nested menu
+        } else if (parent) {
+          // Sub-menu is displayed in the left side of root menu If it is nested menu
           style.right = 'auto';
-          style.left = Math.max(overlay.getBoundingClientRect().left,
-            parentContentRect.left - overlay.getBoundingClientRect().width) + 'px';
+          style.left =
+            Math.max(
+              overlay.getBoundingClientRect().left,
+              parentContentRect.left - overlay.getBoundingClientRect().width
+            ) + 'px';
           this._setEndAligned(overlay);
-        } else { // Sub-menu is displayed in the left side of root menu
-          style.right = Math.max(0, (wdthVport - x)) + 'px';
+        } else {
+          // Sub-menu is displayed in the left side of root menu
+          style.right = Math.max(0, wdthVport - x) + 'px';
           this._setEndAligned(overlay);
         }
       } else {
         // Sub-menu is displayed in the left side of root menu
         if ((x > wdthVport / 2 || x > xMin) && !parent) {
-          style.right = Math.max(0, (wdthVport - x)) + 'px';
-        } else if (parent && (parentContentRect.left >= parentContentRect.width)) {
+          style.right = Math.max(0, wdthVport - x) + 'px';
+        } else if (parent && parentContentRect.left >= parentContentRect.width) {
           // Sub-menu is displayed in the left side of root menu If it is nested menu
-          style.right = (wdthVport - parentContentRect.right + parentContentRect.width) + 'px';
-        } else if (parent) { // Sub-menu is displayed in the right side of root menu If it is nested menu
+          style.right = wdthVport - parentContentRect.right + parentContentRect.width + 'px';
+        } else if (parent) {
+          // Sub-menu is displayed in the right side of root menu If it is nested menu
           style.right = 'auto';
-          style.left = Math.max(overlay.getBoundingClientRect().left - overlay.getBoundingClientRect().width,
-            parentContentRect.right) + 'px';
+          style.left =
+            Math.max(
+              overlay.getBoundingClientRect().left - overlay.getBoundingClientRect().width,
+              parentContentRect.right
+            ) + 'px';
           this._setEndAligned(overlay);
-        } else { // Sub-menu is displayed in the left side of root menu
+        } else {
+          // Sub-menu is displayed in the left side of root menu
           style.left = x + 'px';
           this._setEndAligned(overlay);
         }
@@ -718,7 +732,7 @@ class ContextMenuElement extends
     if (y < hghtVport / 2 || y < yMax) {
       style.top = y + 'px';
     } else {
-      style.bottom = Math.max(0, (hghtVport - y)) + 'px';
+      style.bottom = Math.max(0, hghtVport - y) + 'px';
       overlay.setAttribute('bottom-aligned', '');
     }
   }

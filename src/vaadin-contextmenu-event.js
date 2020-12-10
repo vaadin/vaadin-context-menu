@@ -17,25 +17,26 @@ register({
 
   info: {
     sourceEvent: null,
-    _ios: (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream)
-      || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)
+    _ios:
+      (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream) ||
+      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)
   },
 
-  reset: function() {
+  reset: function () {
     this.info.sourceEvent = null;
     this._cancelTimer();
     this.info.touchJob = null;
     this.info.touchStartCoords = null;
   },
 
-  _cancelTimer: function() {
+  _cancelTimer: function () {
     if (this._timerId) {
       clearTimeout(this._timerId);
       delete this._fired;
     }
   },
 
-  touchstart: function(e) {
+  touchstart: function (e) {
     this.info.sourceEvent = e;
     this.info.touchStartCoords = {
       x: e.changedTouches[0].clientX,
@@ -61,23 +62,25 @@ register({
     }, 500); // default setting for Android and iOS.
   },
 
-  touchmove: function(e) {
+  touchmove: function (e) {
     const moveThreshold = 15;
     const touchStartCoords = this.info.touchStartCoords;
-    if (Math.abs(touchStartCoords.x - e.changedTouches[0].clientX) > moveThreshold ||
-        Math.abs(touchStartCoords.y - e.changedTouches[0].clientY) > moveThreshold) {
+    if (
+      Math.abs(touchStartCoords.x - e.changedTouches[0].clientX) > moveThreshold ||
+      Math.abs(touchStartCoords.y - e.changedTouches[0].clientY) > moveThreshold
+    ) {
       this._cancelTimer();
     }
   },
 
-  touchend: function(e) {
+  touchend: function (e) {
     if (this._fired) {
       e.preventDefault();
     }
     this._cancelTimer();
   },
 
-  contextmenu: function(e) {
+  contextmenu: function (e) {
     if (!e.shiftKey) {
       this.info.sourceEvent = e;
       this.fire(e.target, e.clientX, e.clientY);
@@ -85,12 +88,12 @@ register({
     }
   },
 
-  fire: function(target, x, y) {
+  fire: function (target, x, y) {
     // NOTE(web-padawan): the code below is copied from `Polymer.Gestures._fire`,
     // which is not exported from `gestures.js` module for Polymer 3.
     const sourceEvent = this.info.sourceEvent;
-    const ev = new Event('vaadin-contextmenu', {bubbles: true, cancelable: true, composed: true});
-    ev.detail = {x, y, sourceEvent};
+    const ev = new Event('vaadin-contextmenu', { bubbles: true, cancelable: true, composed: true });
+    ev.detail = { x, y, sourceEvent };
     target.dispatchEvent(ev);
     // forward `preventDefault` in a clean way
     if (ev.defaultPrevented && sourceEvent && sourceEvent.preventDefault) {

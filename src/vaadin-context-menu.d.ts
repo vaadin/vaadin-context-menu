@@ -1,10 +1,10 @@
-import {GestureEventListeners} from '@polymer/polymer/lib/mixins/gesture-event-listeners.js';
+import { GestureEventListeners } from '@polymer/polymer/lib/mixins/gesture-event-listeners.js';
 
-import {ItemsMixin} from './vaadin-contextmenu-items-mixin.js';
+import { ItemsMixin } from './vaadin-contextmenu-items-mixin.js';
 
-import {ElementMixin} from '@vaadin/vaadin-element-mixin/vaadin-element-mixin.js';
+import { ElementMixin } from '@vaadin/vaadin-element-mixin/vaadin-element-mixin.js';
 
-import {ThemePropertyMixin} from '@vaadin/vaadin-themable-mixin/vaadin-theme-property-mixin.js';
+import { ThemePropertyMixin } from '@vaadin/vaadin-themable-mixin/vaadin-theme-property-mixin.js';
 
 /**
  * `<vaadin-context-menu>` is a Web Component for creating context menus. The content of the
@@ -215,18 +215,14 @@ import {ThemePropertyMixin} from '@vaadin/vaadin-themable-mixin/vaadin-theme-pro
  * In case of using nested menu items, the `theme` attribute is also propagated
  * to internal `vaadin-context-menu-list-box` and `vaadin-context-menu-item`'s.
  */
-declare class ContextMenuElement extends
-  ElementMixin(
-  ThemePropertyMixin(
-  ItemsMixin(
-  GestureEventListeners(
-  HTMLElement)))) {
-
+declare class ContextMenuElement extends ElementMixin(
+  ThemePropertyMixin(ItemsMixin(GestureEventListeners(HTMLElement)))
+) {
   /**
    * CSS selector that can be used to target any child element
    * of the context menu to listen for `openOn` events.
    */
-  selector: string|null|undefined;
+  selector: string | null | undefined;
 
   /**
    * True if the overlay is currently displayed.
@@ -262,7 +258,7 @@ declare class ContextMenuElement extends
    *   - `context.target`  the target of the menu opening event,
    *   - `context.detail` the menu opening event detail.
    */
-  renderer: ContextMenuRenderer|null|undefined;
+  renderer: ContextMenuRenderer | null | undefined;
 
   /**
    * Manually invoke existing renderer.
@@ -279,16 +275,15 @@ declare class ContextMenuElement extends
    *
    * @param e used as the context for the menu. Overlay coordinates are taken from this event.
    */
-  open(e: Event|undefined): void;
+  open(e: Event | undefined): void;
 }
 
 declare global {
-
   interface HTMLElementTagNameMap {
-    "vaadin-context-menu": ContextMenuElement;
+    'vaadin-context-menu': ContextMenuElement;
   }
 }
 
-export {ContextMenuElement};
+export { ContextMenuElement };
 
-import {ContextMenuRenderer} from '../@types/interfaces';
+import { ContextMenuRenderer } from '../@types/interfaces';
