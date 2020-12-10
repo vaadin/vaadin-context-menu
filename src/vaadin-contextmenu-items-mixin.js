@@ -18,6 +18,8 @@ class ContextMenuItemElement extends ItemElement {
   }
 }
 
+customElements.define(ContextMenuItemElement.is, ContextMenuItemElement);
+
 /**
  * The vaadin-context-menu-list-box element.
  *
@@ -29,7 +31,6 @@ class ContextMenuListBoxElement extends ListBoxElement {
   }
 }
 
-customElements.define(ContextMenuItemElement.is, ContextMenuItemElement);
 customElements.define(ContextMenuListBoxElement.is, ContextMenuListBoxElement);
 
 /**

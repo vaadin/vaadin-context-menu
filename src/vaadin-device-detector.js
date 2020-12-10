@@ -13,7 +13,7 @@ import '@polymer/iron-media-query/iron-media-query.js';
  */
 class DeviceDetectorElement extends PolymerElement {
   static get template() {
-    return html` <iron-media-query query="min-device-width: 750px" query-matches="{{wide}}"></iron-media-query> `;
+    return html`<iron-media-query query="min-device-width: 750px" query-matches="{{wide}}"></iron-media-query>`;
   }
 
   static get is() {
