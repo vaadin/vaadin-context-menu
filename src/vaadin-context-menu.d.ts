@@ -6,7 +6,7 @@ import { ElementMixin } from '@vaadin/vaadin-element-mixin/vaadin-element-mixin.
 
 import { ThemePropertyMixin } from '@vaadin/vaadin-themable-mixin/vaadin-theme-property-mixin.js';
 
-import { ContextMenuRenderer } from './interfaces';
+import { ContextMenuEventMap, ContextMenuRenderer } from './interfaces';
 
 /**
  * `<vaadin-context-menu>` is a Web Component for creating context menus. The content of the
@@ -278,6 +278,18 @@ declare class ContextMenuElement extends ElementMixin(
    * @param e used as the context for the menu. Overlay coordinates are taken from this event.
    */
   open(e: Event | undefined): void;
+
+  addEventListener<K extends keyof ContextMenuEventMap>(
+    type: K,
+    listener: (this: ContextMenuElement, ev: ContextMenuEventMap[K]) => void,
+    options?: boolean | AddEventListenerOptions
+  ): void;
+
+  removeEventListener<K extends keyof ContextMenuEventMap>(
+    type: K,
+    listener: (this: ContextMenuElement, ev: ContextMenuEventMap[K]) => void,
+    options?: boolean | EventListenerOptions
+  ): void;
 }
 
 declare global {
