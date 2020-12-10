@@ -1,3 +1,8 @@
+/**
+ * @license
+ * Copyright (c) 2020 Vaadin Ltd.
+ * This program is available under Apache License Version 2.0, available at https://vaadin.com/license/
+ */
 import { flush } from '@polymer/polymer/lib/utils/flush.js';
 import { ItemElement } from '@vaadin/vaadin-item/src/vaadin-item.js';
 import { ListBoxElement } from '@vaadin/vaadin-list-box/src/vaadin-list-box.js';
