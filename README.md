@@ -10,11 +10,14 @@
 
 # &lt;vaadin-context-menu&gt;
 
+> ⚠️ Starting from Vaadin 20, the source code and issues for this component are migrated to the [`vaadin/web-components`](https://github.com/vaadin/web-components/tree/master/packages/vaadin-context-menu) monorepository.
+> This repository contains the source code and releases of `<vaadin-context-menu>` for the Vaadin versions 10 to 19.
+
+[&lt;vaadin-context-menu&gt;](https://vaadin.com/components/vaadin-context-menu) is a Web Component providing a contextual menu, part of the [Vaadin components](https://vaadin.com/components).
+
 [Live Demo ↗](https://vaadin.com/components/vaadin-context-menu/html-examples)
 |
 [API documentation ↗](https://vaadin.com/components/vaadin-context-menu/html-api)
-
-[&lt;vaadin-context-menu&gt;](https://vaadin.com/components/vaadin-context-menu) is a Web Component providing a contextual menu, part of the [Vaadin components](https://vaadin.com/components).
 
 <!--
 ```
