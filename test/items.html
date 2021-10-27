@@ -383,11 +383,14 @@
           expect(spy).to.be.calledOnce;
         });
 
-        it('should have modeless sub menus', () => {
-          const rootItemRect = menuComponents()[0].getBoundingClientRect();
-          const element = document.elementFromPoint(rootItemRect.left, rootItemRect.top);
-          expect(element).not.to.equal(document.documentElement);
-        });
+        // elementFromPoint doesn't work properly with shadydom on ios 10.3
+        if (!window.ShadyDOM) {
+          it('should have modeless sub menus', () => {
+            const rootItemRect = menuComponents()[0].getBoundingClientRect();
+            const element = document.elementFromPoint(rootItemRect.left, rootItemRect.top);
+            expect(element).not.to.equal(document.documentElement);
+          });
+        }
 
         it('should close submenus', () => {
           rootMenu.close();
