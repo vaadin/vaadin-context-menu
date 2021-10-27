@@ -54,7 +54,7 @@
         rootMenu.items = [...rootMenu.items];
         rootMenu.close();
         open();
-        await nextRender(rootMenu);
+        await nextFrame();
       };
 
       const getMenuItems = (menu = rootMenu) => {
@@ -62,6 +62,10 @@
         const listBox = overlay.querySelector('vaadin-context-menu-list-box');
         return Array.from(listBox.querySelectorAll('vaadin-context-menu-item'));
       };
+
+      const nextFrame = el => new Promise(resolve => {
+        requestAnimationFrame(() => resolve());
+      });
 
       const nextRender = el => new Promise(resolve => {
         Polymer.RenderStatus.afterNextRender(el, () => resolve());
