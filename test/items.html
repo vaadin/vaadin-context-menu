@@ -63,7 +63,6 @@
         return Array.from(listBox.querySelectorAll('vaadin-context-menu-item'));
       };
 
-
       const nextRender = el => new Promise(resolve => {
         Polymer.RenderStatus.afterNextRender(el, () => resolve());
       });
