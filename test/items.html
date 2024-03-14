@@ -32,6 +32,12 @@
     describe('items', () => {
       let rootMenu, subMenu, target;
 
+      const createComponent = (text) => {
+        const item = document.createElement('vaadin-context-menu-item');
+        item.textContent = text;
+        return item;
+      };
+
       const menuComponents = (menu = rootMenu) => {
         return Array.from(menu.$.overlay.content.firstElementChild.children);
       };
@@ -84,7 +90,15 @@
                 ]},
               ]
             },
-            {text: 'foo-1'}
+            {text: 'foo-1'},
+            {
+              text: 'foo-2',
+              children: [
+                {component: createComponent('foo-2-0')},
+                {component: createComponent('foo-2-1')},
+                {component: createComponent('foo-2-2')}
+              ]
+            }
           ];
           open();
           flush(() => {
@@ -394,6 +408,34 @@
           const spy = sinon.spy(item, 'focus');
           fire(subMenu.$.overlay.$.overlay, 'keydown', {}, {keyCode: 38, key: 'ArrowUp'});
           expect(spy).to.be.calledOnce;
+        });
+
+        it('should focus first item after re-opening when using components', async() => {
+          subMenu.close();
+          rootMenu.$.overlay.focus();
+
+          const rootItem = getMenuItems(rootMenu)[2];
+
+          // Open the sub-menu with item components
+          open(rootItem);
+          await nextRender();
+          const subMenu2 = getSubMenu(rootMenu);
+          const items = getMenuItems(subMenu2);
+
+          // Arrow Down to focus next item
+          items[0].focus();
+          fire(items[0], 'keydown', {}, {keyCode: 40, key: 'ArrowDown'});
+          expect(items[1].hasAttribute('focus-ring')).to.be.true;
+
+          // Arrow Left to close the sub-menu
+          fire(items[1], 'keydown', {}, {keyCode: 37, key: 'ArrowLeft'});
+          await nextRender();
+          expect(rootItem.hasAttribute('focus-ring')).to.be.true;
+
+          // Re-open sub-menu and check focus
+          open(rootItem);
+          await nextRender();
+          expect(items[0].hasAttribute('focus-ring')).to.be.true;
         });
 
         // elementFromPoint doesn't work properly with shadydom on ios 10.3
